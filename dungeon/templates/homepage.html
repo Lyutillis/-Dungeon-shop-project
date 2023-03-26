@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+	<h1>Hewwo!</h1>
+	{% if product_list %}
+	<section class="section-products">
+	  <div class='container'>
+		{% for i in product_list %}
+          {% if forloop.first %}
+	      <div class="row">
+	      {% endif %}
+	      	<div class="col-md-6 col-lg-4 col-xl-3">
+			  <div id="product-3" class="single-product">
+				<div class="part-1" style="background:url('/static{{ i.picture.url }}') no-repeat center; background-size: contain;">
+				  <a href="/admin" style="width:100%;height:100%;display:block"></a>
+				  <ul>
+					<li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
+					<li><a href="#"><i class="fas fa-heart"></i></a></li>
+					<li><a href="#"><i class="fas fa-plus"></i></a></li>
+					<li><a href="#"><i class="fas fa-expand"></i></a></li>
+				  </ul>
+				</div>
+				<a href="/admin" style="width:100%;height:100%;display:block">
+				  <div class="part-2">
+				  	    <h3 class="product-title">{{ i.name }}</h3>
+				     	<h4 class="product-old-price">$300.00</h4><h4 class="product-price">${{ i.price }}.00</h4>
+				  </div>
+				</a>
+	    	  </div>
+			</div>
+			{% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
+	    	{% if forloop.last %}
+	      	  </div>
+	    	{% endif %}
+	    {% endfor %}
+	  </div>
+	</section>
+	{% endif %}
+{% endblock content %}
