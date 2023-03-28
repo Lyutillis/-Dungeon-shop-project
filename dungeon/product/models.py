@@ -40,6 +40,11 @@ class Product(models.Model) :
 
 # Class methods.
 
+	@staticmethod
+	def get_by_id(id):
+		product=Product.objects.filter(id=id).first()
+		return product if product else None
+
 	"""@staticmethod
 				def create(title=None, body=None, user_id=None):
 					note = Note()
