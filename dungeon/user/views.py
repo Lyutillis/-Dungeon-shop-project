@@ -3,13 +3,18 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import User
 from product.models import Product
+from product.utils import cartData
 import os
 
 # Create your views here.
 def homepage_view(request) :
-	context={'product_list':None,}
+	context={'product_list':None, 'items': None, 'order': None, 'cartItems': None}
 	product_list=Product.objects.all()
 	context['product_list']=product_list
+	data = cartData(request)
+	context['items'] = data['items']
+	context['order'] = data['order']
+	context['cartItems'] = data['cartItems']
 	return render(request, 'homepage.html', context)
 
 def login_view(request):

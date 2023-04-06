@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Product
-from .models import Supplier
+from .models import Product, Supplier, Order, OrderItem, ShippingAddress
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin) :
@@ -27,3 +26,7 @@ class SupplierAdmin(admin.ModelAdmin) :
 			return ('name', 'description')
 		else:
 			return ()
+
+admin.site.register(Order)
+admin.site.register(OrderItem)
+admin.site.register(ShippingAddress)
