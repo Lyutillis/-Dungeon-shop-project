@@ -73,6 +73,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dungeon.wsgi.application'
 
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -125,7 +126,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static/'),
 )
 
 MEDIA_ROOT = BASE_DIR / 'static' / 'uploads'

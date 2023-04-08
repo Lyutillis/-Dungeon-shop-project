@@ -50,7 +50,7 @@
 			<br>
 			<div class="box-element hidden" id="payment-info">
 				<small>Paypal Options</small>
-				<button id="make-payment">Make Payment</button>
+				<!--<button id="make-payment">Make Payment</button>-->
 				<div id="paypal-button-container"></div>
 			</div>
 			
@@ -63,7 +63,7 @@
 				<hr>
 				{% for i in items %}
 				<div class="cart-row">
-					<div style="flex:2"><img class="row-image" src='/static{{ i.product.picture.url }}'></div>
+					<div style="flex:2"><img class="row-image static" src='/static{{ i.product.picture.url }}'></div>
 					<div style="flex:2"><p>{{i.product.name}}</p></div>
 					<div style="flex:1"><p>$ {{i.product.price|floatformat:2}}</p></div>
 					<div style="flex:1"><p>x{{i.quantity}}</p></div>
@@ -76,8 +76,46 @@
 	</div>
 </div>
 
+<script src="https://www.paypal.com/sdk/js?client-id=AX28Lf2b8bKJzNFgCfVBdA660sWrq_jUSSnLqjA48vN8E4fxzx6RquAuuUtqK6nJUv9XkNfbaczPRrmS&disable-funding=credit&currency=USD" data-sdk-integration-source="button-factory"></script>
+
+<script>
+	var total = '{{ order.get_cart_total }}'
+
+	function initPayPalButton() {
+	  paypal.Buttons({
+		style: {
+		  shape: 'pill',
+		  color: 'white',
+		  layout: 'vertical',
+		  label: 'paypal',
+		  
+		},
+  
+		createOrder: function(data, actions) {
+		  return actions.order.create({
+			purchase_units: [{"amount":{"currency_code":"USD","value":parseFloat(total).toFixed(2)}}]
+		  });
+		},
+  
+		onApprove: function(data, actions) {
+		  return actions.order.capture().then(function(orderData) {
+			
+			submitFormData();
+  
+			// Or go to another URL:  actions.redirect('thank_you.html');
+			
+		  });
+		},
+  
+		onError: function(err) {
+		  console.log(err);
+		}
+	  }).render('#paypal-button-container');
+	}
+	initPayPalButton();
+  </script>
+
 <script type="text/javascript">
-	var total='{{order.get_cart_total}}'
 
 	if (user != 'AnonymousUser'){
 		 	document.getElementById('user-info').innerHTML = ''
@@ -92,9 +130,11 @@
 		document.getElementById('payment-info').classList.remove("hidden");
 	})
 
+	/*
 	document.getElementById('make-payment').addEventListener('click', function(e){
 		submitFormData()
 	})
+	*/
 
 	function submitFormData(){
 		console.log('Paymnet button clicked')
