@@ -20,6 +20,8 @@ def supplier_image_upload_handler(instance, filename) :
 	return f'supplier-pics/{new_fname}{fpath.suffix}'
 
 class Supplier(models.Model):
+	class Meta:
+		verbose_name_plural = "Suppliers"
 
 	name=models.CharField(default='No Title', max_length=1000)
 	picture=models.ImageField(default='supplier-pics/default_pic.gif', upload_to=supplier_image_upload_handler, null=True)
@@ -30,6 +32,8 @@ class Supplier(models.Model):
 
 # Create your models here.
 class Product(models.Model) :
+	class Meta:
+		verbose_name_plural = "Products"
 
 	name=models.CharField(default='No Title', max_length=1000)
 	price=models.DecimalField(max_digits = 8, decimal_places = 2)
@@ -72,6 +76,9 @@ class Product(models.Model) :
 
 
 class Order(models.Model):
+	class Meta:
+		verbose_name_plural = "Orders"
+
 	id = models.AutoField(primary_key=True)
 	customer = models.ForeignKey(User, on_delete=models.CASCADE)
 	date_ordered = models.DateTimeField(auto_now_add=True)
@@ -91,6 +98,9 @@ class Order(models.Model):
 		return total
 
 class OrderItem(models.Model):
+	class Meta:
+		verbose_name_plural = "Order Items"
+
 	product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
 	order=models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
 	quantity=models.IntegerField(default=0, null=True, blank=True)
@@ -102,9 +112,36 @@ class OrderItem(models.Model):
 		return total
 
 class ShippingAddress(models.Model):
-	 customer = models.ForeignKey(User, on_delete=models.CASCADE)
-	 order=models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
-	 address = models.CharField(max_length=200, null=True)
-	 city = models.CharField(max_length=200, null=True)
-	 zipcode = models.CharField(max_length=200, null=True)
-	 date_added=models.DateTimeField(auto_now_add=True)
+	class Meta:
+		verbose_name_plural = "Shipping Addresses"
+
+	customer = models.ForeignKey(User, on_delete=models.CASCADE)
+	order=models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
+	address = models.CharField(max_length=200, null=True)
+	city = models.CharField(max_length=200, null=True)
+	zipcode = models.CharField(max_length=200, null=True)
+	date_added=models.DateTimeField(auto_now_add=True)
+
+class Comment(models.Model):
+	class Meta:
+		verbose_name_plural = "Comments"
+
+	product = models.ForeignKey(Product, on_delete=models.CASCADE)
+	customer = models.ForeignKey(User, on_delete=models.CASCADE)
+	body = models.CharField(max_length=1000, null=True)
+	rating = models.IntegerField(default=0, validators=[MaxValueValidator(5), MinValueValidator(1),])
+
+class ReplyComment(models.Model):
+	class Meta:
+		verbose_name_plural = "Reply Comments"
+
+	customer = models.ForeignKey(User, on_delete=models.CASCADE)
+	body = models.CharField(max_length=1000, null=True)
+
+class Reply(models.Model):
+	class Meta:
+		unique_together = ("comment", "reply")
+		verbose_name_plural = "Replies"
+
+	comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+	reply = models.ForeignKey(ReplyComment, on_delete=models.CASCADE)

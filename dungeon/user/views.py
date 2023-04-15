@@ -3,11 +3,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import User
 from product.models import Product
-from product.utils import cartData
+from product.utils import cartData, cookieCart, sessionPath, guestOrder
+from django.http import HttpRequest
+import json
 import os
 
 # Create your views here.
 def homepage_view(request) :
+	path = sessionPath(request, '/')
 	context={'product_list':None, 'items': None, 'order': None, 'cartItems': None}
 	product_list=Product.objects.all()
 	context['product_list']=product_list
@@ -18,10 +21,13 @@ def homepage_view(request) :
 	return render(request, 'homepage.html', context)
 
 def login_view(request):
+	path = sessionPath(request, '/login/')
 	context = {'login_data_error': False,
                'invalid_data_error': False,
                'email': None,
     }
+	data = cartData(request)
+	context['cartItems'] = data['cartItems']
 	if request.method == 'POST' :
 		email = request.POST.get('email')
 		password = request.POST.get('password')
@@ -34,8 +40,9 @@ def login_view(request):
 		if user : 
 			user.update(is_active=True)
 			login(request, user)
+			guestOrder(request, email)
 			messages.success(request, ("Должно было прокатить (логин)!"))
-			return redirect('/')
+			return redirect(path)
 		else:
 			context['invalid_data_error'] = True
 			context['email'] = email
@@ -44,6 +51,7 @@ def login_view(request):
 	return render(request, 'login.html', context=context)
 
 def register_view(request):
+	path = sessionPath(request, '/register/')
 	context = {'register_data_error': False,
                'password_equity_error': False,
                'email_error': False,

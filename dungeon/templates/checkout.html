@@ -13,12 +13,12 @@
 			<div class="box-element" id="form-wrapper">
 				<form id="form">
 					<div id="user-info">
-						<div class="form-field">
-							<input required class="form-control" type="text" name="name" placeholder="Name..">
-						</div>
-						<div class="form-field">
-							<input required class="form-control" type="email" name="email" placeholder="Email..">
-						</div>
+						<h3>To make an order you need to authorize:</h3>
+						<div class="row mx-auto">
+							<h3><a id="form-button" class="col-5 btn btn-success btn-block" href="{% url 'login' %}">Login</a>
+						or
+						<a id="form-button" class="col-5 btn btn-success btn-block" href="{% url 'register' %}">Register</a></h3>
+					</div>
 					</div>
 					
 					<div id="shipping-info">
@@ -156,11 +156,13 @@
 		shippingInfo.city = form.city.value
 		shippingInfo.state = form.state.value
 		shippingInfo.zipcode = form.zipcode.value
+		console.log('Shipping info collected')
 
 		if (user == 'AnonymousUser'){
 			userFormData.name = form.name.value
 			userFormData.email = form.email.value
 		}
+		console.log('Anon user checked')
 
 		var url = '/process-order/'
 		fetch(url, {
@@ -171,17 +173,20 @@
 			},
 			body: JSON.stringify({'form': userFormData, 'shipping': shippingInfo}),
 		})
+		console.log('Fetched')
 
 		.then((response) => response.json())
+		console.log('Response')
 		.then((data) => {
 			console.log('Success:', data);
 			alert('Transaction completed');
 
-			cart ={}
+			cart = {}
 			document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
 
 			window.location.href = "{% url 'homepage' %}"
 		})
+		console.log('Data')
 	}
 </script>
 
