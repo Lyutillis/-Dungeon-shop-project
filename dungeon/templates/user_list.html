@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block links %}
+  <link rel="stylesheet" href="{% static 'product/style.css' %}">
+{% endblock links %}
+
+{% block content %}
+<div class="box-element">
+    <div class="cart-row">
+      <div class="vr"></div>
+        <div class="text-center" style="flex:1"></div>
+        <div class="vr"></div>
+        <div class="text-center" style="flex:2"><strong>Email</strong></div>
+        <div class="vr"></div>
+        <div class="text-center" style="flex:2"><strong>Username</strong></div>
+        <div class="vr"></div>
+        <div class="text-center" style="flex:1"><strong>Is admin</strong></div>
+        <div class="vr"></div>
+        <div class="text-center" style="flex:1"><strong>Is staff</strong></div>
+        <div class="vr"></div>
+    </div>
+  {% if user.is_superuser %}
+  {% for i in users %}
+  <div class="cart-row">
+    <div class="vr"></div>
+    <div class="text-center" style="flex:1"><img class="row-image" src='/static{{ i.profile_pic.url }}'></div>
+    <div class="vr"></div>
+    <div class="text-center" style="flex:2"><p>{{i.email}}</p></div>
+    <div class="vr"></div>
+    <div class="text-center" style="flex:2"><p>{{i.username}}</p></div>
+    <div class="vr"></div>
+    {% if i.is_superuser %}
+    <div class="text-center" style="flex:1"><input data-user = '{{ i.id }}' class="form-check-input check-superuser" type="checkbox" value="" id="flexCheckDefault" checked></div>
+    {% else %}
+    <div class="text-center" style="flex:1"><input data-user = '{{ i.id }}' class="form-check-input check-superuser" type="checkbox" value="" id="flexCheckDefault"></div>
+    {% endif %}
+    <div class="vr"></div>
+    {% if i.is_staff %}
+    <div class="text-center" style="flex:1"><input data-user = '{{ i.id }}' class="form-check-input check-staff" type="checkbox" value="" id="flexCheckDefault" checked></div>
+    {% else %}
+    <div class="text-center" style="flex:1"><input data-user = '{{ i.id }}' class="form-check-input check-staff" type="checkbox" value="" id="flexCheckDefault"></div>
+    {% endif %}
+    <div class="vr"></div>
+</div>
+{% endfor %}
+{% else %}
+<hr class="my-4">
+<h6 class="text-muted">You don`t have permission to observe user list!</h6>
+<hr class="my-4">
+{% endif %}
+</div>
+<script type='text/javascript' src="{% static 'user/permission-change.js' %}"></script>
+{% endblock content %}

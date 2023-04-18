@@ -8,6 +8,7 @@ import json
 from .models import Product, Order, OrderItem, ShippingAddress, Comment, ReplyComment, Reply
 import os
 from .utils import cookieCart, cartData, guestOrder, sessionPath
+from django.db.models import Q
 
 def processOrder(request):
 	transaction_id = datetime.datetime.now().timestamp()
@@ -69,8 +70,6 @@ def product_page_view(request, id) :
 			replies[i] = list(reply)
 		except:
 			pass
-	for i in replies:
-		print(replies.get(i)) 
 
 
 	return render(request, 'product_page.html', {'product': product, 'items': items, 'order': order, 'cartItems': cartItems, 'comments': comments, 'replies': replies})
@@ -128,4 +127,55 @@ def publishReply(request, id):
 		messages.success(request, ("Reply успешно добавлен!"))
 		return redirect(path)
 	messages.success(request, ("Reply не был добавлен!"))
-	return redirect(path)		
+	return redirect(path)
+
+def user_list_view(request):
+	path = sessionPath(request, '/user-list/')
+	data = cartData(request)
+	cartItems = data['cartItems']
+	users = User.objects.filter(~Q(id=request.user.id))
+	
+	return render(request, 'user_list.html', {'users': users, 'cartItems': cartItems})
+
+def updatePermissionSuperuser(request):
+	data = json.loads(request.body)
+	userId=data['userId']
+	action=data['action']
+
+	print('action:', action)
+	print('user id:', userId)
+
+	user = User.objects.get(id = int(userId))
+
+	print(user)
+
+	if action == 'True' :
+		user.is_superuser = True
+	elif action == 'False' :
+		user.is_superuser = False
+
+	user.save()
+
+	return JsonResponse('User permissions were updated!', safe = False)
+
+def updatePermissionStaff(request):
+	print('In views')
+	data = json.loads(request.body)
+	userId=data['userId']
+	action=data['action']
+
+	print('action:', action)
+	print('user id:', userId)
+
+	user = User.objects.get(id = int(userId))
+
+	print(user)
+
+	if action == 'True' :
+		user.is_staff = True
+	elif action == 'False' :
+		user.is_staff = False
+
+	user.save()
+
+	return JsonResponse('User permissions were updated!', safe = False)	

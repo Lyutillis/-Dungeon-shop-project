@@ -104,7 +104,7 @@
 				<i class="bi bi-person-square me-2"></i>{{ user.username }}</a>
 				<ul class="dropdown-menu">
 		            <li><a class="dropdown-item" href="#">Profile</a></li>
-		            <li><a class="dropdown-item" href="#">My Orders</a></li>
+		            <li><a class="dropdown-item" href="{% url 'user-list' %}">User List</a></li>
 		            <li><hr class="dropdown-divider"></li>
 		            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
 	            </ul>
