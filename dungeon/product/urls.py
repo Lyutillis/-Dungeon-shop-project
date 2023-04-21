@@ -13,4 +13,5 @@ urlpatterns = [
 	path('user-list', views.user_list_view, name='user-list'),
 	path('update-permission-superuser/', views.updatePermissionSuperuser, name='update-permission-superuser'),
 	path('update-permission-staff/', views.updatePermissionStaff, name='update-permission-staff'),
+	path('create-product/', views.createProduct, name='create-product'),
 ]

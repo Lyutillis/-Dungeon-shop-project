@@ -178,4 +178,7 @@ def updatePermissionStaff(request):
 
 	user.save()
 
-	return JsonResponse('User permissions were updated!', safe = False)	
+	return JsonResponse('User permissions were updated!', safe = False)
+
+def createProduct(request):
+	return render(request, 'create_product.html', {})	
