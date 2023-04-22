@@ -20,27 +20,31 @@
                         <span class="active">T-shirt</span>
                     </div>
                     <div class="product-image">
-                        <div class="hovereffect">
-                            <form>
-                                <div class="static">
-                                    <div class="product-image-main">
+                        <div class="product-image-main">
+                            <div class="hovereffect">
+                                <form>
+                                    <div class="static">
                                         <div class="holder">
-                                            <img class='.img-preview form-control' id="imgPreview" src="/static/product/add_image1.png" alt="pic" />
+                                            <img class='.img-preview form-control product-image-main' id="imgPreview" src="/static/product/add_image1.png" alt="pic" />
                                         </div>
                                     </div>
-                                </div>
-                                <div class="mask" style="background-color: hsla(217, 89%, 51%, 0.5)">
-                                </div>
-                                <div class="overlay">
-                                    <input type="file" name="photograph"
-                                    id="photo" required="true" />
-                                </div>
-                            </form>
+                                    <div class="mask" style="background-color: hsla(217, 89%, 51%, 0.5)">
+                                    </div>
+                                    <div class="overlay">
+                                        <input class="input-photo" type="file" name="photograph"
+                                        id="photo1" required="true" onchange="PhotoSection1(event)" />
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <div class="product-image-slider">
-                                <img src="/static/uploads/profile-pics/d240dbb5-ca44-11ed-946e-1c1b0d73887c.png" alt=""  class="image-list">
-                                <img src="/static{{ product.picture.url }}" alt=""  class="image-list">
-                                <img src="/static/uploads/profile-pics/d240dbb5-ca44-11ed-946e-1c1b0d73887c.png" alt=""  class="image-list">
+                                <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img1">
+                                <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img2">
+                                <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img3">
+                                <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img4">
+                                <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img5">
+                                <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img6">
+                                <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img7">
                         </div>
                     </div>                 
                 </div>
@@ -112,22 +116,165 @@
 </div>
 
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="{% static 'product/script.js' %}"></script>
-<script>
-    $(document).ready(() => {
-        $("#photo").change(function () {
-            const file = this.files[0];
-            if (file) {
-                let reader = new FileReader();
-                reader.onload = function (event) {
-                    $("#imgPreview")
-                      .attr("src", event.target.result);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    });
+<script src="{% static 'product/slider-input.js' %}"></script>
+<script type="text/javascript">
+
+    var input = document.getElementsByClassName('input-photo')[0];
+
+
+    function PhotoSection1(evt) {
+        var tgt = evt.target || window.event.srcElement,
+        files = tgt.files;
+    
+    // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                var sliderMainImage = document.getElementById("imgPreview");
+                sliderMainImage.src = fr.result;
+                var sliderImage = document.getElementById("img1");
+                sliderImage.src = fr.result;
+            }    
+            fr.readAsDataURL(files[0]);
+        }
+        
+        // Not supported
+        else {
+            console.log('our browser does not support File Reader (( Whatever that means))')
+        }
+    }
+
+    function PhotoSection2(evt) {
+        var tgt = evt.target || window.event.srcElement,
+        files = tgt.files;
+    
+    // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                var sliderMainImage = document.getElementById("imgPreview");
+                sliderMainImage.src = fr.result;
+                var sliderImage = document.getElementById("img2");
+                sliderImage.src = fr.result;
+            }    
+            fr.readAsDataURL(files[0]);
+        }
+        
+        // Not supported
+        else {
+            console.log('our browser does not support File Reader (( Whatever that means))')
+        }
+    }
+
+    function PhotoSection3(evt) {
+        var tgt = evt.target || window.event.srcElement,
+        files = tgt.files;
+    
+    // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                var sliderMainImage = document.getElementById("imgPreview");
+                sliderMainImage.src = fr.result;
+                var sliderImage = document.getElementById("img3");
+                sliderImage.src = fr.result;
+            }    
+            fr.readAsDataURL(files[0]);
+        }
+        
+        // Not supported
+        else {
+            console.log('our browser does not support File Reader (( Whatever that means))')
+        }
+    }
+
+    function PhotoSection4(evt) {
+        var tgt = evt.target || window.event.srcElement,
+        files = tgt.files;
+    
+    // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                var sliderMainImage = document.getElementById("imgPreview");
+                sliderMainImage.src = fr.result;
+                var sliderImage = document.getElementById("img4");
+                sliderImage.src = fr.result;
+            }    
+            fr.readAsDataURL(files[0]);
+        }
+        
+        // Not supported
+        else {
+            console.log('our browser does not support File Reader (( Whatever that means))')
+        }
+    }
+
+    function PhotoSection5(evt) {
+        var tgt = evt.target || window.event.srcElement,
+        files = tgt.files;
+    
+    // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                var sliderMainImage = document.getElementById("imgPreview");
+                sliderMainImage.src = fr.result;
+                var sliderImage = document.getElementById("img5");
+                sliderImage.src = fr.result;
+            }    
+            fr.readAsDataURL(files[0]);
+        }
+        
+        // Not supported
+        else {
+            console.log('our browser does not support File Reader (( Whatever that means))')
+        }
+    }
+
+    function PhotoSection6(evt) {
+        var tgt = evt.target || window.event.srcElement,
+        files = tgt.files;
+    
+    // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                var sliderMainImage = document.getElementById("imgPreview");
+                sliderMainImage.src = fr.result;
+                var sliderImage = document.getElementById("img6");
+                sliderImage.src = fr.result;
+            }    
+            fr.readAsDataURL(files[0]);
+        }
+        
+        // Not supported
+        else {
+            console.log('our browser does not support File Reader (( Whatever that means))')
+        }
+    }
+
+    function PhotoSection7(evt) {
+        var tgt = evt.target || window.event.srcElement,
+        files = tgt.files;
+    
+    // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                var sliderMainImage = document.getElementById("imgPreview");
+                sliderMainImage.src = fr.result;
+                var sliderImage = document.getElementById("img7");
+                sliderImage.src = fr.result;
+            }    
+            fr.readAsDataURL(files[0]);
+        }
+        
+        // Not supported
+        else {
+            console.log('our browser does not support File Reader (( Whatever that means))')
+        }
+    }
 </script>
 
 
