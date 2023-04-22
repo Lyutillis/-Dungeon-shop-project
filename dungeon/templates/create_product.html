@@ -32,7 +32,8 @@
                                     </div>
                                     <div class="overlay">
                                         <input class="input-photo" type="file" name="photograph"
-                                        id="photo1" required="true" onchange="PhotoSection1(event)" />
+                                        id="photo1" required="true" onchange="PhotoSection(event, 'img1')" />
+                                        <button type="button" class="btn btn-danger" id="dimg1" onclick="RemoveImage(this.id)">Remove Image</button>
                                     </div>
                                 </form>
                             </div>
@@ -51,19 +52,23 @@
                 <div class="col-6">
                     <div class="product">
                         <div class="product-title">
-                            <h2>Half Sleve T-shirt for Men</h2>
-                        </div>
-                        <div class="product-rating">
-                            <span><i class="bx bxs-star"></i></span>
-                            <span><i class="bx bxs-star"></i></span>
-                            <span><i class="bx bxs-star"></i></span>
-                            <span><i class="bx bxs-star"></i></span>
-                            <span><i class="bx bxs-star"></i></span>
-                            <span class="review">(47 Reviews)</span>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingInput" placeholder="name">
+                                <label for="floatingInput">Product Name</label>
+                            </div>
                         </div>
                         <div class="product-price">
-                            <span class="offer-price">$99.00</span>
-                            <span class="sale-price">$129.00</span>
+                            <span class="offer-price input-group mb-3 w-35 mx-3">
+                                <span class="input-group-text" id="basic-addon1">$</span>
+                                <input type="text" class="form-control old-price" placeholder="Price" aria-label="Price" aria-describedby="basic-addon1">
+                            </span>
+                            <span class="offer-price input-group mb-3 w-35 discount">
+                                <button type="button" class="btn btn-info" onclick="AddDiscount()">Add a discount</button>
+                            </span>
+                            <span class="offer-price input-group mb-3 w-35 mx-3 hide-discount hidden">
+                                <button type="button" class="btn btn-info" onclick="RemoveDiscount()">Remove a discount</button>
+                            </span>
+                            
                         </div>
 
                         <div class="product-details">
@@ -118,11 +123,12 @@
 
 <script src="{% static 'product/slider-input.js' %}"></script>
 <script type="text/javascript">
+    var initialSrc = "/static/product/add_image1.png";
 
     var input = document.getElementsByClassName('input-photo')[0];
 
 
-    function PhotoSection1(evt) {
+    function PhotoSection(evt, id) {
         var tgt = evt.target || window.event.srcElement,
         files = tgt.files;
     
@@ -132,7 +138,7 @@
             fr.onload = function () {
                 var sliderMainImage = document.getElementById("imgPreview");
                 sliderMainImage.src = fr.result;
-                var sliderImage = document.getElementById("img1");
+                var sliderImage = document.getElementById(id);
                 sliderImage.src = fr.result;
             }    
             fr.readAsDataURL(files[0]);
@@ -275,6 +281,30 @@
             console.log('our browser does not support File Reader (( Whatever that means))')
         }
     }
+
+    function RemoveImage(id) {
+        var targetId = id.slice(1, id.length)
+        console.log(targetId)
+        var sliderMainImage = document.getElementById("imgPreview");
+        sliderMainImage.src = initialSrc;
+        var sliderImage = document.getElementById(targetId);
+        sliderImage.src = initialSrc;
+    }
+
+    function AddDiscount() {
+        var container = document.getElementsByClassName('discount')[0];
+        container.innerHTML = '<span class="input-group-text" id="basic-addon1">$</span><input type="text" class="form-control" placeholder="Old Price" aria-label="Old Price" aria-describedby="basic-addon1">'
+        document.getElementsByClassName('hide-discount')[0].classList.remove('hidden')
+        var oldPrice = document.getElementsByClassName('old-price')[0].placeholder = 'New Price';
+    }
+
+    function RemoveDiscount() {
+        var container = document.getElementsByClassName('discount')[0];
+        container.innerHTML = '<button type="button" class="btn btn-info" onclick="AddDiscount()">Add a discount</button>'
+        document.getElementsByClassName('hide-discount')[0].classList.add('hidden')
+        var oldPrice = document.getElementsByClassName('old-price')[0].placeholder = 'Price';
+    }
+
 </script>
 
 
