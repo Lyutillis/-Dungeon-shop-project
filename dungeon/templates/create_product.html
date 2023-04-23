@@ -73,45 +73,43 @@
 
                         <div class="product-details">
                             <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
-                        <div class="product-size">
-                            <h4>Size</h4>
-                            <div class="size-layout">
-                                <input type="radio" name="size" value="S" id="1" class="size-input">
-                                <label for="1" class="size">S</label>
-
-                                <input type="radio" name="size" value="M" id="2" class="size-input">
-                                <label for="2" class="size">M</label>
-
-                                <input type="radio" name="size" value="L" id="3" class="size-input">
-                                <label for="3" class="size">L</label>
-
-                                <input type="radio" name="size" value="XL" id="4" class="size-input">
-                                <label for="4" class="size">XL</label>
-
-                                <input type="radio" name="size" value="XXL" id="5" class="size-input">
-                                <label for="5" class="size">XXL</label>
-                            </div>
-                        </div>
-                        <div class="product-color">
-                            <h4>Color</h4>
-                            <div class="color-layout">
-                                <input type="radio" name="color"  value="black" class="color-input">
-                                <label for="black" class="black"></label>
-                                <input type="radio" name="color"  value="red" class="color-input">
-                                <label for="red" class="red"></label>
-
-                                <input type="radio" name="color"  value="blue" class="color-input">
-                                <label for="blue" class="blue"></label>
-                            </div>
-                        </div>
+                        
                         <span class="divider"></span>
+                        <div id="categorydiv" class="my-3">
+                            <select id="selectCategory" class="form-select w-35" aria-label="Default select example" onchange="ShowSubcategory();" onfocus="this.selectedIndex = -1;">
+                                <option selected>Select category</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                            <button id="category" type="button" class="btn btn-info my-3" onclick="AddCategory()">Add a category</button>
+                            <button id="delcategory" type="button" class="btn btn-danger my-3 hidden" onclick="DeleteCategory()">Delete this category</button>
+                        </div>
+                        <div id="subcategory" class="my-3 hidden">
+                            <select id="selectSubcategory" class="form-select" aria-label="Default select example" onchange="ShowDelSubcategory();" onfocus="this.selectedIndex = -1;">
+                                <option selected>Select Subcategory</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                            <button id="addsubcategorybut" type="button" class="btn btn-info my-3" onclick="AddSubCategory()">Add a subcategory</button>
+                            <button id="delsubcategory" type="button" class="btn btn-danger my-3 hidden" onclick="DeleteSubCategory()">Delete this subcategory</button>
+                        </div>
+                        <div id="categorynameform" class="form-floating mb-3 hidden">
+                            <input id='categoryinput' type="text" class="form-control" id="floatingInput" placeholder="name">
+                            <label for="floatingInput">Category Name</label>
+                            <button type="button" class="btn btn-info my-3" onclick="CreateCategory()">Submit the category</button>
+                        </div>
+                        <div id="subcategorynameform" class="form-floating mb-3 hidden">
+                            <input id='subcategoryinput' type="text" class="form-control" id="floatingInput" placeholder="name">
+                            <label for="floatingInput">Subcategory Name</label>
+                            <button type="button" class="btn btn-info my-3" onclick="CreateSubCategory()">Submit the category</button>
+                        </div>
 
-                        <div class="product-btn-group">
-                            <div class="button buy-now"><i class='bx bxs-zap' ></i> Buy Now</div>
-                            <div class="button add-cart"><i class='bx bxs-cart' ></i> Add to Cart</div>
-                            <div class="button heart"><i class='bx bxs-heart' ></i> Add to Wishlist</div>
+                        <div class="my-3">
+                            <button type="button" class="btn btn-primary" onclick="">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -173,6 +171,136 @@
         var oldPrice = document.getElementsByClassName('old-price')[0].placeholder = 'Price';
     }
 
+    function ShowSubcategory() {
+        var subcatDiv=document.getElementById('subcategory')
+        var catBut=document.getElementById('category')
+        if (document.getElementById('selectCategory').value=="Select category") {
+            subcatDiv.classList.add('hidden')
+            catBut.classList.remove('hidden')
+            document.getElementById('delcategory').classList.add('hidden')
+        } else {
+            subcatDiv.classList.remove('hidden')
+            catBut.classList.add('hidden')
+            document.getElementById('delcategory').classList.remove('hidden')
+        }
+    }
+
+    function AddCategory() {
+        document.getElementById('categorydiv').classList.add('hidden')
+        document.getElementById('categorynameform').classList.remove('hidden')
+    }
+
+    function CreateCategory() {
+        var url = '/create-category/'
+        var catName = document.getElementById('categoryinput').value 
+
+		fetch(url, {
+			method: 'POST',
+			headers:{
+				'Content-Type':'application/json',
+				'X-CSRFToken': csrftoken,
+			},
+			body:JSON.stringify({'catName': catName,})
+		})
+
+        .then((response) => {
+            return response.json();
+        })
+
+        .then((data) => {
+            console.log('data:', data)
+            location.reload()
+        });
+    }
+
+    function DeleteCategory() {
+        var url = '/delete-category/'
+        var catName = document.getElementById('categoryinput').value 
+
+		fetch(url, {
+			method: 'POST',
+			headers:{
+				'Content-Type':'application/json',
+				'X-CSRFToken': csrftoken,
+			},
+			body:JSON.stringify({'catName': catName,})
+		})
+
+        .then((response) => {
+            return response.json();
+        })
+
+        .then((data) => {
+            console.log('data:', data)
+            location.reload()
+        });
+    }
+
+    function AddSubCategory() {
+        document.getElementById('subcategory').classList.add('hidden')
+        document.getElementById('subcategorynameform').classList.remove('hidden')
+    }
+
+    function CreateSubCategory() {
+        var url = '/create-subcategory/'
+        var subcatName = document.getElementById('subcategoryinput').value
+        var catName = document.getElementById('selectCategory').value 
+
+		fetch(url, {
+			method: 'POST',
+			headers:{
+				'Content-Type':'application/json',
+				'X-CSRFToken': csrftoken,
+			},
+			body:JSON.stringify({'catName': catName, 'subcatName': subcatName,})
+		})
+
+        .then((response) => {
+            return response.json();
+        })
+
+        .then((data) => {
+            console.log('data:', data)
+            location.reload()
+        });
+    }
+
+    function DeleteSubCategory() {
+        var url = '/delete-subcategory/'
+        var subcatName = document.getElementById('subcategoryinput').value
+        var catName = document.getElementById('selectCategory').value 
+
+		fetch(url, {
+			method: 'POST',
+			headers:{
+				'Content-Type':'application/json',
+				'X-CSRFToken': csrftoken,
+			},
+			body:JSON.stringify({'catName': catName, 'subcatName': subcatName,})
+		})
+
+        .then((response) => {
+            return response.json();
+        })
+
+        .then((data) => {
+            console.log('data:', data)
+            location.reload()
+        });
+    }
+
+
+    function ShowDelSubcategory() {
+        var subcatDiv=document.getElementById('subcategory')
+        var subcatBut=document.getElementById('addsubcategorybut')
+        if (document.getElementById('selectSubcategory').value=="Select Subcategory") {
+            subcatBut.classList.remove('hidden')
+            document.getElementById('delsubcategory').classList.add('hidden')
+        } else {
+            subcatBut.classList.add('hidden')
+            document.getElementById('delsubcategory').classList.remove('hidden')
+        }
+    }
 </script>
 
 

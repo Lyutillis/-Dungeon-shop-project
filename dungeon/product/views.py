@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from user.models import User
 import datetime
 import json
-from .models import Product, Order, OrderItem, ShippingAddress, Comment, ReplyComment, Reply
+from .models import Product, Order, OrderItem, ShippingAddress, Comment, ReplyComment, Reply, Category, SubCategory
 import os
 from .utils import cookieCart, cartData, guestOrder, sessionPath
 from django.db.models import Q
@@ -181,4 +181,50 @@ def updatePermissionStaff(request):
 	return JsonResponse('User permissions were updated!', safe = False)
 
 def createProduct(request):
-	return render(request, 'create_product.html', {})	
+	return render(request, 'create_product.html', {})
+
+def createCategory(request):
+	data = json.loads(request.body)
+	catName=data['catName']
+
+	try:
+		category = Category.objects.create(name=catName)
+		return JsonResponse('Category successfully created!', safe = False)
+	except:
+		return JsonResponse('Something went wrong', safe = False)
+
+def deleteCategory(request):
+	data = json.loads(request.body)
+	catName=data['catName']
+
+	try:
+		category = Category.objects.get(name=catName)
+		category.delete()
+		return JsonResponse('Category successfully deleted!', safe = False)
+	except:
+		return JsonResponse('Something went wrong', safe = False)
+
+def createSubCategory(request):
+	data = json.loads(request.body)
+	catName=data['catName']
+	subcatName=data['subcatName']
+
+	try:
+		category = Category.objects.get(name=catName)
+		subCategory = SubCategory.objects.create(category=category, name=subcatName)
+		return JsonResponse('Subcategory successfully created!', safe = False)
+	except:
+		return JsonResponse('Something went wrong', safe = False)
+
+def deleteSubCategory(request):
+	data = json.loads(request.body)
+	catName=data['catName']
+	subcatName=data['subcatName']
+
+	try:
+		category = Category.objects.get(name=catName)
+		subCategory = SubCategory.objects.get(category=category, name=subcatName)
+		subCategory.delete()
+		return JsonResponse('Subcategory successfully deleted!', safe = False)
+	except:
+		return JsonResponse('Something went wrong', safe = False)
