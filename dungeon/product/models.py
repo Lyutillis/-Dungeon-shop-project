@@ -8,7 +8,6 @@ from django.db import IntegrityError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from user.models import User
 
-
 def product_image_upload_handler(instance, filename) :
 	fpath=pathlib.Path(filename)
 	new_fname=str(uuid.uuid1())
@@ -19,15 +18,19 @@ def supplier_image_upload_handler(instance, filename) :
 	new_fname=str(uuid.uuid1())
 	return f'supplier-pics/{new_fname}{fpath.suffix}'
 
-class Supplier(models.Model):
+class Category(models.Model):
 	class Meta:
-		verbose_name_plural = "Suppliers"
+		verbose_name_plural = "Categories"
 
 	name=models.CharField(default='No Title', max_length=1000)
-	picture=models.ImageField(default='supplier-pics/default_pic.gif', upload_to=supplier_image_upload_handler, null=True)
-	city=models.CharField(default='No Title', max_length=100)
-	description=models.CharField(default='No Title', max_length=1000)
-	rating=models.IntegerField(null=True, default=100, validators=[MaxValueValidator(100), MinValueValidator(1),])
+	id = models.AutoField(primary_key=True)
+
+class SubCategory(models.Model):
+	class Meta:
+		verbose_name_plural = "SubCategories"
+
+	category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+	name=models.CharField(default='No Title', max_length=1000)
 	id = models.AutoField(primary_key=True)
 
 # Create your models here.
@@ -37,10 +40,11 @@ class Product(models.Model) :
 
 	name=models.CharField(default='No Title', max_length=1000)
 	price=models.DecimalField(max_digits = 8, decimal_places = 2)
-	category=models.CharField(default='Undefined', max_length=10000)
+	oldPrice=models.DecimalField(max_digits = 8, decimal_places = 2) 
+	category=models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+	subcategory=models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=True)
 	description=models.CharField(default=None, max_length=10000)
 	picture=models.ImageField(default='product-pics/default_pic.gif', upload_to=product_image_upload_handler, null=True)
-	supplier=models.ForeignKey(Supplier, on_delete=models.CASCADE)
 	id = models.AutoField(primary_key=True)
 
 # Class methods.

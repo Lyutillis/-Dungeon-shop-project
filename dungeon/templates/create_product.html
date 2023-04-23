@@ -72,8 +72,8 @@
                         </div>
 
                         <div class="product-details">
-                            <h3>Description</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos est magnam quibusdam maiores sit perferendis minima cupiditate iusto earum repudiandae maxime vitae nostrum, ea cumque iste ipsa hic commodi tempore.</p>
+                            <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
                         <div class="product-size">
                             <h4>Size</h4>
@@ -139,138 +139,6 @@
                 var sliderMainImage = document.getElementById("imgPreview");
                 sliderMainImage.src = fr.result;
                 var sliderImage = document.getElementById(id);
-                sliderImage.src = fr.result;
-            }    
-            fr.readAsDataURL(files[0]);
-        }
-        
-        // Not supported
-        else {
-            console.log('our browser does not support File Reader (( Whatever that means))')
-        }
-    }
-
-    function PhotoSection2(evt) {
-        var tgt = evt.target || window.event.srcElement,
-        files = tgt.files;
-    
-    // FileReader support
-        if (FileReader && files && files.length) {
-            var fr = new FileReader();
-            fr.onload = function () {
-                var sliderMainImage = document.getElementById("imgPreview");
-                sliderMainImage.src = fr.result;
-                var sliderImage = document.getElementById("img2");
-                sliderImage.src = fr.result;
-            }    
-            fr.readAsDataURL(files[0]);
-        }
-        
-        // Not supported
-        else {
-            console.log('our browser does not support File Reader (( Whatever that means))')
-        }
-    }
-
-    function PhotoSection3(evt) {
-        var tgt = evt.target || window.event.srcElement,
-        files = tgt.files;
-    
-    // FileReader support
-        if (FileReader && files && files.length) {
-            var fr = new FileReader();
-            fr.onload = function () {
-                var sliderMainImage = document.getElementById("imgPreview");
-                sliderMainImage.src = fr.result;
-                var sliderImage = document.getElementById("img3");
-                sliderImage.src = fr.result;
-            }    
-            fr.readAsDataURL(files[0]);
-        }
-        
-        // Not supported
-        else {
-            console.log('our browser does not support File Reader (( Whatever that means))')
-        }
-    }
-
-    function PhotoSection4(evt) {
-        var tgt = evt.target || window.event.srcElement,
-        files = tgt.files;
-    
-    // FileReader support
-        if (FileReader && files && files.length) {
-            var fr = new FileReader();
-            fr.onload = function () {
-                var sliderMainImage = document.getElementById("imgPreview");
-                sliderMainImage.src = fr.result;
-                var sliderImage = document.getElementById("img4");
-                sliderImage.src = fr.result;
-            }    
-            fr.readAsDataURL(files[0]);
-        }
-        
-        // Not supported
-        else {
-            console.log('our browser does not support File Reader (( Whatever that means))')
-        }
-    }
-
-    function PhotoSection5(evt) {
-        var tgt = evt.target || window.event.srcElement,
-        files = tgt.files;
-    
-    // FileReader support
-        if (FileReader && files && files.length) {
-            var fr = new FileReader();
-            fr.onload = function () {
-                var sliderMainImage = document.getElementById("imgPreview");
-                sliderMainImage.src = fr.result;
-                var sliderImage = document.getElementById("img5");
-                sliderImage.src = fr.result;
-            }    
-            fr.readAsDataURL(files[0]);
-        }
-        
-        // Not supported
-        else {
-            console.log('our browser does not support File Reader (( Whatever that means))')
-        }
-    }
-
-    function PhotoSection6(evt) {
-        var tgt = evt.target || window.event.srcElement,
-        files = tgt.files;
-    
-    // FileReader support
-        if (FileReader && files && files.length) {
-            var fr = new FileReader();
-            fr.onload = function () {
-                var sliderMainImage = document.getElementById("imgPreview");
-                sliderMainImage.src = fr.result;
-                var sliderImage = document.getElementById("img6");
-                sliderImage.src = fr.result;
-            }    
-            fr.readAsDataURL(files[0]);
-        }
-        
-        // Not supported
-        else {
-            console.log('our browser does not support File Reader (( Whatever that means))')
-        }
-    }
-
-    function PhotoSection7(evt) {
-        var tgt = evt.target || window.event.srcElement,
-        files = tgt.files;
-    
-    // FileReader support
-        if (FileReader && files && files.length) {
-            var fr = new FileReader();
-            fr.onload = function () {
-                var sliderMainImage = document.getElementById("imgPreview");
-                sliderMainImage.src = fr.result;
-                var sliderImage = document.getElementById("img7");
                 sliderImage.src = fr.result;
             }    
             fr.readAsDataURL(files[0]);
