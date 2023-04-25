@@ -18,4 +18,5 @@ urlpatterns = [
 	path('delete-category/', views.deleteCategory, name='delete-category'),
 	path('create-subcategory/', views.createSubCategory, name='create-subcategory'),
 	path('delete-subcategory/', views.deleteSubCategory, name='delete-subcategory'),
+	path('create-product-ajax/', views.create_product_ajax, name='create-product-ajax')
 ]

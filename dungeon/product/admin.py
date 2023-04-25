@@ -3,8 +3,8 @@ from .models import Product, Order, OrderItem, ShippingAddress, Comment, ReplyCo
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin) :
-	list_display=['id', 'name', 'price', 'description', 'category', 'picture']
-	list_filter=['id', 'name', 'price', 'category']
+	list_display=['id', 'name', 'price', 'description', 'category', 'picture', 'subcategory']
+	list_filter=['id', 'name', 'price', 'category', 'subcategory']
 
 	def get_readonly_fields(self, request, obj=None):
 		if obj:

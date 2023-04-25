@@ -81,7 +81,7 @@ SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
+        'NAME': 'dungeon',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',

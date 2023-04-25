@@ -9,6 +9,7 @@ from .models import Product, Order, OrderItem, ShippingAddress, Comment, ReplyCo
 import os
 from .utils import cookieCart, cartData, guestOrder, sessionPath
 from django.db.models import Q
+from django.forms.models import model_to_dict
 
 def processOrder(request):
 	transaction_id = datetime.datetime.now().timestamp()
@@ -181,7 +182,8 @@ def updatePermissionStaff(request):
 	return JsonResponse('User permissions were updated!', safe = False)
 
 def createProduct(request):
-	return render(request, 'create_product.html', {})
+	categories = list(Category.objects.all())
+	return render(request, 'create_product.html', {'categories': categories,})
 
 def createCategory(request):
 	data = json.loads(request.body)
@@ -228,3 +230,22 @@ def deleteSubCategory(request):
 		return JsonResponse('Subcategory successfully deleted!', safe = False)
 	except:
 		return JsonResponse('Something went wrong', safe = False)
+
+def create_product_ajax(request):
+    data = json.loads(request.body)
+    subcategories = None
+
+    categories = list(Category.objects.all())
+
+    for i in categories:
+        if data['category'] == i.name :
+            subcategories = [model_to_dict(i) for i in list(SubCategory.objects.filter(category=i))]
+            break
+
+    if subcategories == None :
+        return JsonResponse('Something went wrong in categories!', safe=False)
+
+    return JsonResponse({
+        'category': data['category'],
+        'subcategories': subcategories,
+    }, safe=False)

@@ -32,7 +32,7 @@
                                     </div>
                                     <div class="overlay">
                                         <input class="input-photo" type="file" name="photograph"
-                                        id="photo1" required="true" onchange="PhotoSection(event, 'img1')" />
+                                        id="photo1" required="true" data-imgid="img1" onchange="PhotoSection(event, this.dataset.imgid)" />
                                         <button type="button" class="btn btn-danger" id="dimg1" onclick="RemoveImage(this.id)">Remove Image</button>
                                     </div>
                                 </form>
@@ -53,14 +53,14 @@
                     <div class="product">
                         <div class="product-title">
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="floatingInput" placeholder="name">
+                                <input type="text" class="form-control" id="floatingName" placeholder="name">
                                 <label for="floatingInput">Product Name</label>
                             </div>
                         </div>
                         <div class="product-price">
                             <span class="offer-price input-group mb-3 w-35 mx-3">
                                 <span class="input-group-text" id="basic-addon1">$</span>
-                                <input type="text" class="form-control old-price" placeholder="Price" aria-label="Price" aria-describedby="basic-addon1">
+                                <input type="text" class="form-control old-price" placeholder="Price" aria-label="Price" aria-describedby="basic-addon1" id="inputPrice">
                             </span>
                             <span class="offer-price input-group mb-3 w-35 discount">
                                 <button type="button" class="btn btn-info" onclick="AddDiscount()">Add a discount</button>
@@ -73,26 +73,23 @@
 
                         <div class="product-details">
                             <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" id="description" rows="3"></textarea>
                         </div>
                         
                         <span class="divider"></span>
                         <div id="categorydiv" class="my-3">
                             <select id="selectCategory" class="form-select w-35" aria-label="Default select example" onchange="ShowSubcategory();" onfocus="this.selectedIndex = -1;">
-                                <option selected>Select category</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                <option id='selectcategory' selected>Select category</option>
+                                {% for i in categories %}
+                                <option id='{{ i.id }}'>{{ i.name }}</option>
+                                {% endfor %}
                             </select>
                             <button id="category" type="button" class="btn btn-info my-3" onclick="AddCategory()">Add a category</button>
                             <button id="delcategory" type="button" class="btn btn-danger my-3 hidden" onclick="DeleteCategory()">Delete this category</button>
                         </div>
                         <div id="subcategory" class="my-3 hidden">
                             <select id="selectSubcategory" class="form-select" aria-label="Default select example" onchange="ShowDelSubcategory();" onfocus="this.selectedIndex = -1;">
-                                <option selected>Select Subcategory</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                <option id="selectsubcategory" selected>Select Subcategory</option>
                             </select>
                             <button id="addsubcategorybut" type="button" class="btn btn-info my-3" onclick="AddSubCategory()">Add a subcategory</button>
                             <button id="delsubcategory" type="button" class="btn btn-danger my-3 hidden" onclick="DeleteSubCategory()">Delete this subcategory</button>
@@ -101,15 +98,17 @@
                             <input id='categoryinput' type="text" class="form-control" id="floatingInput" placeholder="name">
                             <label for="floatingInput">Category Name</label>
                             <button type="button" class="btn btn-info my-3" onclick="CreateCategory()">Submit the category</button>
+                            <button id="cancelcat" type="button" class="btn btn-danger my-3" onclick="CancelCategory()">Cancel</button>
                         </div>
                         <div id="subcategorynameform" class="form-floating mb-3 hidden">
                             <input id='subcategoryinput' type="text" class="form-control" id="floatingInput" placeholder="name">
                             <label for="floatingInput">Subcategory Name</label>
-                            <button type="button" class="btn btn-info my-3" onclick="CreateSubCategory()">Submit the category</button>
+                            <button type="button" class="btn btn-info my-3" onclick="CreateSubCategory()">Submit the subcategory</button>
+                            <button id="cancelsubcat" type="button" class="btn btn-danger my-3" onclick="CancelSubCategory()">Cancel</button>
                         </div>
 
                         <div class="my-3">
-                            <button type="button" class="btn btn-primary" onclick="">Submit</button>
+                            <button type="button" class="btn btn-primary" onclick="SubmitData()">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -120,6 +119,128 @@
 
 
 <script src="{% static 'product/slider-input.js' %}"></script>
+<script type="text/javascript">
+    function SubmitData() {
+        var url = '/submit-product/'
+
+        var name = document.getElementById('floatingName').value
+        var price = '$' + document.getElementById('inputPrice').value
+        if (document.getElementById('oldPrice') !== null) {
+            var oldPrice = '$' + document.getElementById('oldPrice').value
+        } else {
+            var oldPrice = null
+        }
+        var description = document.getElementById('description').value
+        var category = document.getElementById('selectCategory').value
+        var subcategory = document.getElementById('selectSubcategory').value
+        console.log(name)
+        console.log(price)
+        console.log(oldPrice)
+        console.log(description)
+        console.log(category)
+        console.log(subcategory)
+        var img1 = document.getElementById('img1').src
+        var img2 = document.getElementById('img2').src
+        var img3 = document.getElementById('img3').src
+        var img4 = document.getElementById('img4').src
+        var img5 = document.getElementById('img5').src
+        var img6 = document.getElementById('img6').src
+        var img7 = document.getElementById('img7').src
+        console.log(img1)
+
+        fetch(url, {
+			method: 'POST',
+			headers:{
+				'Content-Type':'application/json',
+				'X-CSRFToken': csrftoken,
+			},
+			body:JSON.stringify({
+                'name': name,
+                'price': price,
+                'oldPrice': oldPrice,
+                'description': description,
+                'category': category,
+                'subcategory': subcategory,
+                'img1': img1,
+                'img2': img2,
+                'img3': img3,
+                'img4': img4,
+                'img5': img5,
+                'img6': img6,
+                'img7': img7,
+            })
+		})
+
+        .then((response) => {
+            return response.json();
+        })
+
+        .then((data) => {
+            console.log('data:', data)
+            location.reload()
+        });
+    }
+</script>
+<script type="text/javascript">
+    
+    function removeOptions(selectElement, initial) {
+        console.log('i`M HERE', selectElement)
+        var i, L = selectElement.options.length - 1
+        for(i=L; i >= 0; i--) {
+            selectElement.remove(i)
+        }
+
+        var opt = document.createElement('option');
+        opt.value=""
+        opt.innerHTML=initial;
+        selectElement.appendChild(opt)
+    }
+
+    function populate_list() {
+        const url='/create-product-ajax/'
+        const csrftoken=getToken('csrftoken');
+
+        var e = document.getElementById('selectCategory')
+        var selectedOption = e.value
+        if (selectedOption == "") {
+            removeOptions(document.getElementById('selectCategory'), "Select category")
+            removeOptions(document.getElementById('selectSubcategory'), "Select Subcategory")
+            return
+        }
+        
+        // Send AJAX Request
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "category": selectedOption,
+            }),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            var select = document.getElementById("selectCategory");
+            removeOptions(select, data.category);
+
+            if (data.subcategories != null) {
+                var select = document.getElementById("selectSubcategory");
+                removeOptions(select, `All subcategories from ${data.category['name']}`);
+                for (var i = 0; i<=data.subcategories.length-1; i++){
+                    var opt = document.createElement('option');
+                    opt.value = data.subcategories[i]['id'];
+                    opt.innerHTML = data.subcategories[i]['name'];
+                    select.appendChild(opt);
+                }
+            }
+            
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+</script>
 <script type="text/javascript">
     var initialSrc = "/static/product/add_image1.png";
 
@@ -137,6 +258,7 @@
                 var sliderMainImage = document.getElementById("imgPreview");
                 sliderMainImage.src = fr.result;
                 var sliderImage = document.getElementById(id);
+                console.log(id)
                 sliderImage.src = fr.result;
             }    
             fr.readAsDataURL(files[0]);
@@ -159,7 +281,7 @@
 
     function AddDiscount() {
         var container = document.getElementsByClassName('discount')[0];
-        container.innerHTML = '<span class="input-group-text" id="basic-addon1">$</span><input type="text" class="form-control" placeholder="Old Price" aria-label="Old Price" aria-describedby="basic-addon1">'
+        container.innerHTML = '<span class="input-group-text" id="basic-addon1">$</span><input type="text" class="form-control" placeholder="Old Price" aria-label="Old Price" aria-describedby="basic-addon1" id="oldPrice">'
         document.getElementsByClassName('hide-discount')[0].classList.remove('hidden')
         var oldPrice = document.getElementsByClassName('old-price')[0].placeholder = 'New Price';
     }
@@ -183,11 +305,17 @@
             catBut.classList.add('hidden')
             document.getElementById('delcategory').classList.remove('hidden')
         }
+        populate_list();
     }
 
     function AddCategory() {
         document.getElementById('categorydiv').classList.add('hidden')
         document.getElementById('categorynameform').classList.remove('hidden')
+    }
+
+    function CancelCategory() {
+        document.getElementById('categorydiv').classList.remove('hidden')
+        document.getElementById('categorynameform').classList.add('hidden')
     }
 
     function CreateCategory() {
@@ -239,6 +367,11 @@
     function AddSubCategory() {
         document.getElementById('subcategory').classList.add('hidden')
         document.getElementById('subcategorynameform').classList.remove('hidden')
+    }
+
+    function CancelSubCategory() {
+        document.getElementById('subcategory').classList.remove('hidden')
+        document.getElementById('subcategorynameform').classList.add('hidden')
     }
 
     function CreateSubCategory() {
@@ -302,6 +435,7 @@
         }
     }
 </script>
+
 
 
 {% endblock content %}
