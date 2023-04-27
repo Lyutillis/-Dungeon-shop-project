@@ -144,10 +144,17 @@
         var img5 = document.getElementById('img5').src
         var img6 = document.getElementById('img6').src
         var img7 = document.getElementById('img7').src
-        if (name!="" && price !="$" && description!="" && category!="" && subcategory!="") {
-            console.log('Near the button')
-            var but = document.getElementById('submit-hidden')
-            but.click()
+        console.log(img7)
+        if (name!="" && price !="$" && description!="" && category!="") {
+            for (var i = 1; i < 8; i++) {
+                element = document.getElementById('img'+String(i))
+                if (element.src != "/static/product/add_image1.png") {
+                    var but = document.getElementById('submit-hidden')
+                    but.click()
+                    break
+                }
+            alert('You must fille all the fields and add at least 1 picture!')
+            } 
         } else {
             alert('You must fille all the fields and add at least 1 picture!')
         }
@@ -303,7 +310,12 @@
 
     function CreateCategory() {
         var url = '/create-category/'
-        var catName = document.getElementById('categoryinput').value 
+        var catName = document.getElementById('categoryinput').value
+        console.log(catName)
+        if (catName == "") {
+            alert('Add the name!')
+            return
+        } 
 
 		fetch(url, {
 			method: 'POST',
@@ -361,6 +373,11 @@
         var url = '/create-subcategory/'
         var subcatName = document.getElementById('subcategoryinput').value
         var catName = document.getElementById('selectCategory').value 
+
+        if (subcatName == "") {
+            alert('Add the name!')
+            return
+        } 
 
 		fetch(url, {
 			method: 'POST',

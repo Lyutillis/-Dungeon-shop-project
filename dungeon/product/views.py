@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from user.models import User
 import datetime
 import json
-from .models import Product, Order, OrderItem, ShippingAddress, Comment, ReplyComment, Reply, Category, SubCategory
+from .models import Product, Order, OrderItem, ShippingAddress, Comment, ReplyComment, Reply, Category, SubCategory, PictureList, Rating
 import os
 from .utils import cookieCart, cartData, guestOrder, sessionPath
 from django.db.models import Q
@@ -60,6 +60,8 @@ def product_page_view(request, id) :
 	order = data['order']
 	items =  data['items']
 	product=Product.get_by_id(id)
+	rating, created = Rating.objects.get_or_create(product=product)
+	quantity = rating.quantity
 
 	comments = Comment.objects.filter(product = product)[::-1]
 
@@ -73,7 +75,7 @@ def product_page_view(request, id) :
 			pass
 
 
-	return render(request, 'product_page.html', {'product': product, 'items': items, 'order': order, 'cartItems': cartItems, 'comments': comments, 'replies': replies})
+	return render(request, 'product_page.html', {'product': product, 'items': items, 'order': order, 'cartItems': cartItems, 'comments': comments, 'replies': replies, 'rating': round(rating.overall), 'quantity': quantity,})
 
 def update_item(request):
 	data = json.loads(request.body)
@@ -107,11 +109,16 @@ def update_item(request):
 def publishComment(request, id):
 	path = sessionPath(request, '/product-page/'+str(id))
 	if request.method == 'POST' :
-		rating = request.POST.getlist('rating')
+		rate = request.POST.getlist('rating')
 		content = request.POST.get('content')
 		product = Product.objects.get(id=id)
-		comment = Comment.objects.create(customer = request.user, product = product, body = content, rating = int(rating[0]))		
+		comment = Comment.objects.create(customer = request.user, product = product, body = content, rating = int(rate[0]))		
 		comment.save()
+		rating, created = Rating.objects.get_or_create(product=product)
+		rating.quantity += 1
+		rating.stars += int(rate[0])
+		rating.overall = rating.stars/rating.quantity
+		rating.save()
 		messages.success(request, ("Комментарий успешно добавлен!"))
 		return redirect(path)
 	messages.success(request, ("Комментарий не был добавлен!"))
@@ -198,12 +205,23 @@ def createProduct(request):
 		description = request.POST.get('description')
 		category = Category.objects.get(name = request.POST.get('category'))
 		print(request.POST.get('subcategory'))
-		subcategory = SubCategory.objects.get(id = int(request.POST.get('subcategory')), category=category)
+		try:
+			subcategory = SubCategory.objects.get(id = int(request.POST.get('subcategory')), category=category)
+		except:
+			subcategory = None
 		for i in range(1, 8):
 			imgList.append(request.FILES.get('img'+str(i)))
 		print(imgList)
 		product, created = Product.objects.get_or_create(name=name, price=price, oldPrice=oldPrice, description=description, category=category, subcategory=subcategory, picture=imgList[0])
 		if created:
+			pictureList, created = PictureList.objects.get_or_create(product=product)
+			pictureList.picture1 = imgList[1]
+			pictureList.picture2 = imgList[2]
+			pictureList.picture3 = imgList[3]
+			pictureList.picture4 = imgList[4]
+			pictureList.picture5 = imgList[5]
+			pictureList.picture6 = imgList[6]
+			pictureList.save()
 			messages.success(request, ("Товар создан успешно!"))
 			return redirect('/')
 		else:
@@ -218,6 +236,8 @@ def createProduct(request):
 def createCategory(request):
 	data = json.loads(request.body)
 	catName=data['catName']
+
+	print(catName)
 
 	try:
 		category = Category.objects.create(name=catName)
