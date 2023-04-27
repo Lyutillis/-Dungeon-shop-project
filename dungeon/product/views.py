@@ -182,8 +182,38 @@ def updatePermissionStaff(request):
 	return JsonResponse('User permissions were updated!', safe = False)
 
 def createProduct(request):
+	path = sessionPath(request, '/create-product/')
 	categories = list(Category.objects.all())
-	return render(request, 'create_product.html', {'categories': categories,})
+	imgList=[]
+	if request.method == 'POST':
+		name = request.POST.get('productName')
+		price = request.POST.get('price')
+		try:
+			if request.POST.get('oldPrice') != None:
+				oldPrice = request.POST.get('oldPrice')
+			else:
+				oldPrice=price  
+		except:
+			oldPrice = price
+		description = request.POST.get('description')
+		category = Category.objects.get(name = request.POST.get('category'))
+		print(request.POST.get('subcategory'))
+		subcategory = SubCategory.objects.get(id = int(request.POST.get('subcategory')), category=category)
+		for i in range(1, 8):
+			imgList.append(request.FILES.get('img'+str(i)))
+		print(imgList)
+		product, created = Product.objects.get_or_create(name=name, price=price, oldPrice=oldPrice, description=description, category=category, subcategory=subcategory, picture=imgList[0])
+		if created:
+			messages.success(request, ("Товар создан успешно!"))
+			return redirect('/')
+		else:
+			messages.success(request, ("Товар уже существует!"))
+			return redirect('product-page/'+str(product.id))
+	data = cartData(request)
+	cartItems = data['cartItems']
+	order = data['order']
+	items =  data['items']
+	return render(request, 'create_product.html', {'categories': categories, 'cartItems': cartItems, 'order': order, 'items': items})
 
 def createCategory(request):
 	data = json.loads(request.body)
