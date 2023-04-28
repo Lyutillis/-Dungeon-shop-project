@@ -299,3 +299,42 @@ def create_product_ajax(request):
         'category': data['category'],
         'subcategories': subcategories,
     }, safe=False)
+
+def editProduct(request, id):
+	path = sessionPath(request, '/edit-product/'+str(id))
+	names = ['productName', 'price', 'description']
+	modelNames = ['name', 'price', 'description']
+	product = Product.objects.get(id=id)
+	categories = list(Category.objects.all())
+	pictures = PictureList.objects.get(product=product) 
+	imgList=[getattr(pictures, 'picture' + str(i)) for i in range(1, 7)]
+	if request.method == 'POST':
+		try:
+			for i, j in names, modelNames:
+				print(request.POST.get(i))
+				setattr(product, j, request.POST.get(i))
+			try:
+				if request.POST.get('oldPrice') != None:
+					setattr(product, 'oldPrice', request.POST.get('oldPrice'))
+				else:
+					setattr(product, 'oldPrice', request.POST.get('price'))  
+			except:
+				setattr(product, 'oldPrice', request.POST.get('price'))
+			category = Category.objects.get(name = request.POST.get('category'))
+			try:
+				setattr(product, 'subcategory', SubCategory.objects.get(id = int(request.POST.get('subcategory')), category=category))
+			except:
+				setattr(product, 'subcategory', None)
+			for i in range(1, 8):
+				setattr(PictureList, 'picture' + str(i), request.FILES.get('img'+str(i)))
+			product.save()
+			pictureList.save()
+			messages.success(request, ("Товар успешно изменён!"))
+			return redirect('/')
+		except:
+			messages.success(request, ("Some issue occured!"))
+	data = cartData(request)
+	cartItems = data['cartItems']
+	order = data['order']
+	items =  data['items']
+	return render(request, 'edit_product.html', {'product': product, 'categories': categories, 'cartItems': cartItems, 'order': order, 'items': items, 'imgList': imgList})

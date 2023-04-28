@@ -8,7 +8,7 @@ class ProductAdmin(admin.ModelAdmin) :
 
 	def get_readonly_fields(self, request, obj=None):
 		if obj:
-			return ('name', 'description')
+			return ()
 		else:
 			return ()
 
