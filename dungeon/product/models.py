@@ -44,7 +44,7 @@ class Product(models.Model) :
 	category=models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 	subcategory=models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=True)
 	description=models.CharField(default=None, max_length=10000)
-	picture=models.ImageField(default='product-pics/default_pic.gif', upload_to=product_image_upload_handler, null=True)
+	picture=models.ImageField(default='product-pics/default_pic.png', upload_to=product_image_upload_handler, null=True)
 	id = models.AutoField(primary_key=True)
 
 # Class methods.
@@ -78,6 +78,15 @@ class Product(models.Model) :
 			
 					self.save()"""
 
+class Rating(models.Model):
+	class Meta:
+		verbose_name_plural = "Rating"
+
+	id = models.AutoField(primary_key=True)
+	quantity = models.IntegerField(default=0, validators=[MinValueValidator(0),])
+	overall = models.DecimalField(default=5, max_digits = 10, decimal_places = 2)
+	stars = models.IntegerField(default=0, validators=[MinValueValidator(0),])
+	product=models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
 
 class Order(models.Model):
 	class Meta:
@@ -149,3 +158,15 @@ class Reply(models.Model):
 
 	comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
 	reply = models.ForeignKey(ReplyComment, on_delete=models.CASCADE)
+
+class PictureList(models.Model) :
+	class Meta:
+		verbose_name_plural = "Picture List"
+
+	product = models.ForeignKey(Product, on_delete=models.CASCADE)
+	picture1=models.ImageField(default='product-pics/default_pic.gif', upload_to=product_image_upload_handler, null=True)
+	picture2=models.ImageField(default='product-pics/default_pic.gif', upload_to=product_image_upload_handler, null=True)
+	picture3=models.ImageField(default='product-pics/default_pic.gif', upload_to=product_image_upload_handler, null=True)
+	picture4=models.ImageField(default='product-pics/default_pic.gif', upload_to=product_image_upload_handler, null=True)
+	picture5=models.ImageField(default='product-pics/default_pic.gif', upload_to=product_image_upload_handler, null=True)
+	picture6=models.ImageField(default='product-pics/default_pic.gif', upload_to=product_image_upload_handler, null=True)

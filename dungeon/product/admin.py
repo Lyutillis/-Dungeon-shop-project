@@ -1,5 +1,9 @@
 from django.contrib import admin
+<<<<<<< HEAD
 from .models import Product, Order, OrderItem, ShippingAddress, Comment, ReplyComment, Reply, Category, SubCategory
+=======
+from .models import Product, Order, OrderItem, ShippingAddress, Comment, ReplyComment, Reply, Category, SubCategory, PictureList, Rating
+>>>>>>> edit-product
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin) :
@@ -8,7 +12,7 @@ class ProductAdmin(admin.ModelAdmin) :
 
 	def get_readonly_fields(self, request, obj=None):
 		if obj:
-			return ('name', 'description')
+			return ()
 		else:
 			return ()
 
@@ -19,4 +23,10 @@ admin.site.register(Comment)
 admin.site.register(ReplyComment)
 admin.site.register(Reply)
 admin.site.register(Category)
+<<<<<<< HEAD
 admin.site.register(SubCategory)
+=======
+admin.site.register(SubCategory)
+admin.site.register(PictureList)
+admin.site.register(Rating)
+>>>>>>> edit-product

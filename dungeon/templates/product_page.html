@@ -37,11 +37,15 @@
                             <h2>Half Sleve T-shirt for Men</h2>
                         </div>
                         <div class="product-rating">
-                            <span><i class="bx bxs-star"></i></span>
-                            <span><i class="bx bxs-star"></i></span>
-                            <span><i class="bx bxs-star"></i></span>
-                            <span><i class="bx bxs-star"></i></span>
-                            <span><i class="bx bxs-star"></i></span>
+                            {% with '12345' as range %}
+                            {% for j in range %}
+                            {% if j|slugify > rating|slugify %} 
+                            <span><i class="bi bi-star"></i></span>
+                            {% else %}
+                            <span><i class="bi bi-star-fill"></i></span>
+                            {% endif %}
+                            {% endfor %}
+                            {% endwith %} 
                             <span class="review">(47 Review)</span>
                         </div>
                         <div class="product-price">

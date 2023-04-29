@@ -41,13 +41,13 @@
                                 </div>
                             </div>
                             <div class="product-image-slider">
-                                <img src="/static{{ product.picture.url }}" alt=""  class="image-list" id="img1">
-                                <img src="/static{{ imgList.0.url }}" alt=""  class="image-list" id="img2">
-                                <img src="/static{{ imgList.1.url }}" alt=""  class="image-list" id="img3">
-                                <img src="/static{{ imgList.2.url }}" alt=""  class="image-list" id="img4">
-                                <img src="/static{{ imgList.3.url }}" alt=""  class="image-list" id="img5">
-                                <img src="/static{{ imgList.4.url }}" alt=""  class="image-list" id="img6">
-                                <img src="/static{{ imgList.5.url }}" alt=""  class="image-list" id="img7">
+                                <img src="/static{{ product.picture.url }}" alt=""  data-hasimg='false' class="image-list" id="img1">
+                                <img src="/static{{ imgList.0.url }}" alt=""  data-hasimg='false' class="image-list" id="img2">
+                                <img src="/static{{ imgList.1.url }}" alt=""  data-hasimg='false' class="image-list" id="img3">
+                                <img src="/static{{ imgList.2.url }}" alt=""  data-hasimg='false' class="image-list" id="img4">
+                                <img src="/static{{ imgList.3.url }}" alt=""  data-hasimg='false' class="image-list" id="img5">
+                                <img src="/static{{ imgList.4.url }}" alt=""  data-hasimg='false' class="image-list" id="img6">
+                                <img src="/static{{ imgList.5.url }}" alt=""  data-hasimg='false' class="image-list" id="img7">
                             </div>
                         </div>                 
                     </div>
@@ -137,7 +137,7 @@
 </div>
 
 
-<script src="{% static 'product/slider-input.js' %}"></script>
+<script src="{% static 'product/edit-slider-input.js' %}"></script>
 <script type="text/javascript">
 
     function SubmitData() {
@@ -242,7 +242,7 @@
         el.id = 'input' + id
         el.name = id
 
-        el.classList.add('hidden')
+        
 
         // FileReader support
         if (FileReader && files && files.length) {
@@ -265,6 +265,8 @@
         console.log(clone)
         el.after(clone)
         document.getElementById('hiddenform').append(el)
+
+        document.getElementById(id).dataset.hasimg='true'
     }
 
     function RemoveImage(id) {
@@ -274,16 +276,19 @@
         sliderMainImage.src = initialSrc;
         var sliderImage = document.getElementById(targetId);
         sliderImage.src = initialSrc;
+        document.getElementById(targetId).dataset.hasimg='false'
+        document.getElementById('input' + targetId).remove()
+        document.getElementById('d' + targetId).remove()
+        document.getElementById('photo1').remove()
+        document.getElementById('a' + targetId).classList.remove('hidden')
     }
 
     function AddField(id) {
         var targetId = id.slice(1, id.length)
         console.log(targetId)
-        var sliderMainImage = document.getElementById("imgPreview");
-        sliderMainImage.src = initialSrc;
-        var sliderImage = document.getElementById(targetId);
-        sliderImage.src = initialSrc;
-        var inner = '<input class="input-photo" type="file" name="photograph" id="photo1" required="true" data-imgid="' + id + '" onchange="PhotoSection(this, event, this.dataset.imgid)" placeholder="/static{{ product.picture.url }}"/><button type="button" class="btn btn-danger" id="dimg1" onclick="RemoveImage(this.id)">Remove Image</button>'
+        document.getElementById(id).classList.add('hidden')
+        var inner = '<input class="input-photo form-control" type="file" name="photograph" id="photo1" required="true" data-imgid="' + targetId + '" onchange="PhotoSection(this, event, this.dataset.imgid)" placeholder="/static{{ product.picture.url }}"/><button type="button" class="btn btn-danger" id="dimg1" onclick="RemoveImage(this.id)">Remove Image</button>'
+        document.getElementsByClassName('overlay')[0].innerHTML = inner;
     }
 
     function AddDiscount() {
@@ -438,7 +443,6 @@
             location.reload()
         });
     }
-
 
     function ShowDelSubcategory() {
         var subcatDiv=document.getElementById('subcategory')

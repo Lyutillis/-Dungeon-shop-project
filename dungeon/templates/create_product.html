@@ -74,6 +74,68 @@
                                 </span>
                                 
                             </div>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row gx-5">
+                    <div class="col-6">
+                        <div class="breadcrumb">
+                            <span><a href="#">Home</a></span>
+                            <span><a href="#">Product</a></span>
+                            <span class="active">T-shirt</span>
+                        </div>
+                        <div class="product-image">
+                            <div class="product-image-main">
+                                <div class="hovereffect">
+                                        <div class="static">
+                                            <div class="holder">
+                                                <img class='.img-preview form-control product-image-main' id="imgPreview" src="/static/product/add_image1.png" alt="pic" />
+                                            </div>
+                                        </div>
+                                        <div class="mask" style="background-color: hsla(217, 89%, 51%, 0.5)">
+                                        </div>
+                                        <div class="overlay">
+                                            <input class="input-photo form-control" type="file" name="photograph"
+                                            id="photo1" required="true" data-imgid="img1" onchange="PhotoSection(this, event, this.dataset.imgid)" />
+                                            <button type="button" class="btn btn-danger" id="dimg1" onclick="RemoveImage(this.id)">Remove Image</button>
+                                        </div>
+                                        <div id="hiddenform" class="hidden">
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="product-image-slider">
+                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img1">
+                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img2">
+                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img3">
+                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img4">
+                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img5">
+                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img6">
+                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img7">
+                            </div>
+                        </div>                 
+                    </div>
+                    <div class="col-6">
+                        <div class="product">
+                            <div class="product-title">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="floatingName" placeholder="name" name="productName">
+                                    <label for="floatingInput">Product Name</label>
+                                </div>
+                            </div>
+                            <div class="product-price">
+                                <span class="offer-price input-group mb-3 w-35 mx-3">
+                                    <span class="input-group-text" id="basic-addon1">$</span>
+                                    <input type="text" class="form-control old-price" placeholder="Price" aria-label="Price" aria-describedby="basic-addon1" id="inputPrice" name="price">
+                                </span>
+                                <span class="offer-price input-group mb-3 w-35 discount">
+                                    <button type="button" class="btn btn-info" onclick="AddDiscount()">Add a discount</button>
+                                </span>
+                                <span class="offer-price input-group mb-3 w-35 mx-3 hide-discount hidden">
+                                    <button type="button" class="btn btn-info" onclick="RemoveDiscount()">Remove a discount</button>
+                                </span>
+                                
+                            </div>
 
                             <div class="product-details">
                                 <label for="exampleFormControlTextarea1" class="form-label">Description</label>
@@ -103,7 +165,44 @@
                                 <label for="floatingInput">Category Name</label>
                                 <button type="button" class="btn btn-info my-3" onclick="CreateCategory()">Submit the category</button>
                                 <button id="cancelcat" type="button" class="btn btn-danger my-3" onclick="CancelCategory()">Cancel</button>
+                            <div class="product-details">
+                                <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" rows="3" name="description"></textarea>
                             </div>
+                            
+                            <span class="divider"></span>
+                            <div id="categorydiv" class="my-3">
+                                <select name="category" id="selectCategory" class="form-select w-35" aria-label="Default select example" onchange="ShowSubcategory();" onfocus="this.selectedIndex = -1;">
+                                    <option id='selectcategory' selected>Select category</option>
+                                    {% for i in categories %}
+                                    <option id='{{ i.id }}'>{{ i.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button id="category" type="button" class="btn btn-info my-3" onclick="AddCategory()">Add a category</button>
+                                <button id="delcategory" type="button" class="btn btn-danger my-3 hidden" onclick="DeleteCategory()">Delete this category</button>
+                            </div>
+                            <div id="subcategory" class="my-3 hidden">
+                                <select name="subcategory" id="selectSubcategory" class="form-select" aria-label="Default select example" onchange="ShowDelSubcategory();" onfocus="this.selectedIndex = -1;">
+                                    <option id="selectsubcategory" selected>Select Subcategory</option>
+                                </select>
+                                <button id="addsubcategorybut" type="button" class="btn btn-info my-3" onclick="AddSubCategory()">Add a subcategory</button>
+                                <button id="delsubcategory" type="button" class="btn btn-danger my-3 hidden" onclick="DeleteSubCategory()">Delete this subcategory</button>
+                            </div>
+                            <div id="categorynameform" class="form-floating mb-3 hidden">
+                                <input id='categoryinput' type="text" class="form-control" id="floatingInput" placeholder="name">
+                                <label for="floatingInput">Category Name</label>
+                                <button type="button" class="btn btn-info my-3" onclick="CreateCategory()">Submit the category</button>
+                                <button id="cancelcat" type="button" class="btn btn-danger my-3" onclick="CancelCategory()">Cancel</button>
+                            </div>
+                            <div id="subcategorynameform" class="form-floating mb-3 hidden">
+                                <input id='subcategoryinput' type="text" class="form-control" id="floatingInput" placeholder="name">
+                                <label for="floatingInput">Subcategory Name</label>
+                                <button type="button" class="btn btn-info my-3" onclick="CreateSubCategory()">Submit the subcategory</button>
+                                <button id="cancelsubcat" type="button" class="btn btn-danger my-3" onclick="CancelSubCategory()">Cancel</button>
+                            </div>
+                            <div class="my-3">
+                                <button id="submit" type="button" class="btn btn-primary" onclick="SubmitData()">Submit</button>
+                                <button id="submit-hidden" type="submit" class="btn btn-primary hidden">Submit</button>
                             <div id="subcategorynameform" class="form-floating mb-3 hidden">
                                 <input id='subcategoryinput' type="text" class="form-control" id="floatingInput" placeholder="name">
                                 <label for="floatingInput">Subcategory Name</label>
@@ -231,12 +330,23 @@
         el.classList.add('hidden')
 
         // FileReader support
+    function PhotoSection(el, evt, id) {
+        var tgt = evt.target || window.event.srcElement, files = tgt.files;
+        var clone = el.cloneNode(true)
+
+        el.id = 'input' + id
+        el.name = id
+
+        el.classList.add('hidden')
+
+        // FileReader support
         if (FileReader && files && files.length) {
             var fr = new FileReader();
             fr.onload = function () {
                 var sliderMainImage = document.getElementById("imgPreview");
                 sliderMainImage.src = fr.result;
                 var sliderImage = document.getElementById(id);
+                console.log(id)
                 console.log(id)
                 sliderImage.src = fr.result;
             }    
@@ -246,7 +356,12 @@
         // Not supported
         else {
             console.log('Our browser does not support File Reader ((Whatever that means))')
+            console.log('Our browser does not support File Reader ((Whatever that means))')
         }
+
+        console.log(clone)
+        el.after(clone)
+        document.getElementById('hiddenform').append(el)
 
         console.log(clone)
         el.after(clone)
@@ -264,6 +379,7 @@
 
     function AddDiscount() {
         var container = document.getElementsByClassName('discount')[0];
+        container.innerHTML = '<span class="input-group-text" id="basic-addon1">$</span><input type="text" class="form-control" placeholder="Old Price" aria-label="Old Price" aria-describedby="basic-addon1" id="oldPrice" name="oldPrice">'
         container.innerHTML = '<span class="input-group-text" id="basic-addon1">$</span><input type="text" class="form-control" placeholder="Old Price" aria-label="Old Price" aria-describedby="basic-addon1" id="oldPrice" name="oldPrice">'
         document.getElementsByClassName('hide-discount')[0].classList.remove('hidden')
         var oldPrice = document.getElementsByClassName('old-price')[0].placeholder = 'New Price';
