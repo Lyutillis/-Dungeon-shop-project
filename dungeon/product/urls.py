@@ -14,4 +14,9 @@ urlpatterns = [
 	path('update-permission-superuser/', views.updatePermissionSuperuser, name='update-permission-superuser'),
 	path('update-permission-staff/', views.updatePermissionStaff, name='update-permission-staff'),
 	path('create-product/', views.createProduct, name='create-product'),
+	path('create-category/', views.createCategory, name='create-category'),
+	path('delete-category/', views.deleteCategory, name='delete-category'),
+	path('create-subcategory/', views.createSubCategory, name='create-subcategory'),
+	path('delete-subcategory/', views.deleteSubCategory, name='delete-subcategory'),
+	path('create-product-ajax/', views.create_product_ajax, name='create-product-ajax')
 ]

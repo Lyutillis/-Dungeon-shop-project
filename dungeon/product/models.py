@@ -22,7 +22,7 @@ class Category(models.Model):
 	class Meta:
 		verbose_name_plural = "Categories"
 
-	name=models.CharField(default='No Title', max_length=1000)
+	name=models.CharField(default='No Title', max_length=1000, null=False)
 	id = models.AutoField(primary_key=True)
 
 class SubCategory(models.Model):
@@ -30,7 +30,7 @@ class SubCategory(models.Model):
 		verbose_name_plural = "SubCategories"
 
 	category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
-	name=models.CharField(default='No Title', max_length=1000)
+	name=models.CharField(default='No Title', max_length=1000, null=False)
 	id = models.AutoField(primary_key=True)
 
 # Create your models here.
@@ -39,8 +39,8 @@ class Product(models.Model) :
 		verbose_name_plural = "Products"
 
 	name=models.CharField(default='No Title', max_length=1000)
-	price=models.DecimalField(max_digits = 8, decimal_places = 2)
-	oldPrice=models.DecimalField(max_digits = 8, decimal_places = 2) 
+	price=models.DecimalField(max_digits = 8, decimal_places = 2, default=0)
+	oldPrice=models.DecimalField(max_digits = 8, decimal_places = 2, default=0) 
 	category=models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 	subcategory=models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=True)
 	description=models.CharField(default=None, max_length=10000)

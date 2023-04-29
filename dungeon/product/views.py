@@ -5,10 +5,11 @@ from django.http import JsonResponse
 from user.models import User
 import datetime
 import json
-from .models import Product, Order, OrderItem, ShippingAddress, Comment, ReplyComment, Reply
+from .models import Product, Order, OrderItem, ShippingAddress, Comment, ReplyComment, Reply, Category, SubCategory
 import os
 from .utils import cookieCart, cartData, guestOrder, sessionPath
 from django.db.models import Q
+from django.forms.models import model_to_dict
 
 def processOrder(request):
 	transaction_id = datetime.datetime.now().timestamp()
@@ -181,4 +182,100 @@ def updatePermissionStaff(request):
 	return JsonResponse('User permissions were updated!', safe = False)
 
 def createProduct(request):
-	return render(request, 'create_product.html', {})	
+	path = sessionPath(request, '/create-product/')
+	categories = list(Category.objects.all())
+	imgList=[]
+	if request.method == 'POST':
+		name = request.POST.get('productName')
+		price = request.POST.get('price')
+		try:
+			if request.POST.get('oldPrice') != None:
+				oldPrice = request.POST.get('oldPrice')
+			else:
+				oldPrice=price  
+		except:
+			oldPrice = price
+		description = request.POST.get('description')
+		category = Category.objects.get(name = request.POST.get('category'))
+		print(request.POST.get('subcategory'))
+		subcategory = SubCategory.objects.get(id = int(request.POST.get('subcategory')), category=category)
+		for i in range(1, 8):
+			imgList.append(request.FILES.get('img'+str(i)))
+		print(imgList)
+		product, created = Product.objects.get_or_create(name=name, price=price, oldPrice=oldPrice, description=description, category=category, subcategory=subcategory, picture=imgList[0])
+		if created:
+			messages.success(request, ("Товар создан успешно!"))
+			return redirect('/')
+		else:
+			messages.success(request, ("Товар уже существует!"))
+			return redirect('product-page/'+str(product.id))
+	data = cartData(request)
+	cartItems = data['cartItems']
+	order = data['order']
+	items =  data['items']
+	return render(request, 'create_product.html', {'categories': categories, 'cartItems': cartItems, 'order': order, 'items': items})
+
+def createCategory(request):
+	data = json.loads(request.body)
+	catName=data['catName']
+
+	try:
+		category = Category.objects.create(name=catName)
+		return JsonResponse('Category successfully created!', safe = False)
+	except:
+		return JsonResponse('Something went wrong', safe = False)
+
+def deleteCategory(request):
+	data = json.loads(request.body)
+	catName=data['catName']
+
+	try:
+		category = Category.objects.get(name=catName)
+		category.delete()
+		return JsonResponse('Category successfully deleted!', safe = False)
+	except:
+		return JsonResponse('Something went wrong', safe = False)
+
+def createSubCategory(request):
+	data = json.loads(request.body)
+	catName=data['catName']
+	subcatName=data['subcatName']
+
+	try:
+		category = Category.objects.get(name=catName)
+		subCategory = SubCategory.objects.create(category=category, name=subcatName)
+		return JsonResponse('Subcategory successfully created!', safe = False)
+	except:
+		return JsonResponse('Something went wrong', safe = False)
+
+def deleteSubCategory(request):
+	data = json.loads(request.body)
+	catName=data['catName']
+	subcatName=data['subcatName']
+
+	try:
+		category = Category.objects.get(name=catName)
+		subCategory = SubCategory.objects.get(category=category, name=subcatName)
+		subCategory.delete()
+		return JsonResponse('Subcategory successfully deleted!', safe = False)
+	except:
+		return JsonResponse('Something went wrong', safe = False)
+
+def create_product_ajax(request):
+    data = json.loads(request.body)
+    subcategories = None
+
+    categories = list(Category.objects.all())
+
+    for i in categories:
+        if data['category'] == i.name :
+            subcategories = [model_to_dict(i) for i in list(SubCategory.objects.filter(category=i))]
+            break
+
+    if subcategories == None :
+        return JsonResponse('Something went wrong in categories!', safe=False)
+
+    return JsonResponse({
+        'category': data['category'],
+        'subcategories': subcategories,
+    }, safe=False)

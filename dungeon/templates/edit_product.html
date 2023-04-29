@@ -32,9 +32,7 @@
                                         <div class="mask" style="background-color: hsla(217, 89%, 51%, 0.5)">
                                         </div>
                                         <div class="overlay">
-                                            <input class="input-photo form-control" type="file" name="photograph"
-                                            id="photo1" required="true" data-imgid="img1" onchange="PhotoSection(this, event, this.dataset.imgid)" />
-                                            <button type="button" class="btn btn-danger" id="dimg1" onclick="RemoveImage(this.id)">Remove Image</button>
+                                            <button type="button" class="btn btn-danger" id="aimg1" onclick="AddField(this.id)">Add Image</button>
                                         </div>
                                         <div id="hiddenform" class="hidden">
 
@@ -43,13 +41,13 @@
                                 </div>
                             </div>
                             <div class="product-image-slider">
-                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img1">
-                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img2">
-                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img3">
-                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img4">
-                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img5">
-                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img6">
-                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img7">
+                                <img src="/static{{ product.picture.url }}" alt=""  class="image-list" id="img1">
+                                <img src="/static{{ imgList.0.url }}" alt=""  class="image-list" id="img2">
+                                <img src="/static{{ imgList.1.url }}" alt=""  class="image-list" id="img3">
+                                <img src="/static{{ imgList.2.url }}" alt=""  class="image-list" id="img4">
+                                <img src="/static{{ imgList.3.url }}" alt=""  class="image-list" id="img5">
+                                <img src="/static{{ imgList.4.url }}" alt=""  class="image-list" id="img6">
+                                <img src="/static{{ imgList.5.url }}" alt=""  class="image-list" id="img7">
                             </div>
                         </div>                 
                     </div>
@@ -57,14 +55,15 @@
                         <div class="product">
                             <div class="product-title">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="floatingName" placeholder="name" name="productName">
+                                    <input type="text" class="form-control" id="floatingName" placeholder="name" name="productName" value="{{ product.name }}">
                                     <label for="floatingInput">Product Name</label>
                                 </div>
                             </div>
                             <div class="product-price">
+                                {% if product.price == product.oldPrice %}
                                 <span class="offer-price input-group mb-3 w-35 mx-3">
                                     <span class="input-group-text" id="basic-addon1">$</span>
-                                    <input type="text" class="form-control old-price" placeholder="Price" aria-label="Price" aria-describedby="basic-addon1" id="inputPrice" name="price">
+                                    <input type="text" class="form-control old-price" placeholder="Price" aria-label="Price" aria-describedby="basic-addon1" id="inputPrice" name="price" value="{{ product.price }}">
                                 </span>
                                 <span class="offer-price input-group mb-3 w-35 discount">
                                     <button type="button" class="btn btn-info" onclick="AddDiscount()">Add a discount</button>
@@ -72,26 +71,41 @@
                                 <span class="offer-price input-group mb-3 w-35 mx-3 hide-discount hidden">
                                     <button type="button" class="btn btn-info" onclick="RemoveDiscount()">Remove a discount</button>
                                 </span>
-                                
+                                {% else %}
+                                <span class="offer-price input-group mb-3 w-35 mx-3">
+                                    <span class="input-group-text" id="basic-addon1">$</span>
+                                    <input type="text" class="form-control old-price" placeholder="New Price" aria-label="New Price" aria-describedby="basic-addon1" id="inputPrice" name="price" value="{{ product.price }}">
+                                </span>
+                                <span class="offer-price input-group mb-3 w-35 discount">
+                                    <span class="input-group-text" id="basic-addon1">$</span>
+                                    <input type="text" class="form-control" placeholder="Old Price" aria-label="Old Price" aria-describedby="basic-addon1" id="oldPrice" name="oldPrice" value="{{ product.oldPrice }}">
+                                </span>
+                                <span class="offer-price input-group mb-3 w-35 mx-3 hide-discount">
+                                    <button type="button" class="btn btn-info" onclick="RemoveDiscount()">Remove a discount</button>
+                                </span>
+                                {% endif %}
                             </div>
 
                             <div class="product-details">
                                 <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                                <textarea class="form-control" id="description" rows="3" name="description"></textarea>
+                                <textarea class="form-control" id="description" rows="3" name="description">{{ product.description }}</textarea>
                             </div>
                             
                             <span class="divider"></span>
                             <div id="categorydiv" class="my-3">
                                 <select name="category" id="selectCategory" class="form-select w-35" aria-label="Default select example" onchange="ShowSubcategory();" onfocus="this.selectedIndex = -1;">
-                                    <option id='selectcategory' selected>Select category</option>
+                                    <option id='selectcategory' selected>{{ product.category.name }}</option>
                                     {% for i in categories %}
+                                    {% if i != product.category %}
                                     <option id='{{ i.id }}'>{{ i.name }}</option>
+                                    {% endif %}
                                     {% endfor %}
+                                    <option id='selectcategory'>Select category</option>
                                 </select>
-                                <button id="category" type="button" class="btn btn-info my-3" onclick="AddCategory()">Add a category</button>
-                                <button id="delcategory" type="button" class="btn btn-danger my-3 hidden" onclick="DeleteCategory()">Delete this category</button>
+                                <button id="category" type="button" class="btn btn-info my-3 hidden" onclick="AddCategory()">Add a category</button>
+                                <button id="delcategory" type="button" class="btn btn-danger my-3" onclick="DeleteCategory()">Delete this category</button>
                             </div>
-                            <div id="subcategory" class="my-3 hidden">
+                            <div id="subcategory" class="my-3">
                                 <select name="subcategory" id="selectSubcategory" class="form-select" aria-label="Default select example" onchange="ShowDelSubcategory();" onfocus="this.selectedIndex = -1;">
                                     <option id="selectsubcategory" selected>Select Subcategory</option>
                                 </select>
@@ -144,12 +158,12 @@
         var img5 = document.getElementById('img5').src
         var img6 = document.getElementById('img6').src
         var img7 = document.getElementById('img7').src
-        if (name!="" && price !="$" && description!="" && category!="" && subcategory!="") {
-            console.log('Near the button')
+        console.log(img7)
+        if (name!="" && price !="$" && description!="" && category!="") {
             var but = document.getElementById('submit-hidden')
             but.click()
         } else {
-            alert('You must fille all the fields and add at least 1 picture!')
+            alert('Don`t leave the fields empty!')
         }
     }
 </script>
@@ -262,9 +276,19 @@
         sliderImage.src = initialSrc;
     }
 
+    function AddField(id) {
+        var targetId = id.slice(1, id.length)
+        console.log(targetId)
+        var sliderMainImage = document.getElementById("imgPreview");
+        sliderMainImage.src = initialSrc;
+        var sliderImage = document.getElementById(targetId);
+        sliderImage.src = initialSrc;
+        var inner = '<input class="input-photo" type="file" name="photograph" id="photo1" required="true" data-imgid="' + id + '" onchange="PhotoSection(this, event, this.dataset.imgid)" placeholder="/static{{ product.picture.url }}"/><button type="button" class="btn btn-danger" id="dimg1" onclick="RemoveImage(this.id)">Remove Image</button>'
+    }
+
     function AddDiscount() {
         var container = document.getElementsByClassName('discount')[0];
-        container.innerHTML = '<span class="input-group-text" id="basic-addon1">$</span><input type="text" class="form-control" placeholder="Old Price" aria-label="Old Price" aria-describedby="basic-addon1" id="oldPrice" name="oldPrice">'
+        container.innerHTML = '<span class="input-group-text" id="basic-addon1">$</span><input type="text" class="form-control" placeholder="Old Price" aria-label="Old Price" aria-describedby="basic-addon1" id="oldPrice" name="oldPrice" value="{{ product.oldPrice }}">'
         document.getElementsByClassName('hide-discount')[0].classList.remove('hidden')
         var oldPrice = document.getElementsByClassName('old-price')[0].placeholder = 'New Price';
     }
@@ -303,7 +327,12 @@
 
     function CreateCategory() {
         var url = '/create-category/'
-        var catName = document.getElementById('categoryinput').value 
+        var catName = document.getElementById('categoryinput').value
+        console.log(catName)
+        if (catName == "") {
+            alert('Add the name!')
+            return
+        } 
 
 		fetch(url, {
 			method: 'POST',
@@ -362,6 +391,11 @@
         var subcatName = document.getElementById('subcategoryinput').value
         var catName = document.getElementById('selectCategory').value 
 
+        if (subcatName == "") {
+            alert('Add the name!')
+            return
+        } 
+
 		fetch(url, {
 			method: 'POST',
 			headers:{
@@ -409,7 +443,7 @@
     function ShowDelSubcategory() {
         var subcatDiv=document.getElementById('subcategory')
         var subcatBut=document.getElementById('addsubcategorybut')
-        if (document.getElementById('selectSubcategory').value=="Select Subcategory") {
+        if (document.getElementById('selectSubcategory').value=="Select Subcategory" || document.getElementById('selectSubcategory').value == "") {
             subcatBut.classList.remove('hidden')
             document.getElementById('delsubcategory').classList.add('hidden')
         } else {
@@ -417,6 +451,8 @@
             document.getElementById('delsubcategory').classList.remove('hidden')
         }
     }
+
+    window.onload = populate_list()
 </script>
 
 
