@@ -309,30 +309,32 @@ def editProduct(request, id):
 	pictures = PictureList.objects.get(product=product) 
 	imgList=[getattr(pictures, 'picture' + str(i)) for i in range(1, 7)]
 	if request.method == 'POST':
+
+		for i, j in zip(names, modelNames):
+			print(request.POST.get(i))
+			setattr(product, j, request.POST.get(i))
 		try:
-			for i, j in names, modelNames:
-				print(request.POST.get(i))
-				setattr(product, j, request.POST.get(i))
-			try:
-				if request.POST.get('oldPrice') != None:
-					setattr(product, 'oldPrice', request.POST.get('oldPrice'))
-				else:
-					setattr(product, 'oldPrice', request.POST.get('price'))  
-			except:
-				setattr(product, 'oldPrice', request.POST.get('price'))
-			category = Category.objects.get(name = request.POST.get('category'))
-			try:
-				setattr(product, 'subcategory', SubCategory.objects.get(id = int(request.POST.get('subcategory')), category=category))
-			except:
-				setattr(product, 'subcategory', None)
-			for i in range(1, 8):
-				setattr(PictureList, 'picture' + str(i), request.FILES.get('img'+str(i)))
-			product.save()
-			pictureList.save()
-			messages.success(request, ("Товар успешно изменён!"))
-			return redirect('/')
+			if request.POST.get('oldPrice') != None:
+				setattr(product, 'oldPrice', request.POST.get('oldPrice'))
+			else:
+				setattr(product, 'oldPrice', request.POST.get('price'))  
 		except:
-			messages.success(request, ("Some issue occured!"))
+			setattr(product, 'oldPrice', request.POST.get('price'))
+		category = Category.objects.get(name = request.POST.get('category'))
+		try:
+			setattr(product, 'subcategory', SubCategory.objects.get(id = int(request.POST.get('subcategory')), category=category))
+		except:
+			setattr(product, 'subcategory', None)
+		if request.FILES.get('img1'):
+			product.picture = request.FILES.get('img1')
+		for i in range(2, 8):
+			image = request.FILES.get('img'+str(i))
+			if image:
+				setattr(pictures, 'picture' + str(i), image)
+		product.save()
+		pictures.save()
+		messages.success(request, ("Товар успешно изменён!"))
+		return redirect('/')
 	data = cartData(request)
 	cartItems = data['cartItems']
 	order = data['order']
