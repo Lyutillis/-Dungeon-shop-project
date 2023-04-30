@@ -76,45 +76,7 @@
                             </div>
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div class="row gx-5">
-                    <div class="col-6">
-                        <div class="breadcrumb">
-                            <span><a href="#">Home</a></span>
-                            <span><a href="#">Product</a></span>
-                            <span class="active">T-shirt</span>
-                        </div>
-                        <div class="product-image">
-                            <div class="product-image-main">
-                                <div class="hovereffect">
-                                        <div class="static">
-                                            <div class="holder">
-                                                <img class='.img-preview form-control product-image-main' id="imgPreview" src="/static/product/add_image1.png" alt="pic" />
-                                            </div>
-                                        </div>
-                                        <div class="mask" style="background-color: hsla(217, 89%, 51%, 0.5)">
-                                        </div>
-                                        <div class="overlay">
-                                            <input class="input-photo form-control" type="file" name="photograph"
-                                            id="photo1" required="true" data-imgid="img1" onchange="PhotoSection(this, event, this.dataset.imgid)" />
-                                            <button type="button" class="btn btn-danger" id="dimg1" onclick="RemoveImage(this.id)">Remove Image</button>
-                                        </div>
-                                        <div id="hiddenform" class="hidden">
-
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="product-image-slider">
-                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img1">
-                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img2">
-                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img3">
-                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img4">
-                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img5">
-                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img6">
-                                    <img src="/static/product/add_image1.png" alt=""  class="image-list" id="img7">
-                            </div>
-                        </div>                 
-                    </div>
+                
                     <div class="col-6">
                         <div class="product">
                             <div class="product-title">
