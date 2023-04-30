@@ -9,6 +9,15 @@
 	{% if product_list %}
 	<section class="section-products">
 	  <div class='container-md'>
+		{% if user.is_admin or user.is_staff %}
+		<div class='row justify-content-center'>
+			<div class="col-2" style="padding-left:0px;">
+				<a href="{% url 'create-product' %}" style="width:100%;height:100%;">
+					<i class="bi bi-plus-square" style="font-size:100px"></i>
+				</a>  
+			</div>
+		</div>
+		{% endif %}
 		{% for i in product_list %}
           {% if forloop.first %}
 	      <div class="row">
@@ -16,23 +25,23 @@
 	      	<div class="col-2" style="padding-left:0px;">
 			  <div id="product" class="single-product product">
 			    <a href="{% url 'product-page' id=i.id %}" style="width:100%;height:100%;display:block">
-				  <div class="part-1 hovereffect">
-			  	  	<div class="static">
-			  	  	<img src='/static{{ i.picture.url }}' class='img-fluid mx-auto d-block static'>
+				  	<div class="part-1 hovereffect">
+						<div class="static">
+							<img src='/static{{ i.picture.url }}' class='img-fluid mx-auto d-block static'>
+						</div>
+						<div class="mask" style="background-color: hsla(217, 89%, 51%, 0.5)">
+						</div>
+						<div class="overlay">
+							<ul>
+								<li><a href="#" data-product='{{ i.id }}' data-action="add" class='update-cart'><i class="fas fa-shopping-cart"></i></a></li>
+								<li><a href="#"><i class="fas fa-heart"></i></a></li>
+								{% if user.is_admin or user.is_staff %}
+								<li><a href="{% url 'edit-product' id=i.id %}"><i class="bi bi-pencil-fill"></i></a></li>
+								<li><a href="#"><i class="bi bi-trash-fill"></i></a></li>
+								{% endif %}
+							</ul>
+						</div>
 				  	</div>
-				  	<div class="mask" style="background-color: hsla(217, 89%, 51%, 0.5)">
-				    </div>
-			    <div class="overlay">
-				  <ul>
-					  <li><a href="#" data-product='{{ i.id }}' data-action="add" class='update-cart'><i class="fas fa-shopping-cart"></i></a></li>
-					  <li><a href="#"><i class="fas fa-heart"></i></a></li>
-					  {% if user.is_admin or user.is_staff %}
-					  <li><a href="{% url 'edit-product' id=i.id %}"><i class="bi bi-pencil-fill"></i></a></li>
-					  <li><a href="#"><i class="bi bi-trash-fill"></i></a></li>
-					  {% endif %}
-				    </ul>
-				  </div>
-				</div>
 				</a>
 			    <div class="part-2">
 				  <a href="{% url 'product-page' id=i.id %}">

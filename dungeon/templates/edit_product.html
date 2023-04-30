@@ -265,8 +265,8 @@
         console.log(clone)
         el.after(clone)
         document.getElementById('hiddenform').append(el)
-
         document.getElementById(id).dataset.hasimg='true'
+        document.getElementsByClassName('overlay')[0].innerHTML += '<button type="button" class="btn btn-danger" id="' + 'd' + id + '" onclick="RemoveImage(this.id)">Remove Image</button>';
     }
 
     function RemoveImage(id) {
@@ -281,14 +281,15 @@
         document.getElementById('d' + targetId).remove()
         document.getElementById('photo1').remove()
         document.getElementById('a' + targetId).classList.remove('hidden')
+        document.getElementById(id).remove()
     }
 
     function AddField(id) {
         var targetId = id.slice(1, id.length)
         console.log(targetId)
         document.getElementById(id).classList.add('hidden')
-        var inner = '<input class="input-photo form-control" type="file" name="photograph" id="photo1" required="true" data-imgid="' + targetId + '" onchange="PhotoSection(this, event, this.dataset.imgid)" placeholder="/static{{ product.picture.url }}"/><button type="button" class="btn btn-danger" id="dimg1" onclick="RemoveImage(this.id)">Remove Image</button>'
-        document.getElementsByClassName('overlay')[0].innerHTML = inner;
+        var inner = '<input class="input-photo form-control" type="file" name="photograph" id="photo1" required="true" data-imgid="' + targetId + '" onchange="PhotoSection(this, event, this.dataset.imgid)" placeholder="/static{{ product.picture.url }}"/>'
+        document.getElementsByClassName('overlay')[0].innerHTML += inner;
     }
 
     function AddDiscount() {
