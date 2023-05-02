@@ -267,6 +267,7 @@
         document.getElementById('hiddenform').append(el)
         document.getElementById(id).dataset.hasimg='true'
         document.getElementsByClassName('overlay')[0].innerHTML += '<button type="button" class="btn btn-danger" id="' + 'd' + id + '" onclick="RemoveImage(this.id)">Remove Image</button>';
+        document.getElementById('photo1').remove()
     }
 
     function RemoveImage(id) {

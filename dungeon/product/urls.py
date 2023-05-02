@@ -20,4 +20,6 @@ urlpatterns = [
 	path('delete-subcategory/', views.deleteSubCategory, name='delete-subcategory'),
 	path('create-product-ajax/', views.create_product_ajax, name='create-product-ajax'),
 	path('edit-product/<int:id>', views.editProduct, name='edit-product'),
+	path('delete-product/<int:id>', views.deleteProduct, name='delete-product'),
+	path('category-filter/', views.categoryFilter, name='category-filter'),
 ]

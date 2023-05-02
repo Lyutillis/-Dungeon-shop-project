@@ -38,7 +38,6 @@ class User(AbstractBaseUser, PermissionsMixin) :
 	email = models.CharField(max_length=100, unique=True, default=None)
 	password=models.CharField(default=None, max_length=255)
 	username = models.CharField(default=None, max_length=100, null=True)
-	name = models.CharField(default=None, max_length=100, null=True)
 	profile_pic = models.ImageField(default='profile-pics/default_pic.gif', upload_to=image_upload_handler, null=True)
 	is_staff = models.BooleanField(default=False)
 	is_superuser = models.BooleanField(default=False)

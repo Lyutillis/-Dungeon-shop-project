@@ -340,3 +340,34 @@ def editProduct(request, id):
 	order = data['order']
 	items =  data['items']
 	return render(request, 'edit_product.html', {'product': product, 'categories': categories, 'cartItems': cartItems, 'order': order, 'items': items, 'imgList': imgList})
+
+def deleteProduct(request, id):
+	product=Product.objects.get(id=id)
+	product.delete()
+	return redirect('/')
+
+def categoryFilter(request):
+	path = sessionPath(request, '/')
+
+	data = cartData(request)
+
+	if request.method == 'GET':
+		try:
+			category = Category.objects.get(name=request.GET.get('category'))
+		except :
+			category = None
+		try:
+			subcategory = SubCategory.objects.get(name=request.GET.get('subcategory'))
+		except:
+			subcategory = None
+
+		if subcategory is None :
+			if category is None :
+				messages.success(request, ('You didn`t choose any category'))
+				return redirect('/')
+			else:
+				product_list = list(Product.objects.filter(category=category))
+		else:
+			product_list = list(Product.objects.filter(category=category, subcategory=subcategory))
+		
+		return render(request, 'homepage.html', {'product_list':product_list, 'items': data['items'], 'order': data['order'], 'cartItems': data['cartItems'], 'categories': list(Category.objects.all())})

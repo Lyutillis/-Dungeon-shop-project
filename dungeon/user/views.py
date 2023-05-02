@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import User
-from product.models import Product
+from product.models import Product, Category
 from product.utils import cartData, cookieCart, sessionPath, guestOrder
 from django.http import HttpRequest
 import json
@@ -18,6 +18,7 @@ def homepage_view(request) :
 	context['items'] = data['items']
 	context['order'] = data['order']
 	context['cartItems'] = data['cartItems']
+	context['categories'] = list(Category.objects.all())
 	return render(request, 'homepage.html', context)
 
 def login_view(request):
@@ -92,3 +93,20 @@ def logout_view(request):
 	logout(request)
 	messages.success(request, ("You were Logged Out!")) 
 	return redirect('/')
+
+def profile_view(request):
+	path = sessionPath(request, '/profile/')
+	context={}
+	data = cartData(request)
+	context['cartItems'] = data['cartItems']
+	if request.method == 'POST':
+		user=request.user
+		user.username=request.POST.get('username')
+		user.email=request.POST.get('email')
+
+		if request.FILES.get('image') :
+			user.profile_pic = request.FILES.get('image')
+			user.save()
+		
+		messages.success(request, ('Successfully altered!'))
+	return render(request, 'profile.html', context)

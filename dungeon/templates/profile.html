@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block links %}
+  <link rel="stylesheet" href="{% static 'product/style.css' %}">
+  <link rel="stylesheet" href="{% static 'product/comment.css' %}">
+  <link rel="stylesheet" href="{% static 'product/preview-hover.css' %}">
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+{% endblock links %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<section class="vh-10" style="background-color: #eee;">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-12 col-xl-4">
+                    <div class="card" style="border-radius: 15px;">
+                        <div id="cont" class="card-body text-center">
+                            <div id="imgcont" class="mt-3 mb-4">
+                                <img id="mainimg" src="/static{{ user.profile_pic.url }}"
+                                class="border border-warning-subtle rounded-circle img-fluid mb-3" style="width: 100px; height: 100px;" />
+                            </div>
+                            <h4 id="username" class="mb-2">{{ user.username }}</h4>
+                            <p id="email" class="text-muted mb-4"> {{ user.email }}</p>
+                            <button id="alterBut" type="button" class="btn btn-primary btn-rounded btn-lg" onclick=AlterFields()>Alter Profile</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+    {% else %}
+
+<section class='w-100 p-4 d-flex justify-content-center pb-4 my-5'> 
+  <div class="my-5" style='width: 30rem;'>
+    <p class = 'display-6 text-center'>You aren`t logged in!~</p>
+    <p class="display-6 text-center">You can <a href='{% url "login" %}'>Sign Up</a></p>
+    <p class="display-6 text-center">Or go to <a href='{% url "homepage" %}'>Home Page</a></p>
+  </div>
+</section>
+{% endif %}
+
+<script type="text/javascript">
+
+    function AlterFields() {
+        var container = document.getElementById('cont')
+        document.getElementById('imgcont').innerHTML += '<input id="el1" class="form-control" type="file" id="formFile" name="image" onchange="SetPhoto(this, event)">'
+        document.getElementById('username').classList.add('hidden')
+        document.getElementById('email').classList.add('hidden')
+        document.getElementById('alterBut').classList.add('hidden')
+        container.innerHTML += '<div id="el2" class="form-floating mb-3"><input type="text" class="form-control" id="floatingInputGroup1" placeholder="Username" value="{{ user.username }}" name="username"><label for="floatingInputGroup1">Username</label></div>'
+        container.innerHTML += '<div id="el3" class="form-floating mb-3"><input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" value="{{ user.email }}" name="email"><label for="floatingInput">Email address</label></div>'
+        container.innerHTML += '<button id="el4" type="submit" class="btn btn-info btn-rounded btn-lg mx-3">Save</button>'
+        container.innerHTML += '<button id="el5" type="button" class="btn btn-danger btn-rounded btn-lg mx-3" onclick=Cancel()>Cancel</button>'
+    }
+
+    function SetPhoto(el, evt) {
+        var tgt = evt.target || window.event.srcElement, files = tgt.files;
+
+        // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                var MainImage = document.getElementById("mainimg");
+                MainImage.src = fr.result;
+            }    
+            fr.readAsDataURL(files[0]);
+        }
+        
+        // Not supported
+        else {
+            console.log('Our browser does not support File Reader ((Whatever that means))')
+        }
+    }
+
+    function Cancel() {
+        var container = document.getElementById('cont')
+        document.getElementById('username').classList.remove('hidden')
+        document.getElementById('email').classList.remove('hidden')
+        document.getElementById('alterBut').classList.remove('hidden')
+        document.getElementById('imgcont').removeChild(document.getElementById('el1'))
+        container.removeChild(document.getElementById('el2'))
+        container.removeChild(document.getElementById('el3'))
+        container.removeChild(document.getElementById('el4'))
+        container.removeChild(document.getElementById('el5'))
+    }
+
+</script>
+
+{% endblock content %}
