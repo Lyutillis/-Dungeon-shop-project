@@ -135,9 +135,26 @@ a:active {
     transition: color 0.2s;
 }
 
-.section-products .single-product .part-1 ul li a:hover {
+.section-products .single-product .part-1 ul li .a:hover {
     color: #fe302f;
 }
+
+.section-products .single-product .part-1 ul li .wishlist-empty {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #ffffff;
+    color: #fe302f;
+    text-align: center;
+    box-shadow: 0 2px 20px rgb(50 50 50 / 10%);
+    transition: color 0.2s;
+}
+
+.section-products .single-product .part-1 ul li .wishlist-empty:hover {
+    color: #444444;
+}
+
 
 .section-products .single-product .part-2 {
     padding-left: 10px;
@@ -259,14 +276,4 @@ transform:translatey(0);
 .hovereffect:hover a.info {
 -webkit-transition-delay:.2s;
 transition-delay:.2s;
-}
-
-/*-- For video and gifs to only play on hover --*/
-
-.static {
-  animation-play-state: paused;
-}
-
-.static:hover {
-  animation-play-state:running;
 }

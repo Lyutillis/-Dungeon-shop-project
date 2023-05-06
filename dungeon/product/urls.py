@@ -22,4 +22,11 @@ urlpatterns = [
 	path('edit-product/<int:id>', views.editProduct, name='edit-product'),
 	path('delete-product/<int:id>', views.deleteProduct, name='delete-product'),
 	path('category-filter/', views.categoryFilter, name='category-filter'),
+	path('category-edit/', views.categoryEdit, name='category-edit'),
+	path('category/<int:id>', views.category, name='category'),
+	path('delete-category/<int:id>', views.categoryDelete, name='delete-category'),
+	path('delete-subcategory/<int:id>', views.subcategoryDelete, name='delete-subcategory'),
+	path('save-subcategory/id=<int:id>', views.subcategorySave, name='save-subcategory'),
+	path('save-category/id=<int:id>', views.categorySave, name='save-category'),
+	path('search/', views.searchView, name='search')
 ]

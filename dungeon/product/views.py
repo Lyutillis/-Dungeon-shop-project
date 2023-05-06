@@ -60,6 +60,15 @@ def product_page_view(request, id) :
 	order = data['order']
 	items =  data['items']
 	product=Product.get_by_id(id)
+	piclist=PictureList.objects.get(product=product)
+	pictures=[]
+	for i in range(1, 7):
+		pic=getattr(piclist, 'picture'+str(i))
+		try:
+			if pic.url!='product-pics/default_pic.gif':
+				pictures.append(pic)
+		except:
+			pass
 	rating, created = Rating.objects.get_or_create(product=product)
 	quantity = rating.quantity
 
@@ -75,7 +84,7 @@ def product_page_view(request, id) :
 			pass
 
 
-	return render(request, 'product_page.html', {'product': product, 'items': items, 'order': order, 'cartItems': cartItems, 'comments': comments, 'replies': replies, 'rating': round(rating.overall), 'quantity': quantity,})
+	return render(request, 'product_page.html', {'pictures': pictures, 'product': product, 'items': items, 'order': order, 'cartItems': cartItems, 'comments': comments, 'replies': replies, 'rating': round(rating.overall), 'quantity': quantity,})
 
 def update_item(request):
 	data = json.loads(request.body)
@@ -260,13 +269,15 @@ def createSubCategory(request):
 	data = json.loads(request.body)
 	catName=data['catName']
 	subcatName=data['subcatName']
-
-	try:
-		category = Category.objects.get(name=catName)
-		subCategory = SubCategory.objects.create(category=category, name=subcatName)
-		return JsonResponse('Subcategory successfully created!', safe = False)
-	except:
-		return JsonResponse('Something went wrong', safe = False)
+	if subcatName != "" and subcatName :
+		try:
+			category = Category.objects.get(name=catName)
+			subCategory = SubCategory.objects.create(category=category, name=subcatName)
+			return JsonResponse('Subcategory successfully created!', safe = False)
+		except:
+			return JsonResponse('Something went wrong', safe = False)
+	messages.success(request, ('Can`t set empty field'))
+	return JsonResponse('Empty field!', safe = False)
 
 def deleteSubCategory(request):
 	data = json.loads(request.body)
@@ -371,3 +382,76 @@ def categoryFilter(request):
 			product_list = list(Product.objects.filter(category=category, subcategory=subcategory))
 		
 		return render(request, 'homepage.html', {'product_list':product_list, 'items': data['items'], 'order': data['order'], 'cartItems': data['cartItems'], 'categories': list(Category.objects.all())})
+
+def categoryEdit(request):
+	path = sessionPath(request, '/category-edit/')
+	data = cartData(request)
+	categories=list(Category.objects.all())
+	subcategories = {}
+	for i in categories:
+		subcategories.update({i.name:list(SubCategory.objects.filter(category=i))})
+
+	return render(request, 'category-edit.html', {'categories': categories, 'subcategories': subcategories, 'items': data['items'], 'order': data['order'], 'cartItems': data['cartItems'],})
+
+def category(request, id):
+	path = sessionPath(request, '/category/'+str(id))
+	data = cartData(request)
+	category=Category.objects.get(id=id)
+	subcategories=list(SubCategory.objects.filter(category=category))
+	return render(request, 'category.html', {'category': category, 'subcategories': subcategories, 'items': data['items'], 'order': data['order'], 'cartItems': data['cartItems'],})
+
+def categoryDelete(request, id):
+	category = Category.objects.get(id = id)
+	category.delete()
+	return redirect('/category-edit/')
+
+def subcategoryDelete(request, id):
+	subcategory = SubCategory.objects.get(id = id)
+	catId = subcategory.category.id
+	subcategory.delete()
+	return redirect('/category/' + str(catId))
+
+def subcategorySave(request, id):
+	if request.method == "POST":
+		subcategory = SubCategory.objects.get(id=id)
+		data = json.loads(request.body)
+		name = data['name']
+		if name != "" and name :
+			subcategory.name = name
+			subcategory.save()
+		return JsonResponse({
+    }, safe=False)
+
+def categorySave(request, id):
+	if request.method == "POST":
+		category = Category.objects.get(id=id)
+		data = json.loads(request.body)
+		name = data['name']
+		if name != "" and name :
+			category.name = name
+			category.save()
+		return JsonResponse({
+    }, safe=False)
+
+def searchView(request):
+	context={}
+	path = sessionPath(request, '/')
+	data = cartData(request)
+	context['items'] = data['items']
+	context['order'] = data['order']
+	context['cartItems'] = data['cartItems']
+	context['categories'] = list(Category.objects.all())
+	if request.method=='GET':
+		query=request.GET.get('query')
+		products = Product.objects.filter(name__icontains=query)
+		if products: 
+			context['product_list']=products
+			messages.success(request, ('Search successfull!'))
+			return render(request, 'homepage.html', context)
+		else:
+			context['product_list']=products
+			context['search']=True
+			messages.success(request, ('Search wasn`t successfull!'))
+			return render(request, 'homepage.html', context)
+	messages.success(request, ('Something went wrong'))
+	return redirect('/')

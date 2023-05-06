@@ -1,21 +1,19 @@
-var updateBtns = document.getElementsByClassName('update-cart')
+var checkoutBtns = document.getElementsByClassName('update-cart-checkout')
 
-for(i = 0; i < updateBtns.length; i++){
-	updateBtns[i].addEventListener('click', function(){
-		var productId = this.dataset.product
-		var action = this.dataset.action
-		console.log('productId:', productId, 'action:', action)
+checkoutBtns[0].addEventListener('click', function(){
+	var productId = this.dataset.product
+	var action = this.dataset.action
+	console.log('productId:', productId, 'action:', action)
 
-		console.log('USER', user)
-		if(user=='AnonymousUser'){
-			addCookieItem(productId, action)
-		}else{
-			updateUserOrder(productId, action)
-		}
-	})
-}
+	console.log('USER', user)
+	if(user=='AnonymousUser'){
+		checkoutAddCookieItem(productId, action)
+	}else{
+		checkoutUpdateUserOrder(productId, action)
+	}
+})
 
-function addCookieItem(productId, action){
+function checkoutAddCookieItem(productId, action){
 	console.log('User is not authenticated')
 
 	if (action=='add'){
@@ -36,10 +34,10 @@ function addCookieItem(productId, action){
 	}
 	console.log('Cart:', cart)
 	document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/' 
-	location.reload()
+	location.replace('/checkout/')
 }
 
-function updateUserOrder(productId, action){
+function checkoutUpdateUserOrder(productId, action){
 	console.log('User is logged in, sending data...')
 		var url = '/update-item/'
 
@@ -58,6 +56,6 @@ function updateUserOrder(productId, action){
 
 	.then((data) => {
 		console.log('data:', data)
-		location.reload()
+		location.replace('/checkout/')
 	});
 }

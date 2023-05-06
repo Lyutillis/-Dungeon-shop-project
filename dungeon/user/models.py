@@ -35,6 +35,9 @@ def image_upload_handler(instance, filename) :
 
 # Create your models here.
 class User(AbstractBaseUser, PermissionsMixin) :
+	class Meta:
+		verbose_name_plural = "Users"
+
 	email = models.CharField(max_length=100, unique=True, default=None)
 	password=models.CharField(default=None, max_length=255)
 	username = models.CharField(default=None, max_length=100, null=True)
@@ -95,3 +98,13 @@ class User(AbstractBaseUser, PermissionsMixin) :
 	@staticmethod
 	def get_all():
 		return User.objects.all()
+
+class WishList(models.Model):
+	class Meta:
+		verbose_name_plural = "Wish List"
+
+	from product.models import Product
+
+	user=models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+	product=models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+	id = models.AutoField(primary_key=True)

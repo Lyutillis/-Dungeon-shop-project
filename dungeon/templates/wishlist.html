@@ -8,6 +8,7 @@
 {% block content %}		
 	{% if product_list %}
 	<section id="sectionProducts" class="section-products">
+        <p class="h3 ms-5">Your Wishlist</p>
 		<form action = '{% url "category-filter" %}' method = 'GET'>
 			<div id="category" class="btn-group dropend ms-5 my-5" onchange="ShowSubcategory();">
 				<select name="category" id="catselect" class="form-select" aria-label="Default select example">
@@ -90,7 +91,7 @@
 	</div>
 	{% else %}
 	<div class="text-center">
-		<h4>There are no any products yet!</h4>
+		<h4>You haven`t add anything here yet!</h4>
 	</div>
 	{% endif %}
 	{% endif %}

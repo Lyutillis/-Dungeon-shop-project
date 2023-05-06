@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block links %}
+  <link rel="stylesheet" href="{% static 'user/style.css' %}">
   <link rel="stylesheet" href="{% static 'product/style.css' %}">
   <link rel="stylesheet" href="{% static 'product/comment.css' %}">
   <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
@@ -24,9 +25,10 @@
                             <img src="/static{{ product.picture.url }}" alt="" id="product-main-image">
                         </div>
                         <div class="product-image-slider">
-                            <img src="/static/uploads/profile-pics/d240dbb5-ca44-11ed-946e-1c1b0d73887c.png" alt=""  class="image-list">
                             <img src="/static{{ product.picture.url }}" alt=""  class="image-list">
-                            <img src="/static/uploads/profile-pics/d240dbb5-ca44-11ed-946e-1c1b0d73887c.png" alt=""  class="image-list">
+                            {% for i in pictures %}
+                            <img src="/static{{ i.url }}" alt=""  class="image-list">
+                            {% endfor %}
 
                         </div>
                     </div>
@@ -34,7 +36,7 @@
                 <div class="col-6">
                     <div class="product">
                         <div class="product-title">
-                            <h2>Half Sleve T-shirt for Men</h2>
+                            <h2>{{ product.name }}</h2>
                         </div>
                         <div class="product-rating">
                             {% with '12345' as range %}
@@ -45,54 +47,27 @@
                             <span><i class="bi bi-star-fill"></i></span>
                             {% endif %}
                             {% endfor %}
-                            {% endwith %} 
-                            <span class="review">(47 Review)</span>
+                            {% endwith %}
+                            <span class="review ms-1">({{ quantity }} Review)</span>
                         </div>
                         <div class="product-price">
-                            <span class="offer-price">$99.00</span>
-                            <span class="sale-price">$129.00</span>
+                            {% if i.oldPrice == i.price %}
+                            <span class="offer-price">${{ product.price|floatformat:2 }}</span>
+					        {% else %}
+                            <span class="offer-price">${{ product.price|floatformat:2 }}</span>
+                            <span class="sale-price">${{ product.oldPrice|floatformat:2 }}</span>
+					        {% endif %}
                         </div>
 
                         <div class="product-details">
                             <h3>Description</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos est magnam quibusdam maiores sit perferendis minima cupiditate iusto earum repudiandae maxime vitae nostrum, ea cumque iste ipsa hic commodi tempore.</p>
-                        </div>
-                        <div class="product-size">
-                            <h4>Size</h4>
-                            <div class="size-layout">
-                                <input type="radio" name="size" value="S" id="1" class="size-input">
-                                <label for="1" class="size">S</label>
-
-                                <input type="radio" name="size" value="M" id="2" class="size-input">
-                                <label for="2" class="size">M</label>
-
-                                <input type="radio" name="size" value="L" id="3" class="size-input">
-                                <label for="3" class="size">L</label>
-
-                                <input type="radio" name="size" value="XL" id="4" class="size-input">
-                                <label for="4" class="size">XL</label>
-
-                                <input type="radio" name="size" value="XXL" id="5" class="size-input">
-                                <label for="5" class="size">XXL</label>
-                            </div>
-                        </div>
-                        <div class="product-color">
-                            <h4>Color</h4>
-                            <div class="color-layout">
-                                <input type="radio" name="color"  value="black" class="color-input">
-                                <label for="black" class="black"></label>
-                                <input type="radio" name="color"  value="red" class="color-input">
-                                <label for="red" class="red"></label>
-
-                                <input type="radio" name="color"  value="blue" class="color-input">
-                                <label for="blue" class="blue"></label>
-                            </div>
+                            <p>{{ product.description }}</p>
                         </div>
                         <span class="divider"></span>
 
                         <div class="product-btn-group">
-                            <div class="button buy-now"><i class='bx bxs-zap' ></i> Buy Now</div>
-                            <div class="button add-cart"><i class='bx bxs-cart' ></i> Add to Cart</div>
+                            <div data-product='{{ product.id }}' data-action="add"  class="button buy-now update-cart-checkout"><i class='bx bxs-zap'></i> Buy Now</div>
+                            <div data-product='{{ product.id }}' data-action="add" class="button add-cart update-cart"><i class='bx bxs-cart' ></i> Add to Cart</div>
                             <div class="button heart"><i class='bx bxs-heart' ></i> Add to Wishlist</div>
                         </div>
                     </div>
@@ -340,6 +315,7 @@
 
 
 <script src="{% static 'product/script.js' %}"></script>
+<script src="{% static 'product/checkout-cart.js' %}"></script>
 
 <script type="text/javascript">
 
@@ -434,6 +410,7 @@
     }
 
 </script>
-
+<script type="text/javascript">
+</script>
 
 {% endblock content %}
