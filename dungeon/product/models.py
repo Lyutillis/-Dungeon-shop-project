@@ -7,6 +7,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.db import IntegrityError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from user.models import User
+from django.utils.html import mark_safe
 
 def product_image_upload_handler(instance, filename) :
 	fpath=pathlib.Path(filename)
@@ -54,29 +55,10 @@ class Product(models.Model) :
 		product=Product.objects.filter(id=id).first()
 		return product if product else None
 
-	"""@staticmethod
-				def create(title=None, body=None, user_id=None):
-					note = Note()
-					if title:
-						note.title = title
-					if body:
-						note.body = body
-					if user_id :
-						user=User.objects.filter(id=user_id).first()
-						note.user=user	
-					else :
-						return False
-					note.save()
-					return note
-			
-				def update(self, title=None, body=None):
-					if title is not None:
-						self.title = title
-			
-					if body is not None:
-						self.body = body
-			
-					self.save()"""
+	def admin_img(self):
+		return mark_safe('<img src="{}" width="100"/>'.format(self.picture.url))
+	admin_img.short_description = "Picture"
+	admin_img.allow_tags = True
 
 class Rating(models.Model):
 	class Meta:

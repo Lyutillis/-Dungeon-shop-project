@@ -1,0 +1,24 @@
+{% extends 'admin/change_form.html' %}
+{% block after_field_sets %}
+    {{ block.super }}
+<script type="text/javascript">
+    var imgInput=document.getElementsByClassName('file-upload')[0]
+    imgInput.querySelector('#id_picture').addEventListener('change', function(e) {
+        var imgCont=document.getElementsByTagName('img')[0]
+        var tgt = event.target || window.event.srcElement, files = tgt.files;
+
+        if (FileReader && files && files.length) {
+        var fr = new FileReader();
+        fr.onload = function () {
+            imgCont.src = fr.result;
+        }    
+        fr.readAsDataURL(files[0]);
+    }
+    
+    // Not supported
+    else {
+        console.log('Our browser does not support File Reader ((Whatever that means))')
+    }
+    })
+</script>
+{% endblock after_field_sets %}

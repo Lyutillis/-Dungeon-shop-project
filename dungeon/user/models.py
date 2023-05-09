@@ -5,6 +5,7 @@ from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db import IntegrityError
+from django.utils.html import mark_safe
 
 class UserManager(BaseUserManager) :
 
@@ -82,6 +83,11 @@ class User(AbstractBaseUser, PermissionsMixin) :
 		return {'id': self.id,
 				'email': f'{self.email}',
 				}
+
+	def admin_image(self):
+		return mark_safe('<img src="{}" width="100"/>'.format(self.profile_pic.url))
+	admin_image.short_description = "Picture"
+	admin_image.allow_tags = True
 
 	def update(self, password=None, is_active=None, username=None, profile_description=None):
 		user_to_update = User.objects.filter(email=self.email).first()
