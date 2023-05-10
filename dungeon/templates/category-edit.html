@@ -1,15 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block links %}
-  <link rel="stylesheet" href="{% static 'product/style.css' %}">
-{% endblock links %}
-
 {% block content %}
 {% if user.is_superuser or user.is_staff %}
 <div class="box-element">
     <div class="cart-row">
-      <div class="vr"></div>
+        <div class="vr"></div>
         <div class="text-center" style="flex:2"><strong>Category Name</strong></div>
         <div class="vr"></div>
         <div class="text-center" style="flex:2"><strong>Subcategories</strong></div>
@@ -17,36 +13,37 @@
         <div class="text-center" style="flex:1"><strong></strong></div>
         <div class="vr"></div>
     </div>
-  {% if user.is_superuser %}
-  {% for i in categories %}
-  <div class="cart-row">
-    <div class="vr"></div>
-    <div class="text-center" style="flex:2"><p>{{i.name}}</p></div>
-    <div class="vr"></div>
-    
-    <div class="text-center" style="flex:2">
-        <select class="form-select mx-auto" style="width:90%;" aria-label="Default select example">
-            <option selected>Subcategories</option>
-            {% for j in subcategories|get_item:i.name %}
-            <option>{{ j.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
 
-    <div class="vr"></div>
-    <div class="text-center" style="flex:1">
-        <a href="{% url 'category' id=i.id %}" class="btn btn-info mx-3" role="button">Edit</a>
-        <a href="{% url 'delete-category' id=i.id %}" class="btn btn-danger mx-3" role="button">Delete</a>    
-    </div>
-    <div class="vr"></div>
+	{% for i in categories %}
+    <div class="cart-row">
+    	<div class="vr"></div>
+    	<div class="text-center" style="flex:2"><p>{{i.name}}</p></div>
+    	<div class="vr"></div>
+    
+    	<div class="text-center" style="flex:2">
+        	<select class="form-select mx-auto" style="width:90%;" aria-label="Default select example">
+            	<option selected>Subcategories</option>
+
+            	{% for j in subcategories|get_item:i.name %}
+				
+            		<option>{{ j.name }}</option>
+            	
+				{% endfor %}
+        	</select>
+    	</div>
+
+    	<div class="vr"></div>
+		<div class="text-center" style="flex:1">
+			<a href="{% url 'category' id=i.id %}" class="btn btn-info mx-3" role="button">Edit</a>
+			<a href="{% url 'delete-category' id=i.id %}" class="btn btn-danger mx-3" role="button">Delete</a>    
+		</div>
+		<div class="vr"></div>
+	</div>
+	{% endfor %}
 </div>
-{% endfor %}
 {% else %}
 <hr class="my-4">
-<h6 class="text-muted">You don`t have permission to observe user list!</h6>
+<h6 class="text-muted ms-5">You don`t have permission to manage categories!</h6>
 <hr class="my-4">
 {% endif %}
-</div>
-{% endif %}
-<script type='text/javascript' src="{% static 'user/permission-change.js' %}"></script>
 {% endblock content %}

@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
-
 {% load static %}
 
-{% block links %}
- 
-{% endblock links %}
 
 {% block content %}
 <div class="container">    
@@ -16,15 +12,19 @@
 						<h3>To make an order you need to authorize:</h3>
 						<div class="row mx-auto">
 							<h3><a id="form-button" class="col-5 btn btn-success btn-block" href="{% url 'login' %}">Login</a>
-						or
-						<a id="form-button" class="col-5 btn btn-success btn-block" href="{% url 'register' %}">Register</a></h3>
-					</div>
+							or
+							<a id="form-button" class="col-5 btn btn-success btn-block" href="{% url 'register' %}">Register</a></h3>
+						</div>
 					</div>
 					
 					<div id="shipping-info">
+
 						<hr>
+
 						<p>Shipping Information:</p>
+
 						<hr>
+
 						<div class="form-field">
 							<input class="form-control" type="text" name="address" placeholder="Address..">
 						</div>
@@ -43,14 +43,16 @@
 					</div>
 
 					<hr>
+
 					<input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
 				</form>
 			</div>
 
 			<br>
+
 			<div class="box-element hidden" id="payment-info">
 				<small>Paypal Options</small>
-				<!--<button id="make-payment">Make Payment</button>-->
+				<button id="make-payment">Make Payment</button>
 				<div id="paypal-button-container"></div>
 			</div>
 			
@@ -58,9 +60,13 @@
 
 		<div class="col-6">
 			<div class="box-element">
+
 				<hr>
+
 				<h3>Order Summary</h3>
+
 				<hr>
+
 				{% for i in items %}
 				<div class="cart-row">
 					<div style="flex:2"><img class="row-image static" src='/static{{ i.product.picture.url }}'></div>
@@ -69,6 +75,7 @@
 					<div style="flex:1"><p>x{{i.quantity}}</p></div>
 				</div>
 				{% endfor %}
+				
 				<h5>Items:   {{order.get_cart_items}}</h5>
 				<h5>Total:   $ {{order.get_cart_total|floatformat:2}}</h5>
 			</div>
@@ -77,8 +84,9 @@
 </div>
 
 <script src="https://www.paypal.com/sdk/js?client-id=AX28Lf2b8bKJzNFgCfVBdA660sWrq_jUSSnLqjA48vN8E4fxzx6RquAuuUtqK6nJUv9XkNfbaczPRrmS&disable-funding=credit&currency=USD" data-sdk-integration-source="button-factory"></script>
+	
 
-<script>
+<script type="text/javascript">
 	var total = '{{ order.get_cart_total }}'
 
 	function initPayPalButton() {
@@ -113,7 +121,7 @@
 	  }).render('#paypal-button-container');
 	}
 	initPayPalButton();
-  </script>
+</script>
 
 <script type="text/javascript">
 
@@ -130,11 +138,9 @@
 		document.getElementById('payment-info').classList.remove("hidden");
 	})
 
-	/*
 	document.getElementById('make-payment').addEventListener('click', function(e){
 		submitFormData()
 	})
-	*/
 
 	function submitFormData(){
 		console.log('Paymnet button clicked')
@@ -191,3 +197,6 @@
 </script>
 
 {% endblock content %}
+
+
+

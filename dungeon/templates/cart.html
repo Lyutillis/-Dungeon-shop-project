@@ -1,51 +1,49 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block links %}
-  <link rel="stylesheet" href="{% static 'product/style.css' %}">
-{% endblock links %}
-
 {% block content %}
 <div class="box-element">
-    <div class="cart-row">
-        <div style="flex:2"></div>
-        <div style="flex:2"><strong>Item</strong></div>
-        <div style="flex:1"><strong>Price</strong></div>
-        <div style="flex:1"><strong>Quantity</strong></div>
-        <div style="flex:1"><strong>Total</strong></div>
-    </div>
-  {% if items %}
-  {% for i in items %}
-  <div class="cart-row">
-    <div style="flex:2"><img class="row-image" src='/static{{ i.product.picture.url }}'></div>
-    <div style="flex:2"><p>{{i.product.name}}</p></div>
-    <div style="flex:1"><p>${{i.product.price}}</p></div>
-    <div style="flex:1">
-        <p class="quantity">{{i.quantity}}</p>
-        <div class="quantity">
-            <img data-product="{{i.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static 'product/arrow_up.png' %}">
-    
-            <img data-product="{{i.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static 'product/arrow_down.png' %}">
-        </div>
-    </div>
-    <div style="flex:1"><p>${{i.get_total}}</p></div>
-</div>
-{% endfor %}
-<div class="float-end my-5">
-    <p class="mb-0 me-5 d-flex align-items-center">
-        <span class="small text-muted me-2">Total items:</span> <span
-          class="lead fw-normal">{{ order.get_cart_items }}</span>
-      </p>
-    <p class="mb-0 me-5 d-flex align-items-center">
-      <span class="small text-muted me-2">Order total:</span> <span
-        class="lead fw-normal">$ {{ order.get_cart_total }}</span>
-    </p>
-  </div>
-{% else %}
-<hr class="my-4">
-<h6 class="text-muted">You don`t have any goods in your cart yet!</h6>
-<hr class="my-4">
-{% endif %}
+	<div class="cart-row">
+        <div style="flex:2"><strong>Image</strong></div>
+		<div style="flex:2"><strong>Item</strong></div>
+		<div style="flex:1"><strong>Price</strong></div>
+		<div style="flex:1"><strong>Quantity</strong></div>
+		<div style="flex:1"><strong>Total</strong></div>
+	</div>
+	{% if items %}
+
+		{% for i in items %}
+	<div class="cart-row">
+		<div style="flex:2"><img class="row-image" src='/static{{ i.product.picture.url }}'></div>
+		<div style="flex:2"><p>{{i.product.name}}</p></div>
+		<div style="flex:1"><p>${{i.product.price}}</p></div>
+		<div style="flex:1">
+			<p class="quantity">{{i.quantity}}</p>
+			<div class="quantity">
+				<img data-product="{{i.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static 'product/arrow_up.png' %}">
+				<img data-product="{{i.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static 'product/arrow_down.png' %}">
+			</div>
+		</div>
+		<div style="flex:1"><p>${{i.get_total}}</p></div>
+	</div>
+		{% endfor %}
+
+	<div class="float-end my-5">
+		<p class="mb-0 me-5 d-flex align-items-center">
+			<span class="small text-muted me-2">Total items:</span> 
+			<span class="lead fw-normal">{{ order.get_cart_items }}</span>
+		</p>
+		<p class="mb-0 me-5 d-flex align-items-center">
+			<span class="small text-muted me-2">Order total:</span> 
+			<span class="lead fw-normal">$ {{ order.get_cart_total }}</span>
+		</p>
+	</div>
+
+	{% else %}
+	<hr class="my-4">
+	<h6 class="text-muted">You don`t have any goods in your cart yet!</h6>
+	<hr class="my-4">
+	{% endif %}
 </div>
 
 

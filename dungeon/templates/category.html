@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block links %}
-  <link rel="stylesheet" href="{% static 'product/style.css' %}">
-{% endblock links %}
 
 {% block content %}
 {% if user.is_superuser or user.is_staff %}
@@ -18,134 +15,48 @@
 
 <div class="box-element">
     <div class="cart-row">
-      <div class="vr"></div>
+        <div class="vr"></div>
         <div class="text-center" style="flex:2"><strong>Subcategory Name</strong></div>
         <div class="vr"></div>
         <div class="text-center" style="flex:1"><strong></strong></div>
         <div class="vr"></div>
     </div>
-  {% if user.is_superuser %}
-  {% for i in subcategories %}
-  <div class="cart-row">
-    <div class="vr"></div>
-    <div class="text-center" style="flex:2">
-        <p id="p{{ i.id }}">{{i.name}}</p>
-        <input class="form-control form-control hidden mx-auto" style="width:60%;" type="text" placeholder="{{ i.name }}" id="name{{ i.id }}" aria-label=".form-control-lg example">
+
+    {% for i in subcategories %}
+    <div class="cart-row">
+        <div class="vr"></div>
+        <div class="text-center" style="flex:2">
+            <p id="p{{ i.id }}">{{i.name}}</p>
+            <input class="form-control form-control hidden mx-auto" style="width:60%;" type="text" placeholder="{{ i.name }}" id="name{{ i.id }}" aria-label=".form-control-lg example">
+        </div>
+        <div class="vr"></div>
+        <div class="text-center" style="flex:1">
+            <button type="button" class="btn btn-info" id="{{ i.id }}" onclick="ShowFields(this.id)">Edit</button>
+            <a href="{% url 'delete-subcategory' id=i.id %}" class="btn btn-danger mx-3" role="button">Delete</a>
+            <button type="button" class="btn btn-info hidden" id="h{{ i.id }}" onclick="HideFields(this.id)">Save</button>    
+        </div>
+        <div class="vr"></div>
     </div>
-    <div class="vr"></div>
-    <div class="text-center" style="flex:1">
-        <button type="button" class="btn btn-info" id="{{ i.id }}" onclick="ShowFields(this.id)">Edit</button>
-        <a href="{% url 'delete-subcategory' id=i.id %}" class="btn btn-danger mx-3" role="button">Delete</a>
-        <button type="button" class="btn btn-info hidden" id="h{{ i.id }}" onclick="HideFields(this.id)">Save</button>    
+    {% endfor %}
+
+    <hr></hr>
+
+    <div class="cart-row">
+        <div class="vr"></div>
+        <div class="text-center" style="flex:2">
+            <input class="form-control form-control mx-auto" style="width:60%;" type="text" placeholder="New Subcategory" id="newname" aria-label=".form-control-lg example">
+        </div>
+        <div class="vr"></div>
+        <div class="text-center" style="flex:1">
+            <button type="button" class="btn btn-info" id="newsub" onclick="CreateSub(this.id)">Create</button>    
+        </div>
+        <div class="vr"></div>
     </div>
-    <div class="vr"></div>
-</div>
-{% endfor %}
-<hr></hr>
-<div class="cart-row">
-    <div class="vr"></div>
-    <div class="text-center" style="flex:2">
-        <input class="form-control form-control mx-auto" style="width:60%;" type="text" placeholder="New Subcategory" id="newname" aria-label=".form-control-lg example">
-    </div>
-    <div class="vr"></div>
-    <div class="text-center" style="flex:1">
-        <button type="button" class="btn btn-info" id="newsub" onclick="CreateSub(this.id)">Create</button>    
-    </div>
-    <div class="vr"></div>
 </div>
 {% else %}
 <hr class="my-4">
-<h6 class="text-muted">You don`t have permission to observe user list!</h6>
+<h6 class="text-muted">You don`t have permission to manage categories!</h6>
 <hr class="my-4">
 {% endif %}
-</div>
-{% endif %}
-<script type='text/javascript' src="{% static 'user/permission-change.js' %}"></script>
-<script type='text/javascript'>
-    function ShowFields(id) {
-        var cont = document.getElementById(id).parentNode
-        cont.getElementsByClassName('btn')[0].classList.add('hidden')
-        cont.getElementsByClassName('btn')[1].classList.add('hidden')
-        cont.getElementsByClassName('btn')[2].classList.remove('hidden')
-        document.getElementById('name' + id).classList.remove('hidden')
-        document.getElementById('p' + id).classList.add('hidden')
-    }
 
-    function HideFields(id) {
-        id = id.slice(1, id.length)
-        var url='/save-subcategory/'
-        var name = document.getElementById('name'+id).value
-        
-        fetch(url + new URLSearchParams({id: id}), {
-			method: 'POST',
-			headers:{
-				'Content-Type':'application/json',
-				'X-CSRFToken': csrftoken,
-			},
-			body:JSON.stringify({'name': name,})
-		})
-
-        .then((response) => {
-            return response.json();
-        })
-
-        .then((data) => {
-            var cont = document.getElementById(id).parentNode
-            cont.getElementsByClassName('btn')[0].classList.remove('hidden')
-            cont.getElementsByClassName('btn')[1].classList.remove('hidden')
-            cont.getElementsByClassName('btn')[2].classList.add('hidden')
-            document.getElementById('name' + id).classList.add('hidden')
-            document.getElementById('p' + id).classList.remove('hidden')
-            location.reload()
-        });
-    }
-
-    function CreateSub(id) {
-        id = id.slice(1, id.length)
-        var url='/create-subcategory/'
-        var catName=document.getElementById('catfield').placeholder
-        var subcatName = document.getElementById('newname').value
-        
-        fetch(url, {
-			method: 'POST',
-			headers:{
-				'Content-Type':'application/json',
-				'X-CSRFToken': csrftoken,
-			},
-			body:JSON.stringify({'catName': catName, 'subcatName': subcatName,})
-		})
-
-        .then((response) => {
-            return response.json();
-        })
-
-        .then((data) => {
-            location.reload()
-        });
-    }
-
-    function ChangeName(id) {
-        id = id.slice(2, id.length)
-        var url='/save-category/'
-        var name = document.getElementById('catfield').value
-        
-        fetch(url + new URLSearchParams({id: id}), {
-			method: 'POST',
-			headers:{
-				'Content-Type':'application/json',
-				'X-CSRFToken': csrftoken,
-			},
-			body:JSON.stringify({'name': name,})
-		})
-
-        .then((response) => {
-            return response.json();
-        })
-
-        .then((data) => {
-            location.reload()
-        });
-    }
-
-</script>
 {% endblock content %}
