@@ -2,96 +2,99 @@
 {% load static %}
 
 {% block links %}
-  <link rel="stylesheet" href="{% static 'user/style.css' %}">
-  <link rel="stylesheet" href="{% static 'product/style.css' %}">
-  <link rel="stylesheet" href="{% static 'product/comment.css' %}">
-  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-
+    <link rel="stylesheet" href="{% static 'user/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'product/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'product/css/comment.css' %}">
 {% endblock links %}
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="single-product">
-            <div class="row gx-5">
-                <div class="col-6">
-                  <div class="breadcrumb">
-                        <span><a href="{% url 'homepage' %}">Home</a></span>
-                        <span>{{ product.category.name }}</span>
-                        <span>{{ product.subcategory.name }}</span>
-                    </div>
-
-                    <div class="product-image">
-                        <div class="product-image-main">
-                            <img src="/static{{ product.picture.url }}" alt="" id="product-main-image">
-                        </div>
-                        <div class="product-image-slider">
-                            <img src="/static{{ product.picture.url }}" alt=""  class="image-list">
-                            {% for i in pictures %}
-                            <img src="/static{{ i.url }}" alt=""  class="image-list">
-                            {% endfor %}
-
-                        </div>
-                    </div>
+<div class="container-fluid">
+    <div class="single-product">
+        <div class="row gx-5">
+            <div class="col-6">
+                <div class="breadcrumb">
+                    <span><a href="{% url 'homepage' %}">Home</a></span>
+                    <span>{{ product.category.name }}</span>
+                    <span>{{ product.subcategory.name }}</span>
                 </div>
-                <div class="col-6">
-                    <div class="product">
-                        <div class="product-title">
-                            <h2>{{ product.name }}</h2>
-                        </div>
-                        <div class="product-rating">
-                            {% with '12345' as range %}
-                            {% for j in range %}
-                            {% if j|slugify > rating|slugify %} 
-                            <span><i class="bi bi-star"></i></span>
-                            {% else %}
-                            <span><i class="bi bi-star-fill"></i></span>
-                            {% endif %}
-                            {% endfor %}
-                            {% endwith %}
-                            <span class="review ms-1">({{ quantity }} Review)</span>
-                        </div>
-                        <div class="product-price">
-                            {% if i.oldPrice == i.price %}
-                            <span class="offer-price">${{ product.price|floatformat:2 }}</span>
-					        {% else %}
-                            <span class="offer-price">${{ product.price|floatformat:2 }}</span>
-                            <span class="sale-price">${{ product.oldPrice|floatformat:2 }}</span>
-					        {% endif %}
-                        </div>
 
-                        <div class="product-details">
-                            <h3>Description</h3>
-                            <p>{{ product.description }}</p>
-                        </div>
-                        <span class="divider"></span>
+                <div class="product-image">
+                    <div class="product-image-main">
+                        <img src="/static{{ product.picture.url }}" alt="" id="product-main-image">
+                    </div>
+                    <div class="product-image-slider">
+                        <img src="/static{{ product.picture.url }}" alt=""  class="image-list">
+                        {% for i in pictures %}
 
-                        <div class="product-btn-group">
-                            <div data-product='{{ product.id }}' data-action="add"  class="button buy-now update-cart-checkout"><i class='bx bxs-zap'></i> Buy Now</div>
-                            <div data-product='{{ product.id }}' data-action="add" class="button add-cart update-cart"><i class='bx bxs-cart' ></i> Add to Cart</div>
-                            <div class="button heart"><i class='bx bxs-heart' ></i> Add to Wishlist</div>
-                        </div>
+                        <img src="/static{{ i.url }}" alt=""  class="image-list">
+
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-            <div class="col-12">
+            <div class="col-6">
+                <div class="product">
+                    <div class="product-title">
+                        <h2>{{ product.name }}</h2>
+                    </div>
+                    <div class="product-rating">
+                        {% with '12345' as range %}
+
+                        {% for j in range %}
+
+                            {% if j|slugify > rating|slugify %} 
+
+                        <span><i class="bi bi-star"></i></span>
+
+                            {% else %}
+
+                        <span><i class="bi bi-star-fill"></i></span>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                        {% endwith %}
+                        <span class="review ms-1">({{ quantity }} Review)</span>
+                    </div>
+                    <div class="product-price">
+                        {% if i.oldPrice == i.price %}
+
+                        <span class="offer-price">${{ product.price|floatformat:2 }}</span>
+
+                        {% else %}
+
+                        <span class="offer-price">${{ product.price|floatformat:2 }}</span>
+                        <span class="sale-price">${{ product.oldPrice|floatformat:2 }}</span>
+
+                        {% endif %}
+                    </div>
+
+                    <div class="product-details">
+                        <h3>Description</h3>
+                        <p>{{ product.description }}</p>
+                    </div>
+                    
+                    <span class="divider"></span>
+
+                    <div class="product-btn-group">
+                        <div data-product='{{ product.id }}' data-action="add"  class="button buy-now update-cart-checkout"><i class='bx bxs-zap'></i> Buy Now</div>
+                        <div data-product='{{ product.id }}' data-action="add" class="button add-cart update-cart"><i class='bx bxs-cart' ></i> Add to Cart</div>
+                        <div class="button heart"><i class='bx bxs-heart' ></i> Add to Wishlist</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
             <form action="{% url 'publish-comment' id=product.id %}" method = "post">
-                {% csrf_token %}
+            {% csrf_token %}
                 <div class="card my-5" id="form">
-               
                     <div class="row">
-                        
-                        <div class="col-2">
-                            
-                            
+                        <div class="col-2">                        
                             <img src="/static{{ user.picture.url }}" height="70" width="70" class="rounded-circle mt-2">
-                        
-                        
                         </div>
-                        
                         <div class="col-9 mx-3">
-                            
                             <div class="comment-box ml-2">
-                                
                                 <h4>Add a comment</h4>
                                 
                                 <div class="rating" id="starform"> 
@@ -101,316 +104,145 @@
                                     <input type="radio" name="rating" value="2" id="star2"><label for="star2">☆</label>
                                     <input type="radio" name="rating" value="1" id="star1"><label for="star1">☆</label>
                                 </div>
-                                
-                                <div class="comment-area" id="comment">
-                                    
+
+                                <div class="comment-area" id="comment">       
                                     <textarea class="form-control" name="content" placeholder="What is your view?" rows="4"></textarea>
-                                
                                 </div>
                                 
-                                <div class="comment-btns mt-2">
-                                    
-                                    <div class="row">
-                                        
-                                        <div class="col-6">
-                                            
+                                <div class="comment-btns mt-2"> 
+                                    <div class="row"> 
+                                        <div class="col-6">   
                                             <div class="pull-right">
-                                            
-                                                <button type='submit' id="user-send-disabled" class="col-8 btn btn-success btn-block" disabled>Send</button>
-                                                
+                                                <button type='submit' id="user-send-disabled" class="col-8 btn btn-success btn-block" disabled>Send</button>            
                                                 <button type='submit' id="user-send" class="col-8 btn btn-success btn-block hidden">Send</button> 
-                                                
                                             </div>
-                                        
                                         </div>
-                                    
                                     </div>
-                                
                                 </div>
-                            
-                            
                             </div>
-                        
                         </div>
-                    
-                    
                     </div>
-          
                 </div>
             </form>
-                <div class="card my-4 hidden" id="login">
-                    <h4>To write comments you need to login</h4>
-                        <h4><a id="form-button" class="col-5 btn btn-success btn-block" href="{% url 'login' %}">Login</a>
-                    or
-                    <a id="form-button" class="col-5 btn btn-success btn-block" href="{% url 'register' %}">Register</a></h4>
-          
-                </div>
-            
+            <div class="card my-4 hidden" id="login">
+                <h4>To write comments you need to login</h4>
+                <h4><a id="form-button" class="col-5 btn btn-success btn-block" href="{% url 'login' %}">Login</a>
+                or
+                <a id="form-button" class="col-5 btn btn-success btn-block" href="{% url 'register' %}">Register</a></h4>
+            </div>
+        
             {% for i in comments %}
             <div class="replies">    
-                <div class="card my-1" id="form">
-                    
-                    <div class="row">
-                        
+                <div class="card my-1" id="form"> 
+                    <div class="row">   
                         <div class="col-2">
-                            
-                            
                             <img src="/static{{ i.customer.profile_pic.url }}" height="70" width="70" class="rounded-circle mt-2">
-                        
-                        
                         </div>
-                        
+                    
                         <div class="col-9 mx-3">
                             <div class="comment-box ml-2">
-                                
                                 <h5>{{ i.customer.username }}</h5>
+
                                 {% with '12345' as range %}
+
                                 {% for j in range %}
+
                                     {% if j|slugify > i.rating|slugify %} 
-                                        <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
                                     {% else %}
                                     <i class="bi bi-star-fill"></i>
                                     {% endif %}
+
                                 {% endfor %}
+
                                 {% endwith %}
                                 
                             </div>
                             <div class="comment-box mt-2">
-                                
-                                
-                                    
-                                    <div class="col-12">
-                                        
-                                        <div class="comment-area">
-                                    
-                                            <p>{{ i.body }}</p>
-                                        
-                                        </div>
-                                    
+                                <div class="col-12"> 
+                                    <div class="comment-area">
+                                        <p>{{ i.body }}</p>
                                     </div>
-                                
-                                
-                            
+                                </div>
                             </div>
                             <div class="text-end">
                                 <a class="reply" id="reply">Replies<i class="bi bi-caret-down" style="font-size: 10px"></i></a>
                                 <a class="hidden reply-hide" id="reply-hide">Hide<i class="bi bi-caret-down" style="font-size: 10px"></i></a>                        
                             </div>
-                        
                         </div>
-                    
                     </div>
-                    
-                    
                 </div>
                 <form action="{% url 'publish-reply' id=i.id %}" method = "post" class="reply-form hidden">
-                    {% csrf_token %}
+                {% csrf_token %}
                     <div class="card mx-5 my-3">
-                
                         <div class="row">
-                            
                             <div class="col-2">
-                                
-                                
                                 <img src="/static{{ user.picture.url }}" height="70" width="70" class="rounded-circle mt-2">
-                            
-                            
                             </div>
-                            
                             <div class="col-9 mx-3">
-                                
                                 <div class="comment-box ml-2">
-                                    
                                     <h4>Add a reply</h4>
-                                    
                                     <div class="comment-area" id="comment">
-                                        
                                         <textarea class="form-control text_area" name="content" placeholder="What is your view?" rows="4" oninput="hideOnEmpty(this, this.value)"></textarea>
-                                    
                                     </div>
-                                    
                                     <div class="comment-btns mt-2">
-                                        
                                         <div class="row">
-                                            
                                             <div class="col-6">
-                                                
                                                 <div class="pull-right">
-
                                                     <button type='submit' id="send" class="col-8 btn btn-success btn-block send-disabled" disabled>Send</button>
-                                                
                                                     <button type='submit' id="send" class="col-8 btn btn-success btn-block send hidden">Send</button> 
-                                                    
                                                 </div>
-                                            
                                             </div>
-                                        
                                         </div>
-                                    
                                     </div>
-                                
-                                
                                 </div>
-                            
                             </div>
-                        
-                        
                         </div>
-            
                     </div>
                 </form>
                 <div class="reply-comments hidden">
+
                 {% with replies|get_item:i as repl %}
-                    {% for j in repl reversed %}
-                        <div class="card mx-5 my-3" id="form">
-                    
-                            <div class="row">
-                                
-                                <div class="col-2">
-                                    
-                                    
-                                    <img src="/static{{ j.reply.customer.profile_pic.url }}" height="70" width="70" class="rounded-circle mt-2">
-                                
-                                
+
+                {% for j in repl reversed %}
+
+                    <div class="card mx-5 my-3" id="form">
+                        <div class="row"> 
+                            <div class="col-2">
+                                <img src="/static{{ j.reply.customer.profile_pic.url }}" height="70" width="70" class="rounded-circle mt-2">
+                            </div>
+                            <div class="col-9 mx-3">
+                                <div class="comment-box ml-2">
+                                    <h5>{{ j.reply.customer.username }}</h5>
                                 </div>
-                                
-                                <div class="col-9 mx-3">
-                                    <div class="comment-box ml-2">
-                                        
-                                        <h5>{{ j.reply.customer.username }}</h5>
-                                        
+                                <div class="comment-box mt-2">
+                                    <div class="col-12">
+                                        <div class="comment-area">
+                                            <p>{{ j.reply.body }}</p>
+                                        </div>
                                     </div>
-                                    <div class="comment-box mt-2">
-                                        
-                                        
-                                            
-                                            <div class="col-12">
-                                                
-                                                <div class="comment-area">
-                                            
-                                                    <p>{{ j.reply.body }}</p>
-                                                
-                                                </div>
-                                            
-                                            </div>
-                                        
-                                        
-                                    
-                                    </div>
-                                
                                 </div>
-                            
                             </div>
                         </div>
-                    {% endfor %}
-                    {% endwith %}
+                    </div>
+
+                {% endfor %}
+
+                {% endwith %}
+
                 </div>
+
             {% endfor %}
-  
+
+            </div>
         </div>
-    </div>
     </div>
 </div>
 
 
 
-<script src="{% static 'product/script.js' %}"></script>
-<script src="{% static 'product/checkout-cart.js' %}"></script>
-
-<script type="text/javascript">
-
-	if (user == 'AnonymousUser'){
-            document.getElementById('form').classList.add("hidden");
-            document.getElementById('login').classList.remove("hidden");
-        }
-
-    document.getElementById('star1').addEventListener('change', function(){
-        if (this.checked) {
-            document.getElementById('user-send-disabled').classList.add('hidden')
-            document.getElementById('user-send').classList.remove('hidden')
-        }
-    })
-
-    document.getElementById('star2').addEventListener('change', function(){
-        if (this.checked) {
-            document.getElementById('user-send-disabled').classList.add('hidden')
-            document.getElementById('user-send').classList.remove('hidden')
-        }
-    })
-
-    document.getElementById('star3').addEventListener('change', function(){
-        if (this.checked) {
-            document.getElementById('user-send-disabled').classList.add('hidden')
-            document.getElementById('user-send').classList.remove('hidden')
-        }
-    })
-
-    document.getElementById('star4').addEventListener('change', function(){
-        if (this.checked) {
-            document.getElementById('user-send-disabled').classList.add('hidden')
-            document.getElementById('user-send').classList.remove('hidden')
-        }
-    })
-
-    document.getElementById('star5').addEventListener('change', function(){
-        if (this.checked) {
-            document.getElementById('user-send-disabled').classList.add('hidden')
-            document.getElementById('user-send').classList.remove('hidden')
-        }
-    })
-
-    
-    var replies = document.getElementsByClassName('replies')
-    var repl = replies[0].getElementsByClassName('reply')[0];
-    var hiderepl = replies[0].getElementsByClassName('reply-hide')[0];
-
-    for(let i = 0; i < replies.length; i++){
-        repl = replies[i].getElementsByClassName('reply')[0];
-        hiderepl = replies[i].getElementsByClassName('reply-hide')[0];
-
-        (function () { 
-            repl.addEventListener('click', function(){
-                console.log('Button', i, 'clicked');
-                replies[i].getElementsByClassName('reply')[0].classList.add("hidden");
-                replies[i].getElementsByClassName('reply-hide')[0].classList.remove("hidden");
-                if (user != 'AnonymousUser'){
-                    replies[i].getElementsByClassName('reply-form')[0].classList.remove("hidden");
-                }
-                replies[i].getElementsByClassName('reply-comments')[0].classList.remove("hidden");
-                return 0;
-            })
-
-            hiderepl.addEventListener('click', function(){
-                console.log('Hide-Button', i, 'clicked'); 
-                replies[i].getElementsByClassName('reply')[0].classList.remove("hidden");
-                replies[i].getElementsByClassName('reply-hide')[0].classList.add("hidden");
-                if (user != 'AnonymousUser'){
-                    replies[i].getElementsByClassName('reply-form')[0].classList.add("hidden");
-                }
-                replies[i].getElementsByClassName('reply-comments')[0].classList.add("hidden");
-                return 0;
-            })
-        }());
-    }
-
-
-
-    function hideOnEmpty(element, value) {
-        var doc = element.parentNode.parentNode;
-        var button = null;
-
-        if (value !== '') {
-            button = doc.getElementsByClassName('send-disabled')[0].classList.add('hidden')
-            button = doc.getElementsByClassName('send')[0].classList.remove('hidden') 
-        } else {
-            button = doc.getElementsByClassName('send')[0].classList.add('hidden')
-            button = doc.getElementsByClassName('send-disabled')[0].classList.remove('hidden') 
-        }
-        
-    }
-
-</script>
-<script type="text/javascript">
-</script>
+<script src="{% static 'product/js/script.js' %}"></script>
+<script src="{% static 'product/js/checkout-cart.js' %}"></script>
+<script src="{% static 'product/js/product-page.js' %}"></script>
 
 {% endblock content %}

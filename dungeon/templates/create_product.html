@@ -2,11 +2,9 @@
 {% load static %}
 
 {% block links %}
-  <link rel="stylesheet" href="{% static 'product/style.css' %}">
-  <link rel="stylesheet" href="{% static 'product/comment.css' %}">
-  <link rel="stylesheet" href="{% static 'product/preview-hover.css' %}">
-  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-
+    <link rel="stylesheet" href="{% static 'product/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'product/css/comment.css' %}">
+    <link rel="stylesheet" href="{% static 'product/css/preview-hover.css' %}">
 {% endblock links %}
 
 {% block content %}
@@ -119,7 +117,7 @@
     </div>
 </div>
 
-<script src="{% static 'product/edit-slider-input.js' %}"></script>
-<script src="{% static 'product/create_product.js' %}"></script>
+<script src="{% static 'product/js/edit-slider-input.js' %}"></script>
+<script src="{% static 'product/js/create_product.js' %}"></script>
 
 {% endblock content %}

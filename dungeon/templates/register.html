@@ -2,149 +2,159 @@
 
 {% block content %}
 <section class="vh-100">
-  <div class="container py-5 h-100">
-    <div class="row d-flex align-items-center justify-content-center h-100">
-      <div class="col-md-8 col-lg-7 col-xl-6">
-        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-          class="img-fluid" alt="Phone image">
-      </div>
-      <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-        <form method="POST">
-        	{% csrf_token %}
-        	{% if register_data_error %}
-			  <!-- Email input -->
-			  <div class="form-floating mb-4">
-			    <input type="email" class="form-control is-invalid" id="floatingInput" placeholder="name@example.com" name='email' value = "{{ email }}">
-			    <label for="floatingInput">Email address</label>
-			  </div>
+  	<div class="container py-5 h-100">
+    	<div class="row d-flex align-items-center justify-content-center h-100">
+			<div class="col-md-8 col-lg-7 col-xl-6">
+				<img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+				class="img-fluid" alt="Phone image">
+			</div>
+			<div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+				<form method="POST">
+				{% csrf_token %}
 
-			  <!-- Username input -->
-			  <div class="form-floating mb-4">
-			    <input type="text" class="form-control" id="floatingUsername" placeholder="Username" name='username'>
-			    <label for="floatingUsername">Username</label>
-			  </div>
+				{% if register_data_error %}
 
-			  <!-- Password input -->
-			  <div class="form-floating mb-4">
-			    <input type="password" class="form-control is-invalid" id="floatingPassword" placeholder="Password" name='password1'>
-			    <label for="floatingPassword">Password</label>
-			  </div>
+					<!-- Email input -->
+					<div class="form-floating mb-4">
+						<input type="email" class="form-control is-invalid" id="floatingInput" placeholder="name@example.com" name='email' value = "{{ email }}">
+						<label for="floatingInput">Email address</label>
+					</div>
 
-			  <!-- Password input -->
-			  <div class="form-floating mb-4">
-			    <input type="password" class="form-control is-invalid" id="floatingPassword2" placeholder="Password2" name='password2'>
-			    <label for="floatingPassword2">Repeat your Password</label>
-			    <div id="password1Input" class="invalid-feedback">
-        		You must feel all the highlighted fields!
-    			</div>
-			  </div>
-        	{% elif password_equity_error %}
-			  <!-- Email input -->
-			  <div class="form-floating mb-4">
-			    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name='email' value = "{{ email }}">
-			    <label for="floatingInput">Email address</label>
-			  </div>
+					<!-- Username input -->
+					<div class="form-floating mb-4">
+						<input type="text" class="form-control" id="floatingUsername" placeholder="Username" name='username'>
+						<label for="floatingUsername">Username</label>
+					</div>
 
-			  <!-- Username input -->
-			  <div class="form-floating mb-4">
-			    <input type="text" class="form-control" id="floatingUsername" placeholder="Username" name='username'>
-			    <label for="floatingUsername">Username</label>
-			  </div>
+					<!-- Password input -->
+					<div class="form-floating mb-4">
+						<input type="password" class="form-control is-invalid" id="floatingPassword" placeholder="Password" name='password1'>
+						<label for="floatingPassword">Password</label>
+					</div>
 
-			  <!-- Password input -->
-			  <div class="form-floating mb-4">
-			    <input type="password" class="form-control is-invalid" id="floatingPassword" placeholder="Password" name='password1'>
-			    <label for="floatingPassword">Password</label>
-			    <div id="password1Input" class="invalid-feedback">
-        		Passwords don`t match!
+					<!-- Password input -->
+					<div class="form-floating mb-4">
+						<input type="password" class="form-control is-invalid" id="floatingPassword2" placeholder="Password2" name='password2'>
+						<label for="floatingPassword2">Repeat your Password</label>
+						<div id="password1Input" class="invalid-feedback">
+						You must feel all the highlighted fields!
+						</div>
+					</div>
+
+				{% elif password_equity_error %}
+
+					<!-- Email input -->
+					<div class="form-floating mb-4">
+						<input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name='email' value = "{{ email }}">
+						<label for="floatingInput">Email address</label>
+					</div>
+
+					<!-- Username input -->
+					<div class="form-floating mb-4">
+						<input type="text" class="form-control" id="floatingUsername" placeholder="Username" name='username'>
+						<label for="floatingUsername">Username</label>
+					</div>
+
+					<!-- Password input -->
+					<div class="form-floating mb-4">
+						<input type="password" class="form-control is-invalid" id="floatingPassword" placeholder="Password" name='password1'>
+						<label for="floatingPassword">Password</label>
+						<div id="password1Input" class="invalid-feedback">
+						Passwords don`t match!
+						</div>
+					</div>
+
+					<!-- Password input -->
+					<div class="form-floating mb-4">
+						<input type="password" class="form-control is-invalid" id="floatingPassword2" placeholder="Password2" name='password2'>
+						<label for="floatingPassword2">Repeat your Password</label>
+					</div>
+
+				{% elif email_error %}
+
+					<!-- Email input -->
+					<div class="form-floating mb-4">
+						<input type="email" class="form-control is-invalid" id="floatingInput" placeholder="name@example.com" name='email' value = "{{ email }}">
+						<label for="floatingInput">Email address</label>
+						<div id="emailInput" class="invalid-feedback">
+						User with this email already exists!
+						</div>
+					</div>
+
+					<!-- Username input -->
+					<div class="form-floating mb-4">
+						<input type="text" class="form-control" id="floatingUsername" placeholder="Username" name='username'>
+						<label for="floatingUsername">Username</label>
+					</div>
+
+					<!-- Password input -->
+					<div class="form-floating mb-4">
+						<input type="password" class="form-control" id="floatingPassword" placeholder="Password" name='password1'>
+						<label for="floatingPassword">Password</label>
+					</div>
+
+					<!-- Password input -->
+					<div class="form-floating mb-4">
+						<input type="password" class="form-control" id="floatingPassword2" placeholder="Password2" name='password2'>
+						<label for="floatingPassword2">Repeat your Password</label>
+					</div>
+
+			{% else %}
+
+					<!-- Email input -->
+					<div class="form-floating mb-4">
+						<input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name='email'>
+						<label for="floatingInput">Email address</label>
+					</div>
+
+					<!-- Username input -->
+					<div class="form-floating mb-4">
+						<input type="text" class="form-control" id="floatingUsername" placeholder="Username" name='username'>
+						<label for="floatingUsername">Username</label>
+					</div>
+
+					<!-- Password input -->
+					<div class="form-floating mb-4">
+						<input type="password" class="form-control" id="floatingPassword" placeholder="Password" name='password1'>
+						<label for="floatingPassword">Password</label>
+					</div>
+
+					<!-- Password input -->
+					<div class="form-floating mb-4">
+						<input type="password" class="form-control" id="floatingPassword2" placeholder="Password2" name='password2'>
+						<label for="floatingPassword2">Repeat your Password</label>
+					</div>
+
+				{% endif %}
+
+					<!-- Submit button -->
+					<div class="d-grid gap-2 col-8 mx-auto">
+						<button type="submit" class="btn btn-primary btn-block mb-4 shadow">Register</button>
+					</div>
+
+					<!-- Register buttons -->
+					<div class="text-center">
+						<p>Or sign up via:</p>
+
+						<button type="button" class="btn btn-link btn-floating mx-1">
+							<i class="bi bi-facebook" style="font-size: 30px;"></i>
+						</button>
+
+						<button type="button" class="btn btn-link btn-floating mx-1">
+							<i class="bi bi-google" style="font-size: 30px;"></i>
+						</button>
+
+						<button type="button" class="btn btn-link btn-floating mx-1">
+							<i class="bi bi-twitter" style="font-size: 30px;"></i>
+						</button>
+
+						<button type="button" class="btn btn-link btn-floating mx-1">
+							<i class="bi bi-github" style="font-size: 30px;"></i>
+						</button>
+					</div>
+				</form>
       		</div>
-			  </div>
-
-			  <!-- Password input -->
-			  <div class="form-floating mb-4">
-			    <input type="password" class="form-control is-invalid" id="floatingPassword2" placeholder="Password2" name='password2'>
-			    <label for="floatingPassword2">Repeat your Password</label>
-			  </div>
-        	{% elif email_error %}
-			  <!-- Email input -->
-			  <div class="form-floating mb-4">
-			    <input type="email" class="form-control is-invalid" id="floatingInput" placeholder="name@example.com" name='email' value = "{{ email }}">
-			    <label for="floatingInput">Email address</label>
-			    <div id="emailInput" class="invalid-feedback">
-		        User with this email already exists!
-		      </div>
-			  </div>
-
-			  <!-- Username input -->
-			  <div class="form-floating mb-4">
-			    <input type="text" class="form-control" id="floatingUsername" placeholder="Username" name='username'>
-			    <label for="floatingUsername">Username</label>
-			  </div>
-
-			  <!-- Password input -->
-			  <div class="form-floating mb-4">
-			    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name='password1'>
-			    <label for="floatingPassword">Password</label>
-			  </div>
-
-			  <!-- Password input -->
-			  <div class="form-floating mb-4">
-			    <input type="password" class="form-control" id="floatingPassword2" placeholder="Password2" name='password2'>
-			    <label for="floatingPassword2">Repeat your Password</label>
-			  </div>
-      	  {% else %}
-			  <!-- Email input -->
-			  <div class="form-floating mb-4">
-			    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name='email'>
-			    <label for="floatingInput">Email address</label>
-			  </div>
-
-			  <!-- Username input -->
-			  <div class="form-floating mb-4">
-			    <input type="text" class="form-control" id="floatingUsername" placeholder="Username" name='username'>
-			    <label for="floatingUsername">Username</label>
-			  </div>
-
-			  <!-- Password input -->
-			  <div class="form-floating mb-4">
-			    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name='password1'>
-			    <label for="floatingPassword">Password</label>
-			  </div>
-
-			  <!-- Password input -->
-			  <div class="form-floating mb-4">
-			    <input type="password" class="form-control" id="floatingPassword2" placeholder="Password2" name='password2'>
-			    <label for="floatingPassword2">Repeat your Password</label>
-			  </div>
-			  {% endif %}
-
-			  <!-- Submit button -->
-			  <div class="d-grid gap-2 col-8 mx-auto">
-			  	<button type="submit" class="btn btn-primary btn-block mb-4 shadow">Register</button>
-			  </div>
-
-			  <!-- Register buttons -->
-			  <div class="text-center">
-			    <p>Or sign up via:</p>
-			    <button type="button" class="btn btn-link btn-floating mx-1">
-			      <i class="bi bi-facebook" style="font-size: 30px;"></i>
-			    </button>
-
-			    <button type="button" class="btn btn-link btn-floating mx-1">
-			      <i class="bi bi-google" style="font-size: 30px;"></i>
-			    </button>
-
-			    <button type="button" class="btn btn-link btn-floating mx-1">
-			      <i class="bi bi-twitter" style="font-size: 30px;"></i>
-			    </button>
-
-			    <button type="button" class="btn btn-link btn-floating mx-1">
-			      <i class="bi bi-github" style="font-size: 30px;"></i>
-			    </button>
-			  </div>
-			</form>
-      </div>
-    </div>
-  </div>
+    	</div>
+	</div>	
 </section>
 {% endblock content %}

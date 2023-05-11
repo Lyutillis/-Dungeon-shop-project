@@ -2,88 +2,93 @@
 
 {% block content %}
 <section class="vh-100">
-  <div class="container py-5 h-100">
-    <div class="row d-flex align-items-center justify-content-center h-100">
-      <div class="col-md-8 col-lg-7 col-xl-6">
-        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-          class="img-fluid" alt="Phone image">
-      </div>
-      <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-        <form method="POST">
-        	{% csrf_token %}
-        	{% if login_data_error %}
+	<div class="container py-5 h-100">
+    	<div class="row d-flex align-items-center justify-content-center h-100">
+      		<div class="col-md-8 col-lg-7 col-xl-6">
+				<img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+				class="img-fluid" alt="Phone image">
+      		</div>
+      		<div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+				<form method="POST">
+				{% csrf_token %}
+				{% if login_data_error %}
 
-		  <!-- Email input -->
-		  <div class="form-floating mb-4">
-		    <input type="email" class="form-control is-invalid" id="floatingInput" placeholder="name@example.com" name="email" value="{{ email }}">
-		    <label for="floatingInput">Email address</label>
-		    <div id="emailInput" class="invalid-feedback">
-	          You must fill all of the fields!
-	        </div>
-		  </div>
+					<!-- Email input -->
+					<div class="form-floating mb-4">
+						<input type="email" class="form-control is-invalid" id="floatingInput" placeholder="name@example.com" name="email" value="{{ email }}">
+						<label for="floatingInput">Email address</label>
+						<div id="emailInput" class="invalid-feedback">
+						You must fill all of the fields!
+						</div>
+					</div>
 
-		  <!-- Password input -->
-		  <div class="form-floating mb-4">
-		    <input type="password" class="form-control is-invalid" id="floatingPassword" placeholder="Password" name="password">
-		    <label for="floatingPassword">Password</label>
-		  </div>
-		  {% elif invalid_data_error %}
-		  <!-- Email input -->
-		  <div class="form-floating mb-4">
-		    <input type="email" class="form-control is-invalid" id="floatingInput" placeholder="name@example.com" name="email" value="{{ email }}">
-		    <label for="floatingInput">Email address</label>
-		    <div id="emailInput" class="invalid-feedback">
-	       	  Invalid username/password.
-	      	</div>
-		  </div>
+					<!-- Password input -->
+					<div class="form-floating mb-4">
+						<input type="password" class="form-control is-invalid" id="floatingPassword" placeholder="Password" name="password">
+						<label for="floatingPassword">Password</label>
+					</div>
 
-		  <!-- Password input -->
-		  <div class="form-floating mb-4">
-		    <input type="password" class="form-control is-invalid" id="floatingPassword" placeholder="Password" name="password">
-		    <label for="floatingPassword">Password</label>
-		  </div>
-		  {% else %}
-		  <!-- Email input -->
-		  <div class="form-floating mb-4">
-		    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
-		    <label for="floatingInput">Email address</label>
-		  </div>
+					{% elif invalid_data_error %}
 
-		  <!-- Password input -->
-		  <div class="form-floating mb-4">
-		    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
-		    <label for="floatingPassword">Password</label>
-		  </div>
-		  {% endif %}
+					<!-- Email input -->
+					<div class="form-floating mb-4">
+						<input type="email" class="form-control is-invalid" id="floatingInput" placeholder="name@example.com" name="email" value="{{ email }}">
+						<label for="floatingInput">Email address</label>
+						<div id="emailInput" class="invalid-feedback">
+						Invalid username/password.
+						</div>
+					</div>
 
-		  <!-- Submit button -->
-		  <div class="d-grid gap-2 col-8 mx-auto">
-		  	<button type="submit" class="btn btn-primary btn-block mb-4 shadow">Login</button>
-		  </div>
+					<!-- Password input -->
+					<div class="form-floating mb-4">
+						<input type="password" class="form-control is-invalid" id="floatingPassword" placeholder="Password" name="password">
+						<label for="floatingPassword">Password</label>
+					</div>
 
-		  <!-- Register buttons -->
-		  <div class="text-center">
-		  	<p>Don`t have an account? <a href="{% url 'register' %}">Register</a></p>
-		    <p>Or sign up via:</p>
-		    <button type="button" class="btn btn-link btn-floating mx-1">
-		      <i class="bi bi-facebook" style="font-size: 30px;"></i>
-		    </button>
+					{% else %}
 
-		    <button type="button" class="btn btn-link btn-floating mx-1">
-		      <i class="bi bi-google" style="font-size: 30px;"></i>
-		    </button>
+					<!-- Email input -->
+					<div class="form-floating mb-4">
+						<input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
+						<label for="floatingInput">Email address</label>
+					</div>
 
-		    <button type="button" class="btn btn-link btn-floating mx-1">
-		      <i class="bi bi-twitter" style="font-size: 30px;"></i>
-		    </button>
+					<!-- Password input -->
+					<div class="form-floating mb-4">
+						<input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+						<label for="floatingPassword">Password</label>
+					</div>
 
-		    <button type="button" class="btn btn-link btn-floating mx-1">
-		      <i class="bi bi-github" style="font-size: 30px;"></i>
-		    </button>
-		  </div>
-		</form>
-      </div>
-    </div>
-  </div>
+					{% endif %}
+
+					<!-- Submit button -->
+					<div class="d-grid gap-2 col-8 mx-auto">
+						<button type="submit" class="btn btn-primary btn-block mb-4 shadow">Login</button>
+					</div>
+
+					<!-- Register buttons -->
+					<div class="text-center">
+						<p>Don`t have an account? <a href="{% url 'register' %}">Register</a></p>
+						<p>Or sign up via:</p>
+						<button type="button" class="btn btn-link btn-floating mx-1">
+						<i class="bi bi-facebook" style="font-size: 30px;"></i>
+						</button>
+
+						<button type="button" class="btn btn-link btn-floating mx-1">
+						<i class="bi bi-google" style="font-size: 30px;"></i>
+						</button>
+
+						<button type="button" class="btn btn-link btn-floating mx-1">
+						<i class="bi bi-twitter" style="font-size: 30px;"></i>
+						</button>
+
+						<button type="button" class="btn btn-link btn-floating mx-1">
+						<i class="bi bi-github" style="font-size: 30px;"></i>
+						</button>
+					</div>
+				</form>
+      		</div>
+    	</div>
+  	</div>
 </section>
 {% endblock content %}

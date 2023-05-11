@@ -2,241 +2,110 @@
 {% load static %}
 
 {% block links %}
-  <link rel="stylesheet" href="{% static 'user/style.css' %}">
+  	<link rel="stylesheet" href="{% static 'user/css/style.css' %}">
 {% endblock links %}
 
-{% block content %}		
-	{% if product_list %}
-	<section id="sectionProducts" class="section-products">
-        <p class="h3 ms-5">Your Wishlist</p>
-		<form action = '{% url "category-filter" %}' method = 'GET'>
-			<div id="category" class="btn-group dropend ms-5 my-5" onchange="ShowSubcategory();">
-				<select name="category" id="catselect" class="form-select" aria-label="Default select example">
-					<option selected>Category</option>
+{% block content %}	
+
+{% if product_list %}
+<section id="sectionProducts" class="section-products">
+	<p class="h3 ms-5">Your Wishlist</p>
+	<form action = '{% url "category-filter" %}' method = 'GET'>
+		<div id="category" class="btn-group dropend ms-5 my-5" onchange="ShowSubcategory();">
+			<select name="category" id="catselect" class="form-select" aria-label="Default select example">
+				<option selected>Category</option>
 				{% for i in categories %}
-					<option id='{{ i.id }}'>{{ i.name }}</option>
+				<option id='{{ i.id }}'>{{ i.name }}</option>
 				{% endfor %}
-				</select>
-			</div>
-			<div id="subcategory" class="btn-group dropend ms-5 my-5 hidden">
-				<select name="subcategory" id="subcatselect" class="form-select" aria-label="Default select example">
-					<option selected>Subcategory</option>
-				</select>
-			</div>
-			<div id="goBut" class="btn-group ms-5 my-5 hidden">
-				<button type="button" class="btn btn-primary">Filter</button>
-			</div>
-			<div id="clearBut" class="btn-group ms-3 my-5 hidden">
-				<button type="button" class="btn btn-warning" onclick="clearFilter()">Clear</button>
-			</div>
-		</form>
-
-
-		
-	  <div id="products" class='container-md'>
+			</select>
+		</div>
+		<div id="subcategory" class="btn-group dropend ms-5 my-5 hidden">
+			<select name="subcategory" id="subcatselect" class="form-select" aria-label="Default select example">
+				<option selected>Subcategory</option>
+			</select>
+		</div>
+		<div id="goBut" class="btn-group ms-5 my-5 hidden">
+			<button type="button" class="btn btn-primary">Filter</button>
+		</div>
+		<div id="clearBut" class="btn-group ms-3 my-5 hidden">
+			<button type="button" class="btn btn-warning" onclick="clearFilter()">Clear</button>
+		</div>
+	</form>
+	
+	<div id="products" class='container-md'>
 		{% for i in product_list %}
-          {% if forloop.first %}
-	      <div class="row">
-	      {% endif %}
+
+          	{% if forloop.first %}
+	      
+		<div class="row">
+	      
+			{% endif %}
+
 	      	<div class="col-2" style="padding-left:0px;">
-			  <div id="product" class="single-product product">
-			    <a href="{% url 'product-page' id=i.id %}" style="width:100%;height:100%;display:block">
-				  	<div class="part-1 hovereffect">
-						<div class="static">
-							<img src='/static{{ i.picture.url }}' class='img-fluid mx-auto d-block static'>
-						</div>
-						<div class="mask" style="background-color: hsla(217, 89%, 51%, 0.5)">
-						</div>
-						<div class="overlay">
-							<ul>
-								<li><a href="#" data-product='{{ i.id }}' data-action="add" class='update-cart a'><i class="fas fa-shopping-cart"></i></a></li>
-								{% if i in wishlist %}
-								<li data-id="{{ i.id }}" onclick="RemoveWishlist(this.dataset.id)"><a class="wishlist-empty"><i class="bi bi-heart-fill"></i></a></li>
-								{% else %}
-								<li data-id="{{ i.id }}" onclick="AddWishlist(this.dataset.id)"><a class="a"><i class="bi bi-heart-fill"></i></a></li>
-								{% endif %}
-								{% if user.is_admin or user.is_staff %}
-								<li><a href="{% url 'edit-product' id=i.id %}" class="a"><i class="bi bi-pencil-fill"></i></a></li>
-								<li><a href="{% url 'delete-product' id=i.id %}" class="a"><i class="bi bi-trash-fill"></i></a></li>
-								{% endif %}
-							</ul>
-						</div>
-				  	</div>
-				</a>
-			    <div class="part-2">
-				  <a href="{% url 'product-page' id=i.id %}">
-			  	    <h3 class="product-title">{{ i.name }}</h3>
-				  </a>
-				  <a href="{% url 'product-page' id=i.id %}">
-					{% if i.oldPrice == i.price %}
-					<h4 class="product-price">${{ i.price|floatformat:2 }}</h4>
-					{% else %}
-			     	<h4 class="product-old-price">${{ i.oldPrice|floatformat:2 }}</h4><h4 class="product-price">${{ i.price|floatformat:2 }}</h4>
-					{% endif %}
-				  </a> 
-			    </div>
-	    	  </div>
+			  	<div id="product" class="single-product product">
+			    	<a href="{% url 'product-page' id=i.id %}" style="width:100%;height:100%;display:block">
+				  		<div class="part-1 hovereffect">
+							<div class="static">
+								<img src='/static{{ i.picture.url }}' class='img-fluid mx-auto d-block static'>
+							</div>
+							<div class="mask" style="background-color: hsla(217, 89%, 51%, 0.5)">
+							</div>
+							<div class="overlay">
+								<ul>
+									<li><a href="#" data-product='{{ i.id }}' data-action="add" class='update-cart a'><i class="fas fa-shopping-cart"></i></a></li>
+									{% if i in wishlist %}
+									<li data-id="{{ i.id }}" onclick="RemoveWishlist(this.dataset.id)"><a class="wishlist-empty"><i class="bi bi-heart-fill"></i></a></li>
+									{% else %}
+									<li data-id="{{ i.id }}" onclick="AddWishlist(this.dataset.id)"><a class="a"><i class="bi bi-heart-fill"></i></a></li>
+									{% endif %}
+									{% if user.is_admin or user.is_staff %}
+									<li><a href="{% url 'edit-product' id=i.id %}" class="a"><i class="bi bi-pencil-fill"></i></a></li>
+									<li><a href="{% url 'delete-product' id=i.id %}" class="a"><i class="bi bi-trash-fill"></i></a></li>
+									{% endif %}
+								</ul>
+							</div>
+				  		</div>
+					</a>
+			    	<div class="part-2">
+						<a href="{% url 'product-page' id=i.id %}">
+							<h3 class="product-title">{{ i.name }}</h3>
+						</a>
+				  		<a href="{% url 'product-page' id=i.id %}">
+							{% if i.oldPrice == i.price %}
+							<h4 class="product-price">${{ i.price|floatformat:2 }}</h4>
+							{% else %}
+							<h4 class="product-old-price">${{ i.oldPrice|floatformat:2 }}</h4><h4 class="product-price">${{ i.price|floatformat:2 }}</h4>
+							{% endif %}
+				  		</a> 
+			    	</div>
+	    	  	</div>
 			</div>
 			{% if forloop.counter|divisibleby:6 %}</div><div class="row">{% endif %}
 	    	{% if forloop.last %}
-	      	  </div>
+	    </div>
 	    	{% endif %}
 	    {% endfor %}
-	  </div>
-	</section>
-	{% else %}
+	</div>
+</section>
+
+{% else %}
+
 	{% if search %}
-	<div class="text-center">
-		<h4>Nothing found for this query!</h4>
-	</div>
+
+<div class="text-center">
+	<h4>Nothing found for this query!</h4>
+</div>
+
 	{% else %}
-	<div class="text-center">
-		<h4>You haven`t add anything here yet!</h4>
-	</div>
+
+<div class="text-center">
+	<h4>You haven`t add anything here yet!</h4>
+</div>
+
 	{% endif %}
-	{% endif %}
+	
+{% endif %}
 
-<script type="text/javascript">
-
-	function AddWishlist(id){
-		var url='/add-to-wishlist/'
-
-		if (user == 'AnonymousUser'){
-			alert("You need to login or register to add items to wishlist")
-			return
-		}
-		fetch(url, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrftoken,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "product": id,
-            }),
-        })
-
-		.then((response) => response.json())
-        .then((data) => {
-            location.reload()
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-	}
-
-	function RemoveWishlist(id) {
-		var url='/remove-from-wishlist/'
-
-		if (user == 'AnonymousUser'){
-			alert("You need to login or register to add items to wishlist")
-			return
-		}
-
-		fetch(url, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrftoken,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "product": id,
-            }),
-        })
-
-		.then((response) => response.json())
-        .then((data) => {
-            location.reload()
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-	}
-
-	function clearFilter() {
-		var subcatDiv=document.getElementById('subcategory')
-		document.getElementById('goBut').classList.add('hidden')
-		document.getElementById('clearBut').classList.add('hidden')
-		subcatDiv.classList.add('hidden')
-		document.getElementById('catselect').value="Category"
-	}
-
-	function ShowSubcategory() {
-        var subcatDiv=document.getElementById('subcategory')
-        if (document.getElementById('catselect').value=="Category") {
-            subcatDiv.classList.add('hidden')
-			document.getElementById('goBut').classList.add('hidden')
-			document.getElementById('clearBut').classList.add('hidden')
-        } else {
-            subcatDiv.classList.remove('hidden')
-			document.getElementById('goBut').classList.remove('hidden')
-			document.getElementById('clearBut').classList.remove('hidden')
-        }
-
-		populate_list();
-    }
-
-	function removeOptions(selectElement, initial) {
-        console.log('i`M HERE', selectElement)
-        var i, L = selectElement.options.length - 1
-        for(i=L; i >= 0; i--) {
-            selectElement.remove(i)
-        }
-
-        var opt = document.createElement('option');
-        opt.value=""
-        opt.innerHTML=initial;
-        selectElement.appendChild(opt)
-    }
-
-    function populate_list() {
-        const url='/create-product-ajax/'
-        const csrftoken=getToken('csrftoken');
-
-        var e = document.getElementById('catselect')
-        var selectedOption = e.value
-        if (selectedOption == "") {
-            removeOptions(document.getElementById('catselect'), "Category")
-            removeOptions(document.getElementById('subcatselect'), "Subcategory")
-            return
-        } else if (selectedOption == "Category") {
-            return   
-        }
-        
-        // Send AJAX Request
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrftoken,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "category": selectedOption,
-            }),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            var select = document.getElementById("selectCategory");
-
-
-            if (data.subcategories != null) {
-                var select = document.getElementById("subcatselect");
-                removeOptions(select, `All subcategories from ${data.category}`);
-                for (var i = 0; i<=data.subcategories.length-1; i++){
-                    var opt = document.createElement('option');
-                    opt.value = data.subcategories[i]['id'];
-                    opt.innerHTML = data.subcategories[i]['name'];
-                    select.appendChild(opt);
-                }
-            }
-            
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    }
-
-
-</script>
+<script src="{% static 'product/js/wishlist.js' %}"></script>
 
 {% endblock content %}

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block links %}
-  <link rel="stylesheet" href="{% static 'product/style.css' %}">
+    <link rel="stylesheet" href="{% static 'product/css/style.css' %}">
 {% endblock links %}
 
 {% block content %}
@@ -61,5 +61,7 @@
 <h6 class="text-muted">You don`t have permission to manage categories!</h6>
 <hr class="my-4">
 {% endif %}
+
+<script type='text/javascript' src="{% static 'user/js/permission-change.js' %}"></script>
 
 {% endblock content %}

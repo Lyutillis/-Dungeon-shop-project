@@ -15,7 +15,6 @@ def processOrder(request):
 	transaction_id = datetime.datetime.now().timestamp()
 	data = json.loads(request.body)
 
-
 	customer = request.user
 	order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
@@ -83,7 +82,6 @@ def product_page_view(request, id) :
 		except:
 			pass
 
-
 	return render(request, 'product_page.html', {'pictures': pictures, 'product': product, 'items': items, 'order': order, 'cartItems': cartItems, 'comments': comments, 'replies': replies, 'rating': round(rating.overall), 'quantity': quantity,})
 
 def update_item(request):
@@ -91,16 +89,9 @@ def update_item(request):
 	productId=data['productId']
 	action=data['action']
 
-	print('action:', action)
-	print('prodcut id:', productId)
-
 	customer = request.user
-
-	print(customer)
-
 	product = Product.objects.get(id=productId)
 	order, created = Order.objects.get_or_create(customer = customer, complete=False)
-
 	orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
 	if action == 'add' :
@@ -122,7 +113,6 @@ def publishComment(request, id):
 		content = request.POST.get('content')
 		product = Product.objects.get(id=id)
 		comment = Comment.objects.create(customer = request.user, product = product, body = content, rating = int(rate[0]))		
-		comment.save()
 		rating, created = Rating.objects.get_or_create(product=product)
 		rating.quantity += 1
 		rating.stars += int(rate[0])
@@ -139,7 +129,6 @@ def publishReply(request, id):
 		content = request.POST.get('content')
 		comment = Comment.objects.get(id=id)
 		replycomment = ReplyComment.objects.create(customer = request.user, body = content)
-		replycomment.save()
 		reply = Reply.objects.create(comment=comment, reply=replycomment)
 		messages.success(request, ("Reply успешно добавлен!"))
 		return redirect(path)
@@ -159,12 +148,7 @@ def updatePermissionSuperuser(request):
 	userId=data['userId']
 	action=data['action']
 
-	print('action:', action)
-	print('user id:', userId)
-
 	user = User.objects.get(id = int(userId))
-
-	print(user)
 
 	if action == 'True' :
 		user.is_superuser = True
@@ -176,17 +160,11 @@ def updatePermissionSuperuser(request):
 	return JsonResponse('User permissions were updated!', safe = False)
 
 def updatePermissionStaff(request):
-	print('In views')
 	data = json.loads(request.body)
 	userId=data['userId']
 	action=data['action']
 
-	print('action:', action)
-	print('user id:', userId)
-
 	user = User.objects.get(id = int(userId))
-
-	print(user)
 
 	if action == 'True' :
 		user.is_staff = True
@@ -213,7 +191,6 @@ def createProduct(request):
 			oldPrice = price
 		description = request.POST.get('description')
 		category = Category.objects.get(name = request.POST.get('category'))
-		print(request.POST.get('subcategory'))
 		try:
 			subcategory = SubCategory.objects.get(id = int(request.POST.get('subcategory')), category=category)
 		except:
@@ -224,12 +201,8 @@ def createProduct(request):
 		product, created = Product.objects.get_or_create(name=name, price=price, oldPrice=oldPrice, description=description, category=category, subcategory=subcategory, picture=imgList[0])
 		if created:
 			pictureList, created = PictureList.objects.get_or_create(product=product)
-			pictureList.picture1 = imgList[1]
-			pictureList.picture2 = imgList[2]
-			pictureList.picture3 = imgList[3]
-			pictureList.picture4 = imgList[4]
-			pictureList.picture5 = imgList[5]
-			pictureList.picture6 = imgList[6]
+			for i in range(1, 7) :
+				setattr(pictureList, 'picture' + str(i), imgList[i])
 			pictureList.save()
 			messages.success(request, ("Товар создан успешно!"))
 			return redirect('/')
@@ -245,8 +218,6 @@ def createProduct(request):
 def createCategory(request):
 	data = json.loads(request.body)
 	catName=data['catName']
-
-	print(catName)
 
 	try:
 		category = Category.objects.create(name=catName)
