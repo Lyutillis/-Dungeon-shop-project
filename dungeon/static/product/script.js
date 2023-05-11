@@ -54,11 +54,21 @@ if (sliderImageList.length >= 5){sliderImageList[4].onmouseover = function(){
     }
 };}
 
-if (sliderImageList.length == 6){sliderImageList[5].onmouseover = function(){
+if (sliderImageList.length >= 6){sliderImageList[5].onmouseover = function(){
     sliderMainImage.src = sliderImageList[5].src;
     document.getElementsByClassName('image-list')[5].classList.add("slider-border");
     for(i = 0; i < sliderImageList.length; i++){
         if (i != 5) {
+            document.getElementsByClassName('image-list')[i].classList.remove("slider-border");
+        }
+    }
+};}
+
+if (sliderImageList.length == 7){sliderImageList[6].onmouseover = function(){
+    sliderMainImage.src = sliderImageList[6].src;
+    document.getElementsByClassName('image-list')[6].classList.add("slider-border");
+    for(i = 0; i < sliderImageList.length; i++){
+        if (i != 6) {
             document.getElementsByClassName('image-list')[i].classList.remove("slider-border");
         }
     }

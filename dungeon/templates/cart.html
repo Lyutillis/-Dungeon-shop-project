@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block links %}
+  <link rel="stylesheet" href="{% static 'product/style.css' %}">
+{% endblock links %}
+
 {% block content %}
 <div class="box-element">
 	<div class="cart-row">
@@ -37,6 +41,8 @@
 			<span class="small text-muted me-2">Order total:</span> 
 			<span class="lead fw-normal">$ {{ order.get_cart_total }}</span>
 		</p>
+
+		<a href="{% url 'checkout' %}" class="btn btn-info my-3" role="button" aria-disabled="true">Checkout</a>
 	</div>
 
 	{% else %}

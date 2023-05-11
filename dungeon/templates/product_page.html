@@ -15,9 +15,9 @@
             <div class="row gx-5">
                 <div class="col-6">
                   <div class="breadcrumb">
-                        <span><a href="#">Home</a></span>
-                        <span><a href="#">Product</a></span>
-                        <span class="active">T-shirt</span>
+                        <span><a href="{% url 'homepage' %}">Home</a></span>
+                        <span>{{ product.category.name }}</span>
+                        <span>{{ product.subcategory.name }}</span>
                     </div>
 
                     <div class="product-image">

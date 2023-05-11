@@ -9,7 +9,12 @@
 	{% if product_list %}
 	<section id="sectionProducts" class="section-products">
 		<form action = '{% url "category-filter" %}' method = 'GET'>
-			<div id="category" class="btn-group dropend ms-5 my-5" onchange="ShowSubcategory();">
+			{% if user.is_superuser %}
+			<div>	
+				<a href="{% url 'category-edit' %}" class="btn btn-info mx-5" role="button" aria-disabled="true">Manage Categories</a>
+			</div>
+			{% endif %}
+			<div id="category" class="btn-group dropend ms-5 mb-5 mt-3" onchange="ShowSubcategory();">
 				<select name="category" id="catselect" class="form-select" aria-label="Default select example">
 					<option selected>Category</option>
 				{% for i in categories %}
@@ -48,7 +53,7 @@
 						</div>
 						<div class="overlay">
 							<ul>
-								<li><a href="#" data-product='{{ i.id }}' data-action="add" class='update-cart a'><i class="fas fa-shopping-cart"></i></a></li>
+								<li><a data-product='{{ i.id }}' data-action="add" class='update-cart a'><i class="fas fa-shopping-cart"></i></a></li>
 								{% if i in wishlist %}
 								<li data-id="{{ i.id }}" onclick="RemoveWishlist(this.dataset.id)"><a class="wishlist-empty"><i class="bi bi-heart-fill"></i></a></li>
 								{% else %}

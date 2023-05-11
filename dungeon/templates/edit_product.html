@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block links %}
+  <link rel="stylesheet" href="{% static 'product/style.css' %}">
+  <link rel="stylesheet" href="{% static 'product/comment.css' %}">
+  <link rel="stylesheet" href="{% static 'product/preview-hover.css' %}">
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+{% endblock links %}
+
 {% block content %}
 <div class="container-fluid">
     <div class="single-product">
@@ -10,8 +18,9 @@
                 <div class="col-6">
                     <div class="breadcrumb">
                         <span><a href="{% url 'homepage' %}">Home</a></span>
-                        <span><a href="{% url 'product-page' id=product.id %}">Home</a></span>
-                        <span class="active">Edit Product</span>
+                        <span>{{ product.category.name }}</span>
+                        <span>{{ product.subcategory.name }}</span>
+                        <span>Edit Product</span>
                     </div>
                     <div class="product-image">
                         <div class="product-image-main">

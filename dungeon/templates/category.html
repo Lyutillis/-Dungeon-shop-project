@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block links %}
+  <link rel="stylesheet" href="{% static 'product/style.css' %}">
+{% endblock links %}
 
 {% block content %}
 {% if user.is_superuser or user.is_staff %}
