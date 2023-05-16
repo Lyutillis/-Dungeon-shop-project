@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{% load socialaccount %}
+
 <section class="vh-100">
 	<div class="container py-5 h-100">
     	<div class="row d-flex align-items-center justify-content-center h-100">
@@ -70,25 +73,22 @@
 					<div class="text-center">
 						<p>Don`t have an account? <a href="{% url 'register' %}">Register</a></p>
 						<p>Or sign up via:</p>
-						<button type="button" class="btn btn-link btn-floating mx-1">
-						<i class="bi bi-facebook" style="font-size: 30px;"></i>
-						</button>
+						<a href='{% provider_login_url "facebook" method="oauth2" %}' role="button" class="btn btn-link btn-floating mx-1">
+							<i class="bi bi-facebook" style="font-size: 30px;"></i>
+						</a>
 
-						<button type="button" class="btn btn-link btn-floating mx-1">
-						<i class="bi bi-google" style="font-size: 30px;"></i>
-						</button>
+						<a href='{% provider_login_url "google" method="oauth2" %}' role="button" class="btn btn-link btn-floating mx-1">
+							<i class="bi bi-google" style="font-size: 30px;"></i>
+						</a>
 
-						<button type="button" class="btn btn-link btn-floating mx-1">
-						<i class="bi bi-twitter" style="font-size: 30px;"></i>
-						</button>
-
-						<button type="button" class="btn btn-link btn-floating mx-1">
-						<i class="bi bi-github" style="font-size: 30px;"></i>
-						</button>
+						<a href='{% provider_login_url "github" method="oauth2" %}' role="button" class="btn btn-link btn-floating mx-1">
+							<i class="bi bi-github" style="font-size: 30px;"></i>
+						</a>
 					</div>
 				</form>
       		</div>
     	</div>
   	</div>
 </section>
+
 {% endblock content %}

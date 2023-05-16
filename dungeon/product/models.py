@@ -50,11 +50,6 @@ class Product(models.Model) :
 
 # Class methods.
 
-	@staticmethod
-	def get_by_id(id):
-		product=Product.objects.filter(id=id).first()
-		return product if product else None
-
 	def admin_img(self):
 		return mark_safe('<img src="{}" width="100"/>'.format(self.picture.url))
 	admin_img.short_description = "Picture"

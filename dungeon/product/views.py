@@ -12,13 +12,14 @@ from django.db.models import Q
 from django.forms.models import model_to_dict
 
 def processOrder(request):
-	transaction_id = datetime.datetime.now().timestamp()
 	data = json.loads(request.body)
-
 	customer = request.user
-	order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
 	total = float(data['form']['total'])
+
+	transaction_id = datetime.datetime.now().timestamp()
+
+	order, created = Order.objects.get_or_create(customer=customer, complete=False)
 	order.transaction_id = transaction_id
 
 	if total == order.get_cart_total:
@@ -58,16 +59,10 @@ def product_page_view(request, id) :
 	cartItems = data['cartItems']
 	order = data['order']
 	items =  data['items']
-	product=Product.get_by_id(id)
+	
+	product=Product.objects.get(id=id)
 	piclist=PictureList.objects.get(product=product)
-	pictures=[]
-	for i in range(1, 7):
-		pic=getattr(piclist, 'picture'+str(i))
-		try:
-			if pic.url!='product-pics/default_pic.gif':
-				pictures.append(pic)
-		except:
-			pass
+	pictures=[getattr(piclist, 'picture'+str(i)) for i in range(1,7)]
 	rating, created = Rating.objects.get_or_create(product=product)
 	quantity = rating.quantity
 
