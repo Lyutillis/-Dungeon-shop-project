@@ -78,6 +78,7 @@
 					<ul class="dropdown-menu">
 						<li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
 						<li><a class="dropdown-item" href="{% url 'wishlist' %}">Wishlist</a></li>
+						<li><a class="dropdown-item" href="{% url 'orders' %}">Orders</a></li>
 						{% if user.is_superuser or user.is_staff %}
 						<li><a class="dropdown-item" href="{% url 'user-list' %}">User List</a></li>
 						{% endif %}

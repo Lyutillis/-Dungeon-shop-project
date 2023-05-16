@@ -421,3 +421,62 @@ def searchView(request):
 			return render(request, 'homepage.html', context)
 	messages.success(request, ('Something went wrong'))
 	return redirect('/')
+
+def categoryLink(request, category):
+	path = sessionPath(request, '/')
+
+	data = cartData(request)
+
+	try:
+		category = Category.objects.get(name=category)
+	except :
+		category = None
+
+	if category is None :
+		messages.success(request, ('You didn`t choose any category'))
+		return redirect('/')
+	else:
+		product_list = list(Product.objects.filter(category=category))
+
+		
+	return render(request, 'homepage.html', {'product_list':product_list, 'items': data['items'], 'order': data['order'], 'cartItems': data['cartItems'], 'categories': list(Category.objects.all())})
+
+def subcategoryLink(request, category, subcategory):
+	path = sessionPath(request, '/')
+
+	data = cartData(request)
+
+	try:
+		category = Category.objects.get(name=category)
+	except :
+		category = None
+	try:
+		subcategory = SubCategory.objects.get(name=subcategory)
+	except:
+		subcategory = None
+
+	if subcategory is None :
+		if category is None :
+			messages.success(request, ('You didn`t choose any category'))
+			return redirect('/')
+		else:
+			product_list = list(Product.objects.filter(category=category))
+	else:
+		product_list = list(Product.objects.filter(category=category, subcategory=subcategory))
+		
+	return render(request, 'homepage.html', {'product_list':product_list, 'items': data['items'], 'order': data['order'], 'cartItems': data['cartItems'], 'categories': list(Category.objects.all())})
+
+def orders(request):
+	path = sessionPath(request, '/')
+
+	data = cartData(request)
+
+	user = request.user
+	if user.is_authenticated:
+		order=list(Order.objects.filter(customer=user))
+		items=[]
+		for i in order:
+			items.extend(list(OrderItem.objects.filter(order=i)))
+	else:
+		items=[]
+	return render(request, 'orders.html', {'items': items, 'cartItems': data['cartItems']})

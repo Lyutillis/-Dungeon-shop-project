@@ -39,7 +39,7 @@ class User(AbstractBaseUser, PermissionsMixin) :
 	class Meta:
 		verbose_name_plural = "Users"
 
-	email = models.CharField(max_length=100, unique=True, default=None)
+	email = models.CharField(max_length=100, unique=True)
 	password=models.CharField(default=None, max_length=255)
 	username = models.CharField(default=None, max_length=100, null=True)
 	profile_pic = models.ImageField(default='profile-pics/default_pic.gif', upload_to=image_upload_handler, null=True)
@@ -111,6 +111,6 @@ class WishList(models.Model):
 
 	from product.models import Product
 
-	user=models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-	product=models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+	user=models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+	product=models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
 	id = models.AutoField(primary_key=True)

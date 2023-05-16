@@ -12,10 +12,11 @@
     <div class="single-product">
         <div class="row gx-5">
             <div class="col-6">
+
                 <div class="breadcrumb">
                     <span><a href="{% url 'homepage' %}">Home</a></span>
-                    <span>{{ product.category.name }}</span>
-                    <span>{{ product.subcategory.name }}</span>
+                    <span><a href='{% url "category-link" category=product.category.name %}'>{{ product.category.name }}</a></span>
+                    <span><a href='{% url "subcategory-link" category=product.category.name subcategory=product.subcategory.name %}'>{{ product.subcategory.name }}</a></span>
                 </div>
 
                 <div class="product-image">

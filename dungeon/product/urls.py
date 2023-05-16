@@ -28,5 +28,8 @@ urlpatterns = [
 	path('delete-subcategory/<int:id>', views.subcategoryDelete, name='delete-subcategory'),
 	path('save-subcategory/id=<int:id>', views.subcategorySave, name='save-subcategory'),
 	path('save-category/id=<int:id>', views.categorySave, name='save-category'),
-	path('search/', views.searchView, name='search')
+	path('search/', views.searchView, name='search'),
+	path('category/<str:category>/', views.categoryLink, name='category-link'),
+	path('category/<str:category>/<str:subcategory>', views.subcategoryLink, name='subcategory-link'),
+	path('orders/', views.orders, name='orders'),
 ]

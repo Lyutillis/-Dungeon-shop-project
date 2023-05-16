@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block links %}
+  	<link rel="stylesheet" href="{% static 'product/css/style.css' %}">
+{% endblock links %}
+
+{% block content %}
+<div class="ms-3">
+    <p class="h3"><strong>Orders</strong></p>
+</div>
+
+<div class="box-element">
+	<div class="cart-row">
+        <div style="flex:2"><strong>Image</strong></div>
+		<div style="flex:2"><strong>Item</strong></div>
+		<div style="flex:1"><strong>Price</strong></div>
+		<div style="flex:1"><strong>Quantity</strong></div>
+		<div style="flex:1"><strong>Total</strong></div>
+	</div>
+{% if user.is_authenticated %}
+
+	{% if items %}
+
+		{% for i in items %}
+	<div class="cart-row">
+		<div style="flex:2"><img class="row-image" src='/static{{ i.product.picture.url }}'></div>
+		<div style="flex:2"><p>{{i.product.name}}</p></div>
+		<div style="flex:1"><p>${{i.product.price}}</p></div>
+		<div style="flex:1">
+			<p class="quantity">{{i.quantity}}</p>
+		</div>
+		<div style="flex:1"><p>${{i.get_total}}</p></div>
+	</div>
+		{% endfor %}
+
+	{% else %}
+	<hr class="my-4">
+	<h6 class="text-muted">You don`t have any orders!</h6>
+	<hr class="my-4">
+	{% endif %}
+{% else %}
+	<hr class="my-4">
+	<h6 class="text-muted">You need to login to view your orders!</h6>
+	<hr class="my-4">
+{% endif %}
+</div>
+
+
+{% endblock content %}

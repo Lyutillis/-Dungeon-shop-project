@@ -30,7 +30,7 @@ class SubCategory(models.Model):
 	class Meta:
 		verbose_name_plural = "SubCategories"
 
-	category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+	category = models.ForeignKey(Category, on_delete=models.CASCADE, null=False)
 	name=models.CharField(default='No Title', max_length=1000, null=False)
 	id = models.AutoField(primary_key=True)
 
@@ -63,7 +63,7 @@ class Rating(models.Model):
 	quantity = models.IntegerField(default=0, validators=[MinValueValidator(0),])
 	overall = models.DecimalField(default=5, max_digits = 10, decimal_places = 2)
 	stars = models.IntegerField(default=0, validators=[MinValueValidator(0),])
-	product=models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+	product=models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
 
 class Order(models.Model):
 	class Meta:
@@ -72,8 +72,8 @@ class Order(models.Model):
 	id = models.AutoField(primary_key=True)
 	customer = models.ForeignKey(User, on_delete=models.CASCADE)
 	date_ordered = models.DateTimeField(auto_now_add=True)
-	complete = models.BooleanField(default=False, null=True, blank=False)
-	transaction_id = models.CharField(max_length=200, null=True)
+	complete = models.BooleanField(default=False, null=False)
+	transaction_id = models.CharField(max_length=200, null=False)
 
 	@property
 	def get_cart_total(self):
@@ -91,9 +91,9 @@ class OrderItem(models.Model):
 	class Meta:
 		verbose_name_plural = "Order Items"
 
-	product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
-	order=models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-	quantity=models.IntegerField(default=0, null=True, blank=True)
+	product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
+	order=models.ForeignKey(Order, on_delete=models.CASCADE, null=False)
+	quantity=models.IntegerField(default=1, null=False)
 	date_added=models.DateTimeField(auto_now_add=True)
 
 	@property
@@ -106,10 +106,10 @@ class ShippingAddress(models.Model):
 		verbose_name_plural = "Shipping Addresses"
 
 	customer = models.ForeignKey(User, on_delete=models.CASCADE)
-	order=models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
-	address = models.CharField(max_length=200, null=True)
-	city = models.CharField(max_length=200, null=True)
-	zipcode = models.CharField(max_length=200, null=True)
+	order=models.ForeignKey(Order, on_delete=models.CASCADE, null=False)
+	address = models.CharField(max_length=200, null=False)
+	city = models.CharField(max_length=200, null=False)
+	zipcode = models.CharField(max_length=200, null=False)
 	date_added=models.DateTimeField(auto_now_add=True)
 
 class Comment(models.Model):
@@ -126,7 +126,7 @@ class ReplyComment(models.Model):
 		verbose_name_plural = "Reply Comments"
 
 	customer = models.ForeignKey(User, on_delete=models.CASCADE)
-	body = models.CharField(max_length=1000, null=True)
+	body = models.CharField(max_length=1000, null=False)
 
 class Reply(models.Model):
 	class Meta:
