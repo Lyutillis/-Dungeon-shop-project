@@ -1,6 +1,5 @@
 const sliderMainImage = document.getElementById("product-main-image"); //product container image
 const sliderImageList = document.getElementsByClassName("image-list"); // image thumblian group selection
-console.log(sliderImageList);
 
 if (sliderImageList.length >= 1) {sliderImageList[0].onmouseover = function(){
     sliderMainImage.src = sliderImageList[0].src;

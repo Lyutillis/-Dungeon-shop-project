@@ -64,8 +64,6 @@ padding:7px 14px;
 box-shadow:0 0 5px #fff;
 }
 
-
-
 .hovereffect:hover .overlay {
 opacity:1;
 filter:alpha(opacity=100);

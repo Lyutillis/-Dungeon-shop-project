@@ -42,8 +42,8 @@ class Product(models.Model) :
 	name=models.CharField(default='No Title', max_length=1000)
 	price=models.DecimalField(max_digits = 8, decimal_places = 2, default=0)
 	oldPrice=models.DecimalField(max_digits = 8, decimal_places = 2, default=0) 
-	category=models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
-	subcategory=models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=True)
+	category=models.ForeignKey(Category, on_delete=models.CASCADE, null=True, default=None)
+	subcategory=models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=True, default=None)
 	description=models.CharField(default=None, max_length=10000)
 	picture=models.ImageField(default='product-pics/default_pic.png', upload_to=product_image_upload_handler, null=True)
 	id = models.AutoField(primary_key=True)
@@ -93,7 +93,7 @@ class OrderItem(models.Model):
 
 	product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
 	order=models.ForeignKey(Order, on_delete=models.CASCADE, null=False)
-	quantity=models.IntegerField(default=1, null=False)
+	quantity=models.IntegerField(default=0, null=False)
 	date_added=models.DateTimeField(auto_now_add=True)
 
 	@property
@@ -141,9 +141,9 @@ class PictureList(models.Model) :
 		verbose_name_plural = "Picture List"
 
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
-	picture1=models.ImageField(default='product-pics/default_pic.gif', upload_to=product_image_upload_handler, null=True)
-	picture2=models.ImageField(default='product-pics/default_pic.gif', upload_to=product_image_upload_handler, null=True)
-	picture3=models.ImageField(default='product-pics/default_pic.gif', upload_to=product_image_upload_handler, null=True)
-	picture4=models.ImageField(default='product-pics/default_pic.gif', upload_to=product_image_upload_handler, null=True)
-	picture5=models.ImageField(default='product-pics/default_pic.gif', upload_to=product_image_upload_handler, null=True)
-	picture6=models.ImageField(default='product-pics/default_pic.gif', upload_to=product_image_upload_handler, null=True)
+	picture1=models.ImageField(upload_to=product_image_upload_handler, null=True, default=None)
+	picture2=models.ImageField(upload_to=product_image_upload_handler, null=True, default=None)
+	picture3=models.ImageField(upload_to=product_image_upload_handler, null=True, default=None)
+	picture4=models.ImageField(upload_to=product_image_upload_handler, null=True, default=None)
+	picture5=models.ImageField(upload_to=product_image_upload_handler, null=True, default=None)
+	picture6=models.ImageField(upload_to=product_image_upload_handler, null=True, default=None)

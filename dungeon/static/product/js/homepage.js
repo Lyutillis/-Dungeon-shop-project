@@ -77,7 +77,6 @@ function ShowSubcategory() {
 }
 
 function removeOptions(selectElement, initial) {
-    console.log('i`M HERE', selectElement)
     var i, L = selectElement.options.length - 1
     for(i=L; i >= 0; i--) {
         selectElement.remove(i)
@@ -117,7 +116,6 @@ function populate_list() {
     .then((response) => response.json())
     .then((data) => {
         var select = document.getElementById("selectCategory");
-
 
         if (data.subcategories != null) {
             var select = document.getElementById("subcatselect");

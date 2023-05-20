@@ -77,13 +77,9 @@ a:active {
 		transition: all 0.3s;
 }
 
-
-
 .section-products #product .part-1::before {
     background-size: cover;
 }
-
-
 
 .section-products .single-product .part-1 .discount,
 .section-products .single-product .part-1 .new {

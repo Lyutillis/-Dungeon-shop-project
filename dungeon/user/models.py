@@ -7,6 +7,11 @@ from django.contrib.auth.models import PermissionsMixin
 from django.db import IntegrityError
 from django.utils.html import mark_safe
 
+def image_upload_handler(instance, filename) :
+	fpath=pathlib.Path(filename)
+	new_fname=str(uuid.uuid1())
+	return f'profile-pics/{new_fname}{fpath.suffix}'
+
 class UserManager(BaseUserManager) :
 
 	def create_user(self, email, password, **extra_fields) :
@@ -28,11 +33,6 @@ class UserManager(BaseUserManager) :
 		extra_fields.setdefault('is_superuser', True)
 		extra_fields.setdefault('is_active', True)
 		return self.create_user(email, password, **extra_fields)
-
-def image_upload_handler(instance, filename) :
-	fpath=pathlib.Path(filename)
-	new_fname=str(uuid.uuid1())
-	return f'profile-pics/{new_fname}{fpath.suffix}'
 
 # Create your models here.
 class User(AbstractBaseUser, PermissionsMixin) :
@@ -67,7 +67,7 @@ class User(AbstractBaseUser, PermissionsMixin) :
 	def delete_by_id(user_id):
 		user_to_delete = User.objects.filter(id=user_id).first()
 		if user_to_delete:
-			User.objects.filter(id=user_id).delete()
+			user_to_delete.delete()
 			return True
 		return False
 
@@ -97,8 +97,6 @@ class User(AbstractBaseUser, PermissionsMixin) :
 			user_to_update.is_active = is_active
 		if username!=None:
 			user_to_update.username=username
-		if profile_description != None:
-			user_to_update.profile_description = profile_description
 		user_to_update.save()
 
 	@staticmethod

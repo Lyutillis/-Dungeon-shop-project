@@ -3,7 +3,7 @@ from .models import *
 from django.template.defaulttags import register
 
 def sessionPath(request, url) :
-    print('url', url)
+
     try :
         next = request.session['next']
         request.session['next'] = request.session['path']
@@ -12,14 +12,16 @@ def sessionPath(request, url) :
         next = '/'
         request.session['next'] = url
         request.session['path'] = url
+
     return next
 
 def cookieCart(request):
+
     try:
         cart = json.loads(request.COOKIES['cart'])
     except :
         cart = {}
-    print('Cart:', cart)
+
     items = []
     order = {'get_cart_total': 0, 'get_cart_items': 0}
     cartItems = order['get_cart_items']
@@ -27,14 +29,11 @@ def cookieCart(request):
     for i in cart:
         try:
             cartItems += cart[i]['quantity']
-
             product = Product.objects.get(id=i)
             total = (product.price * cart[i]['quantity'])
 
             order['get_cart_total'] += total
             order['get_cart_items'] += cart[i]['quantity']
-
-            print(product.picture.url)
 
             item = {
                 "product": {
@@ -66,9 +65,6 @@ def cartData(request):
     return {'cartItems': cartItems, 'order': order, 'items': items}
 
 def guestOrder(request, email):
-    print('User is not logged in')
-
-    print('COOKIES:', request.COOKIES)
     cookieData = cookieCart(request)
     items = cookieData['items']
 
@@ -84,11 +80,13 @@ def guestOrder(request, email):
     for i in items:
         product = Product.objects.get(id=i['product']['id'])
 
-        orderItem = OrderItem.objects.create(
+        orderItem, created = OrderItem.objects.get_or_create(
             product = product,
             order = order,
-            quantity = i['quantity'],
             )
+
+        orderItem.quantity += i['quantity']
+        orderItem.save()
     return customer, order
 
 @register.filter

@@ -11,7 +11,7 @@ function AlterFields() {
 }
 
 function SetPhoto(el, evt) {
-    var tgt = evt.target || window.event.srcElement, files = tgt.files;
+    var tgt = evt.target || window.event.target, files = tgt.files;
 
     // FileReader support
     if (FileReader && files && files.length) {

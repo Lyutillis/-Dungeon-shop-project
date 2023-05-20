@@ -236,7 +236,6 @@
     display: none;
 }
 
-
 /** divider **/
 .divider{
     display: block;
@@ -291,6 +290,7 @@
     background: var(--grey);
     color: #fff;
 }
+
 .product-btn-group .heart{
     color: var(--grey);
     cursor: pointer;
@@ -302,6 +302,16 @@
     color: var(--accent-color);
 }
 
+.product-btn-group .heartempt{
+    color: var(--accent-color);
+    cursor: pointer;
+}
+.product-btn-group .heartempt i{
+    font-size: 20px;
+}
+.product-btn-group .heartempt:hover{
+    color: var(--grey);
+}
 
 /** Responsive Mobile **/
 @media screen and (max-width:520px) {

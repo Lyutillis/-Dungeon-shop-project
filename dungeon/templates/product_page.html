@@ -15,8 +15,12 @@
 
                 <div class="breadcrumb">
                     <span><a href="{% url 'homepage' %}">Home</a></span>
-                    <span><a href='{% url "category-link" category=product.category.name %}'>{{ product.category.name }}</a></span>
+                    {% if product.category  %}
+                    <span><a href='{% url "category-link" category=product.category.name %}'>{{ product.category.name }}</a></span> 
+                    {% endif %}
+                    {% if product.subcategory  %}
                     <span><a href='{% url "subcategory-link" category=product.category.name subcategory=product.subcategory.name %}'>{{ product.subcategory.name }}</a></span>
+                    {% endif %}
                 </div>
 
                 <div class="product-image">
@@ -26,9 +30,9 @@
                     <div class="product-image-slider">
                         <img src="/static{{ product.picture.url }}" alt=""  class="image-list">
                         {% for i in pictures %}
-
+                            {% if i %}
                         <img src="/static{{ i.url }}" alt=""  class="image-list">
-
+                            {% endif  %}
                         {% endfor %}
                     </div>
                 </div>
@@ -81,7 +85,11 @@
                     <div class="product-btn-group">
                         <div data-product='{{ product.id }}' data-action="add"  class="button buy-now update-cart-checkout"><i class='bx bxs-zap'></i> Buy Now</div>
                         <div data-product='{{ product.id }}' data-action="add" class="button add-cart update-cart"><i class='bx bxs-cart' ></i> Add to Cart</div>
-                        <div class="button heart"><i class='bx bxs-heart' ></i> Add to Wishlist</div>
+                        {% if product in wishlist %}
+                        <div data-id="{{ product.id }}" onclick="RemoveWishlist(this.dataset.id)" class="button heartempt"><i class='bx bxs-heart'></i> Add to Wishlist</div>
+                        {% else %}
+                        <div data-id="{{ product.id }}" onclick="AddWishlist(this.dataset.id)" class="button heart"><i class='bx bxs-heart'></i> Remove from Wishlist</div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

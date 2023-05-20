@@ -1,3 +1,6 @@
+var initialSrc = "/static/product/add_image1.png";
+var input = document.getElementsByClassName('input-photo')[0];
+
 function SubmitData() {
     var name = document.getElementById('floatingName').value
     var price = '$' + document.getElementById('inputPrice').value
@@ -16,7 +19,6 @@ function SubmitData() {
     var img5 = document.getElementById('img5').src
     var img6 = document.getElementById('img6').src
     var img7 = document.getElementById('img7').src
-    console.log(img7)
     if (name!="" && price !="$" && description!="" && category!="") {
         for (var i = 1; i < 8; i++) {
             element = document.getElementById('img'+String(i))
@@ -33,7 +35,6 @@ function SubmitData() {
 }
 
 function removeOptions(selectElement, initial) {
-    console.log('i`M HERE', selectElement)
     var i, L = selectElement.options.length - 1
     for(i=L; i >= 0; i--) {
         selectElement.remove(i)
@@ -92,11 +93,6 @@ function populate_list() {
     });
 }
 
-var initialSrc = "/static/product/add_image1.png";
-
-var input = document.getElementsByClassName('input-photo')[0];
-
-
 function PhotoSection(el, evt, id) {
     var tgt = evt.target || window.event.srcElement, files = tgt.files;
     var clone = el.cloneNode(true)
@@ -113,7 +109,6 @@ function PhotoSection(el, evt, id) {
             var sliderMainImage = document.getElementById("imgPreview");
             sliderMainImage.src = fr.result;
             var sliderImage = document.getElementById(id);
-            console.log(id)
             sliderImage.src = fr.result;
         }    
         fr.readAsDataURL(files[0]);
@@ -124,7 +119,6 @@ function PhotoSection(el, evt, id) {
         console.log('Our browser does not support File Reader ((Whatever that means))')
     }
 
-    console.log(clone)
     el.after(clone)
     document.getElementById('hiddenform').append(el)
     document.getElementById(id).dataset.hasimg='true'
@@ -134,7 +128,6 @@ function PhotoSection(el, evt, id) {
 
 function RemoveImage(id) {
     var targetId = id.slice(1, id.length)
-    console.log(targetId)
     var sliderMainImage = document.getElementById("imgPreview");
     sliderMainImage.src = initialSrc;
     var sliderImage = document.getElementById(targetId);
@@ -149,7 +142,6 @@ function RemoveImage(id) {
 
 function AddField(id) {
     var targetId = id.slice(1, id.length)
-    console.log(targetId)
     document.getElementById(id).classList.add('hidden')
     var inner = '<input class="input-photo form-control" type="file" name="photograph" id="photo1" required="true" data-imgid="' + targetId + '" onchange="PhotoSection(this, event, this.dataset.imgid)" placeholder="/static{{ product.picture.url }}"/>'
     document.getElementsByClassName('overlay')[0].innerHTML += inner;
@@ -197,7 +189,6 @@ function CancelCategory() {
 function CreateCategory() {
     var url = '/create-category/'
     var catName = document.getElementById('categoryinput').value
-    console.log(catName)
     if (catName == "") {
         alert('Add the name!')
         return
@@ -217,7 +208,6 @@ function CreateCategory() {
     })
 
     .then((data) => {
-        console.log('data:', data)
         location.reload()
     });
 }
@@ -240,7 +230,6 @@ function DeleteCategory() {
     })
 
     .then((data) => {
-        console.log('data:', data)
         location.reload()
     });
 }
@@ -279,7 +268,6 @@ function CreateSubCategory() {
     })
 
     .then((data) => {
-        console.log('data:', data)
         location.reload()
     });
 }
@@ -303,7 +291,6 @@ function DeleteSubCategory() {
     })
 
     .then((data) => {
-        console.log('data:', data)
         location.reload()
     });
 }
@@ -312,7 +299,7 @@ function DeleteSubCategory() {
 function ShowDelSubcategory() {
     var subcatDiv=document.getElementById('subcategory')
     var subcatBut=document.getElementById('addsubcategorybut')
-    if (document.getElementById('selectSubcategory').value=="Select Subcategory") {
+    if (document.getElementById('selectSubcategory').value=="") {
         subcatBut.classList.remove('hidden')
         document.getElementById('delsubcategory').classList.add('hidden')
     } else {

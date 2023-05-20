@@ -13,7 +13,6 @@ function getToken(name) {
 	}
 	return cookieValue;
 }
-var csrftoken = getToken('csrftoken');
 
 function getCookie(name) {
 	var cookieArr = document.cookie.split(';');
@@ -28,10 +27,10 @@ function getCookie(name) {
 	return null;
 }
 
-var cart = JSON.parse(getCookie('cart'))
-
 if (cart == undefined){
 	cart = {}
-	console.log('Cart Created!', cart)
 	document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
 }
+
+var csrftoken = getToken('csrftoken');
+var cart = JSON.parse(getCookie('cart'))

@@ -4,7 +4,6 @@
 <script type="text/javascript">
     var imgInputs=document.getElementsByClassName('file-upload')
     for (let i = 0; i < 6; i++) {
-        console.log(i+1)
         imgInputs[i].querySelector('#id_picture'+(i+1)).addEventListener('change', function(e) {
             var imgCont=document.getElementsByTagName('img')[i]
             var tgt = event.target || window.event.srcElement, files = tgt.files;

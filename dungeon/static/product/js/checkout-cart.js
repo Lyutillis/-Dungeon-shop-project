@@ -14,7 +14,6 @@ checkoutBtns[0].addEventListener('click', function(){
 })
 
 function checkoutAddCookieItem(productId, action){
-	console.log('User is not authenticated')
 
 	if (action=='add'){
 		if (cart[productId] == undefined){
@@ -38,7 +37,6 @@ function checkoutAddCookieItem(productId, action){
 }
 
 function checkoutUpdateUserOrder(productId, action){
-	console.log('User is logged in, sending data...')
 		var url = '/update-item/'
 
 		fetch(url, {
@@ -55,7 +53,6 @@ function checkoutUpdateUserOrder(productId, action){
 	})
 
 	.then((data) => {
-		console.log('data:', data)
 		location.replace('/checkout/')
 	});
 }

@@ -34,7 +34,6 @@ function updateUserPermissions(userId, action, type){
             var url = '/update-permission-superuser/'
         } else {
             var url = '/update-permission-staff/'
-            console.log('staff in js func')
         }
 
 		fetch(url, {
@@ -51,7 +50,6 @@ function updateUserPermissions(userId, action, type){
 	})
 
 	.then((data) => {
-		console.log('data:', data)
 		location.reload()
 	});
 }
