@@ -1,0 +1,1 @@
+web gunicron dungeon.wsgi:application --load-file -
