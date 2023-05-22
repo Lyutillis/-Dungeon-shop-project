@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'user',
     'product',
     #Authentication
@@ -66,10 +67,12 @@ SOCIALACCOUNT_PROVIDERS = {
         # For each OAuth based provider, either add a ``SocialApp``
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
-        'APP': {
-            'client_id': '552145676418-6opofh6qubfhv4f8jqp17d45ca1k1v28.apps.googleusercontent.com',
-            'secret': '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',
-            'key': '',
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
         }
     },
     'facebook': {
