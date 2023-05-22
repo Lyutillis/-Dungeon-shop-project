@@ -25,7 +25,7 @@
                             </div>
                             <h4 id="username" class="mb-2">{{ user.username }}</h4>
                             <p id="email" class="text-muted mb-4"> {{ user.email }}</p>
-                            <button id="alterBut" type="button" class="btn btn-primary btn-rounded btn-lg" onclick=AlterFields()>Alter Profile</button>
+                            <button id="alterBut" type="button" class="btn btn-primary btn-rounded btn-lg" data-username="{{ user.username }}" data-email="{{ user.email }}" onclick=AlterFields(this)>Alter Profile</button>
                         </div>
                     </div>
                 </div>

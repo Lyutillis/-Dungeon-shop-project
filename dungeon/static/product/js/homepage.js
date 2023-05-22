@@ -122,7 +122,7 @@ function populate_list() {
             removeOptions(select, `All subcategories from ${data.category}`);
             for (var i = 0; i<=data.subcategories.length-1; i++){
                 var opt = document.createElement('option');
-                opt.value = data.subcategories[i]['id'];
+                opt.value = data.subcategories[i]['name'];
                 opt.innerHTML = data.subcategories[i]['name'];
                 select.appendChild(opt);
             }

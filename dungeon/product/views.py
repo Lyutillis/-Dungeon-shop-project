@@ -337,6 +337,8 @@ def categoryFilter(request):
 		except:
 			subcategory = None
 
+		print(request.GET.get('subcategory'))
+
 		if not subcategory :
 			if not category :
 				messages.success(request, ('You didn`t choose any category'))
