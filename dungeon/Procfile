@@ -1,1 +1,1 @@
-web gunicorn dungeon.wsgi:application --load-file -
+web: gunicorn dungeon.wsgi
