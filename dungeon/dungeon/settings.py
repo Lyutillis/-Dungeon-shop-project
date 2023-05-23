@@ -57,7 +57,7 @@ INSTALLED_APPS = [
 LOGIN_REDIRECT_URL = '/'
 SOCIALACCOUNT_LOGIN_ON_GET=True
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
 
 SITE_ID = 1
@@ -100,7 +100,7 @@ SOCIALACCOUNT_PROVIDERS = {
     'github': {
         'APP': {
             'client_id': 'a09b816d388bf4067db6',
-            'secret': 'be36db2ad46ccc0d90d1ae4a5a9115e7d4c41d7c',
+            'secret': '670fdc4002d4adf82919831c36962c27d8ee4a2d',
             'key': '',
         },
     },
